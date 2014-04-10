@@ -97,17 +97,17 @@ end
 #   cities  n-by-2 matrix of (x,y) city locations
 # Output:
 #   path    Vector with order to cities are visited in
-function buildTSP(n, cities)
+function buildTSP(n, dist)
 
     # Calculate pairwise distance matrix
-    dist = zeros(n, n)
-    for i = 1:n
-        for j = i:n
-            d = norm(cities[i,1:2] - cities[j,1:2])
-            dist[i,j] = d
-            dist[j,i] = d
-        end
-    end
+    # dist = zeros(n, n)
+    # for i = 1:n
+    #     for j = i:n
+    #         d = norm(cities[i,1:2] - cities[j,1:2])
+    #         dist[i,j] = d
+    #         dist[j,i] = d
+    #     end
+    # end
 
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
@@ -136,17 +136,17 @@ function buildTSP(n, cities)
 
     function subtour(cb)
         # Optional: display tour starting at city 1
-        println("----\nInside subtour callback")
-        println("Current tour starting at city 1:")
-        print(extractTour(n, getValue(x)))
+        # println("----\nInside subtour callback")
+        # println("Current tour starting at city 1:")
+        # print(extractTour(n, getValue(x)))
 
         # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
 
         if subtour_length == n
             # This "subtour" is actually all cities, so we are done
-            println("Solution visits all cities")
-            println("----")
+            # println("Solution visits all cities")
+            # println("----")
             return
         end
         
@@ -176,8 +176,8 @@ function buildTSP(n, cities)
         end
         
         # Add the new subtour elimination constraint we built
-        println("Adding subtour elimination cut")
-        println("----")
+        # println("Adding subtour elimination cut")
+        # println("----")
         addLazyConstraint(cb, arcs_from_subtour >= 2)
     end  # End function subtour
 
@@ -189,40 +189,20 @@ end # end buildTSP
 function solveTSP(m)
     solve(m)
 
+    n = int(sqrt(m.numCols))
     return extractTour(n, getValue(m.dictList[1]))
 end  # end solveTSP
 
-# Create a simple instance that looks like
-#       +           +
-#   +                   +
-#       +           +
-# The optimal tour is obvious, but the initial solution will be
-#    /--+           +--\
-#   +               |   +
-#    \--+           +--/
-# n = 6
-# cities = [ 50 200;
-#                     100 100;
-#                     100 300;
-#                     500 100;
-#                     500 300;
-#                     550 200]
-n = 11
-cities = [50 200;
-          100 100;
-          100 300;
-          500 100;
-          500 300;
-          550 220;
-          900 220;
-          85  455;
-          300 275;
-          250 150;
-          800 1000]
+# Add fixed leg constraints to the model. 
+# This has no check for feasibility issues.
+function addFixedLegs(model, fixedPairs)
 
-#model = buildTSP(n, cities)
-#tour = solveTSP(model)
+    for pair in fixedPairs
+        @addConstraint(model, x[pair[1],pair[2]] == 1)
+        @addConstraint(model, x[pair[2],pair[1]] == 1)
+    end
 
-# println("Solution: ")
-# println(tour)
+    return model
+end
+
 end
