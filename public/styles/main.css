@@ -1867,36 +1867,6 @@ address {
   position: fixed;
 }
 
-/* line 2, ../../src/styles/_base.scss */
-body {
-  background-size: auto;
-  background-repeat: repeat repeat;
-}
-
-/* line 6, ../../src/styles/_base.scss */
-.container-fluid {
-  max-width: 1600px;
-  margin: 0 auto;
-}
-
-/* line 10, ../../src/styles/_base.scss */
-ul, ol {
-  margin: 0;
-}
-/* line 12, ../../src/styles/_base.scss */
-ul li, ol li {
-  list-style: none;
-}
-
-/* line 18, ../../src/styles/_base.scss */
-summary:focus {
-  outline: none;
-}
-/* line 21, ../../src/styles/_base.scss */
-summary::-webkit-details-marker {
-  color: red;
-}
-
 /* line 1, ../../src/styles/_utils.scss */
 .hidden {
   display: none !important;
@@ -1905,4 +1875,36 @@ summary::-webkit-details-marker {
 /* line 4, ../../src/styles/_utils.scss */
 .invisible {
   visibility: hidden;
+}
+
+/* line 1, ../../src/styles/content.scss */
+#content {
+  overflow: auto;
+  width: 100%;
+}
+/* line 5, ../../src/styles/content.scss */
+#content .sidebar, #content .maps {
+  float: left;
+  height: 600px;
+}
+/* line 9, ../../src/styles/content.scss */
+#content .sidebar {
+  width: 245px;
+  background-color: gray;
+}
+/* line 13, ../../src/styles/content.scss */
+#content .maps {
+  width: calc(100% - 245px);
+  overflow: auto;
+}
+/* line 16, ../../src/styles/content.scss */
+#content .maps > div {
+  width: 50%;
+  height: 100%;
+  background: yellow;
+  float: left;
+}
+/* line 22, ../../src/styles/content.scss */
+#content .maps > div:first-child {
+  border-right: 5px solid white;
 }

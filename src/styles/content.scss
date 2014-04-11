@@ -1,0 +1,28 @@
+#content {
+    overflow: auto;
+    width: 100%;
+
+    .sidebar, .maps {
+        float: left;
+        height: 600px;
+    }
+    .sidebar {
+        width: 245px;
+        background-color: $sidebar-bg;
+    }
+    .maps{
+        width: calc(100% - 245px);
+        overflow: auto;
+        >div {
+            width: 50%;
+            height: 100%;
+            background: yellow;
+            float: left;
+
+            &:first-child {
+                border-right: 5px solid white;
+            }
+        }
+    }
+
+}
