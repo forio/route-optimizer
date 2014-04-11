@@ -1,0 +1,26 @@
+
+body {
+    background-size: auto;
+    background-repeat: repeat repeat;
+}
+.container-fluid{
+    max-width: 1600px;
+    margin: 0 auto;
+}
+ul, ol {
+    margin: 0;
+    li {
+        list-style: none;
+    }
+}
+
+summary {
+    &:focus {
+        outline: none;
+    }
+    &::-webkit-details-marker {
+      color: red;
+    }
+}
+
+

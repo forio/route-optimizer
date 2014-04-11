@@ -1,0 +1,17 @@
+{
+  "name": "routeoptimizer",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-browserify2": "*",
+    "grunt-contrib-compass": "*",
+    "grunt-contrib-jst": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-connect": "*",
+    "grunt-open": "*",
+    "connect-livereload": "*",
+    "matchdep": "*",
+    "ejsify": "^0.1.0",
+    "grunt-contrib-copy": "^0.5.0"
+  }
+}
