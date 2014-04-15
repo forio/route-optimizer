@@ -28,8 +28,8 @@ using GLPKMathProgInterface
 function extractTour(n, sol)
     tour = [1]  # Start at city 1 always
     cur_city = 1
+    println(sol)
     while true
-    	#println("Tour: $tour")
         # Look for first arc out of current city
         for j = 1:n
             if sol[cur_city,j] >= 1-1e-6
@@ -137,16 +137,16 @@ function buildTSP(n, dist)
     function subtour(cb)
         # Optional: display tour starting at city 1
         # println("----\nInside subtour callback")
-        # println("Current tour starting at city 1:")
-        # print(extractTour(n, getValue(x)))
+        println("Current tour starting at city 1:")
+        println(extractTour(n, getValue(x)))
 
         # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
 
         if subtour_length == n
             # This "subtour" is actually all cities, so we are done
-            # println("Solution visits all cities")
-            # println("----")
+            println("Solution visits all cities")
+            println("----")
             return
         end
         

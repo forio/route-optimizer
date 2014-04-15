@@ -13,7 +13,12 @@ cities = [50 200;
           85  455;
           300 275;
           250 150;
-          800 1000]
+          800 1000;
+          450 100;
+          1500 100;
+          250 950;
+          621 820;
+          351 750]
 
 n = size(cities)[1]
 # Calculate pairwise distance matrix
