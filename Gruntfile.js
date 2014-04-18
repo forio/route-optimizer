@@ -43,7 +43,7 @@ module.exports = function(grunt) {
             },
             assets: {
                 files: [{
-                    src: ['*.*'],
+                    src: ['**/*.*'],
                     expand: true,
                     cwd: 'src/styles/assets/',
                     dest: 'public/styles/assets/'
