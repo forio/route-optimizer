@@ -127,8 +127,8 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('server', ['connect:livereload', 'open', 'watch']);
     grunt.registerTask('init', ['compass', 'browserify2']);
+    grunt.registerTask('server', ['copy', 'init', 'connect:livereload', 'open', 'watch']);
 
 
     grunt.registerTask('default', ['watch']);
