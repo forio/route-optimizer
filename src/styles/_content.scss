@@ -1,17 +1,11 @@
 #content {
-    overflow: auto;
-    width: 100%;
-
-    .sidebar, .maps {
-        float: left;
+    .side, .maps {
         height: 600px;
     }
-    .sidebar {
-        width: 245px;
+    .side {
         background-color: $light-bg;
     }
     .maps{
-        width: calc(100% - 245px);
         overflow: auto;
         >div {
             width: 50%;

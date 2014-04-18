@@ -1,16 +1,15 @@
-$side-bar-width: 245px;
+$sidebarwidth: 245px;
 
 .section {
     overflow: auto;
     width: 100%;
 
     .side {
-        width: $side-bar-width;
+        width: $sidebarwidth;
         float: left;
     }
     .main {
-        width: calc(100% - $side-bar-width);
+        width: calc(100% - #{$sidebarwidth});
         float: left;
-
     }
 }
