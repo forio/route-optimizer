@@ -1,0 +1,10 @@
+#stats {
+    .main{
+        overflow: auto;
+        .metric {
+            width: 33.3%;
+            background-color: green;
+            float: left;
+        }
+    }
+}
