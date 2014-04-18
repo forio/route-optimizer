@@ -1,8 +1,34 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
 
+
+@include font-face("SSSymbolicons", font-files(
+        "symbolicons/ss-symbolicons-block.woff",
+        "symbolicons/ss-symbolicons-block.ttf",
+        "symbolicons/ss-symbolicons-block.svg#SSSymboliconsBlock"
+        ), "symbolicons/ss-symbolicons-block.eot");
+
+.ss-icon, .ss-icon.ss-symbolicons-block,
+[class^="ss-"]:before, [class*=" ss-"]:before,
+[class^="ss-"].ss-symbolicons-block:before, [class*=" ss-"].ss-symbolicons-block:before,
+[class^="ss-"].right:after, [class*=" ss-"].right:after,
+[class^="ss-"].ss-symbolicons-block.right:after, [class*=" ss-"].ss-symbolicons-block.right:after {
+  font-family: "SSSymbolicons";
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  text-rendering: optimizeLegibility;
+  white-space: nowrap;
+  /*-webkit-font-feature-settings: "liga"; Currently broken in Chrome >= v22. Falls back to text-rendering. Safari is unaffected. */
+  -moz-font-feature-settings: "liga=1";
+  -moz-font-feature-settings: "liga";
+  -ms-font-feature-settings: "liga" 1;
+  -o-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+.ss-flag:before{content:'⚑'}
+
 body {
     font-weight: $font-normal-weight;
 }
-
-
 

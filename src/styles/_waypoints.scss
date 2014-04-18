@@ -15,18 +15,60 @@
         &:before {
             color: $accent-original;
 
-            content: ".";
-            font-size: 102px;
+            content:'🌑';
+            font-size: 11px;
+            left: -6px;
+            top: 1px;
+
             position: absolute;
-            left: -18px;
-            top: -29px;
-            font-family: H;
+            @extend .ss-icon;
         }
 
         &:first-child, &:last-child {
-            border-left: 0;
             &:before {
                 color: $way-point-highlight;
+                border: 2px solid $way-point-highlight;
+                border-radius: 50%;
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+
+                content: '';
+                margin-top: 17px;
+                margin-left: -3px;
+                z-index: 9;
+            }
+
+            &:after {
+               content: '⚑';
+               background: $light-bg;
+
+               font-size: 8px;
+               line-height: 8px;
+               @extend .ss-icon;
+               color: $way-point-highlight;
+
+               position: absolute;
+               left: -3px;
+               top: 20px;
+
+                z-index: 8;
+
+
+            }
+        }
+        &:first-child {
+            margin-top: -18px;
+            &:after {
+                padding-bottom: 4px;
+                padding-top: 24px;
+                top: 0;
+            }
+        }
+        &:last-child {
+            &:after {
+                padding-bottom: 21px;
+                padding-top:4px;
             }
         }
     }
