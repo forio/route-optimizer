@@ -1,0 +1,33 @@
+.waypoints {
+    $line-height: 52px;
+    font-weight: $font-light-weight;
+
+    font-size: 12px;
+    line-height: $line-height;
+    padding-left: 30px;
+
+    li {
+        border-left: 1px solid $accent-original;
+        list-style: none;
+        position: relative;
+        padding-left: 20px;
+
+        &:before {
+            color: $accent-original;
+
+            content: ".";
+            font-size: 102px;
+            position: absolute;
+            left: -18px;
+            top: -29px;
+            font-family: H;
+        }
+
+        &:first-child, &:last-child {
+            border-left: 0;
+            &:before {
+                color: $way-point-highlight;
+            }
+        }
+    }
+}
