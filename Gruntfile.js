@@ -42,10 +42,12 @@ module.exports = function(grunt) {
                 dest: 'public/index.html'
             },
             assets: {
-                src: 'src/styles/assets/',
-                flatten: true,
-                cwd: 'src/styles/assets/',
-                dest: 'public/styles/'
+                files: [{
+                    src: ['*.*'],
+                    expand: true,
+                    cwd: 'src/styles/assets/',
+                    dest: 'public/styles/assets/'
+                }]
             }
         },
         connect: {
