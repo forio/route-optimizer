@@ -12,24 +12,26 @@
         position: relative;
         padding-left: 20px;
 
-        &:before {
+        &:before, &:after {
+            @extend .ss-icon;
+            position: absolute;
+
+        }
+
+        &:before { //Bulled
             color: $accent-original;
 
             content:'🌑';
             font-size: 11px;
             left: -6px;
             top: 1px;
-
-            position: absolute;
-            @extend .ss-icon;
         }
 
         &:first-child, &:last-child {
-            &:before {
+            &:before { //Red circle outline
                 color: $way-point-highlight;
                 border: 2px solid $way-point-highlight;
                 border-radius: 50%;
-                display: inline-block;
                 width: 18px;
                 height: 18px;
 
@@ -39,22 +41,18 @@
                 z-index: 9;
             }
 
-            &:after {
+            &:after { //Flag
                content: '⚑';
                background: $light-bg;
 
                font-size: 8px;
                line-height: 8px;
-               @extend .ss-icon;
                color: $way-point-highlight;
 
-               position: absolute;
                left: -3px;
                top: 20px;
 
                 z-index: 8;
-
-
             }
         }
         &:first-child {
