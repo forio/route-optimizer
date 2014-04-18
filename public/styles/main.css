@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
 /* normalize.css v2.1.3 | MIT License | git.io/normalize */
 /* line 22, ../../src/styles/bootstrap/_normalize.scss */
 article,
@@ -262,7 +263,7 @@ html {
 
 /* line 22, ../../src/styles/bootstrap/_scaffolding.scss */
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 14px;
   line-height: 1.42857;
   color: #333333;
@@ -1552,7 +1553,7 @@ cite {
 /* line 79, ../../src/styles/bootstrap/_type.scss */
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 500;
   line-height: 1.1;
   color: inherit;
@@ -1867,6 +1868,11 @@ address {
   position: fixed;
 }
 
+/* line 3, ../../src/styles/_base.scss */
+body {
+  font-weight: 400;
+}
+
 /* line 1, ../../src/styles/_utils.scss */
 .hidden {
   display: none !important;
@@ -1877,34 +1883,58 @@ address {
   visibility: hidden;
 }
 
-/* line 1, ../../src/styles/content.scss */
+/* line 4, ../../src/styles/_header.scss */
+header {
+  height: 60px;
+  background-color: #f5f8fa;
+  font-weight: 300;
+}
+/* line 9, ../../src/styles/_header.scss */
+header h1, header h2 {
+  display: inline-block;
+}
+/* line 12, ../../src/styles/_header.scss */
+header h1 {
+  font-size: 16px;
+  margin-left: 30px;
+}
+/* line 16, ../../src/styles/_header.scss */
+header h2 {
+  font-size: 12px;
+}
+/* line 19, ../../src/styles/_header.scss */
+header .logo {
+  height: 40px;
+}
+
+/* line 1, ../../src/styles/_content.scss */
 #content {
   overflow: auto;
   width: 100%;
 }
-/* line 5, ../../src/styles/content.scss */
+/* line 5, ../../src/styles/_content.scss */
 #content .sidebar, #content .maps {
   float: left;
   height: 600px;
 }
-/* line 9, ../../src/styles/content.scss */
+/* line 9, ../../src/styles/_content.scss */
 #content .sidebar {
   width: 245px;
-  background-color: gray;
+  background-color: #f5f8fa;
 }
-/* line 13, ../../src/styles/content.scss */
+/* line 13, ../../src/styles/_content.scss */
 #content .maps {
   width: calc(100% - 245px);
   overflow: auto;
 }
-/* line 16, ../../src/styles/content.scss */
+/* line 16, ../../src/styles/_content.scss */
 #content .maps > div {
   width: 50%;
   height: 100%;
   background: yellow;
   float: left;
 }
-/* line 22, ../../src/styles/content.scss */
+/* line 22, ../../src/styles/_content.scss */
 #content .maps > div:first-child {
   border-right: 5px solid white;
 }

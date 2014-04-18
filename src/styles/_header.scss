@@ -1,0 +1,22 @@
+$header-height: 60px;
+$logo-height: 40px;
+
+header {
+    height: $header-height;
+    background-color: $light-bg;
+
+    font-weight: $font-light-weight;
+    h1, h2 {
+        display: inline-block;
+    }
+    h1 {
+        font-size: 16px;
+        margin-left: 30px;
+    }
+    h2 {
+        font-size: 12px;
+    }
+    .logo {
+        height: $logo-height;
+    }
+}

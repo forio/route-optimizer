@@ -2,6 +2,7 @@
 
 @import "bootstrap/normalize";
 
+@import "variables";
 @import "bootstrap/variables"; // Modify this for custom colors, font-sizes, etc
 @import "bootstrap/mixins";
 
@@ -15,8 +16,8 @@
 // Utility classes
 @import "bootstrap/utilities"; // Has to be last to override when necessary
 
-@import "variables";
 @import "base";
 @import "utils";
+@import "header";
 @import "content";
 
