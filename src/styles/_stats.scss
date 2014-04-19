@@ -1,9 +1,43 @@
+$section-height: 238px;
+$large-text: 24px;
+$medium-text: 16px;
+
 #stats {
+    height: $section-height;
+    background-color: $stats-bg;
+    color: $light-bg;
+
+    padding-top: 15px;
+    padding-bottom: 15px
+
+    strong {
+        font-size: $large-text;
+        font-weight: $font-light-weight;
+    }
+
+    h4 {
+        font-size: $medium-text;
+        font-weight: $font-light-weight;
+    }
+
+    .side {
+        padding-top: 36px;
+        border-right: 1px groove $code-bg;
+
+    }
     .main{
+        padding-left: 15px;
+
         overflow: auto;
+        .original {
+            color: $accent-original;
+        }
+        .optimized {
+            color: $accent-optimized;
+        }
+
         .metric {
             width: 33.3%;
-            background-color: green;
             float: left;
         }
     }
