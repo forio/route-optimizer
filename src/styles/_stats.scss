@@ -8,9 +8,9 @@ $medium-text: 16px;
     color: $light-bg;
 
     padding-top: 15px;
-    padding-bottom: 15px
+    padding-bottom: 15px;
 
-    strong {
+    strong{
         font-size: $large-text;
         font-weight: $font-light-weight;
     }
@@ -21,14 +21,24 @@ $medium-text: 16px;
     }
 
     .side {
-        padding-top: 36px;
         border-right: 1px groove $code-bg;
+
+        >div:first-child {
+            padding-top: 37px;
+            padding-bottom: 37px;
+        }
 
     }
     .main{
         padding-left: 15px;
-
         overflow: auto;
+
+        h4 {
+            margin-bottom: 15px;
+            text-align: center;
+
+        }
+
         .original {
             color: $accent-original;
         }
@@ -36,9 +46,22 @@ $medium-text: 16px;
             color: $accent-optimized;
         }
 
+        h5,.value {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+        h5 {
+            text-align: right;
+            width: 72px;
+            margin-right: 24px;
+            font-weight: $font-light-weight;
+        }
+
         .metric {
             width: 33.3%;
             float: left;
+            text-align: center;
+
         }
     }
 }
