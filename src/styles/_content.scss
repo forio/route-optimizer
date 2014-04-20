@@ -7,6 +7,10 @@
     }
     .maps{
         overflow: auto;
+
+        .selected {
+            color: red;
+        }
         >div {
             width: 50%;
             height: 100%;
