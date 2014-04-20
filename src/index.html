@@ -11,8 +11,10 @@
 
         <!-- bower:js -->
         <script src="vendor/jquery/dist/jquery.js"></script>
-        <script src="vendor/underscore/underscore.js"></script>
+        <script src="vendor/lodash/dist/lodash.min.js"></script>
+        <script src="vendor/d3/d3.min.js"></script>
         <!-- endbower -->
+        <script src="http://forio.com/tools/contour/contour.min.js"></script>
         <script src="scripts/app.js"></script>
 
         <link rel="stylesheet" media="screen" href="styles/main.css">
@@ -28,7 +30,7 @@
             <h1> Business Analytics with Forio Epicenter using Julia:</h1>
             <h2> Delivery Route Optimization with a Mobile Interface Example </h2>
         </header>
-        <div id="content" class="section">
+        <section id="content" class="section">
             <div class="side">
                 <ul class="waypoints">
                     <li> Forio </li>
@@ -48,8 +50,8 @@
                     B
                 </div>
             </div>
-        </div>
-        <div id="stats" class="section">
+        </section>
+        <section id="stats" class="section">
             <div class="side">
                 <div>
                     <h4> Stops </h4>
@@ -75,6 +77,12 @@
                             <strong class="optimized"> 62.8 </strong> miles
                         </span>
                     </div>
+                    <div class="graph-container">
+                        <h6> savings </h6>
+                        <div class="graph pie-gauge">
+
+                        </div>
+                    </div>
                 </div>
 
                 <div class="metric">
@@ -88,6 +96,12 @@
                         <span class="value">
                             <strong class="optimized"> 62.8 </strong> miles
                         </span>
+                    </div>
+                    <div class="graph-container">
+                        <h6> savings </h6>
+                        <div class="graph">
+
+                        </div>
                     </div>
                 </div>
 
@@ -103,9 +117,14 @@
                             <strong class="optimized"> 62.8 </strong> miles
                         </span>
                     </div>
-                </div>
+                    <div class="graph-container">
+                        <h6> savings </h6>
+                        <div class="graph">
 
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     </body>
 </html>

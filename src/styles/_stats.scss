@@ -1,6 +1,4 @@
 $section-height: 238px;
-$large-text: 24px;
-$medium-text: 16px;
 
 #stats {
     height: $section-height;
@@ -10,9 +8,13 @@ $medium-text: 16px;
     padding-top: 15px;
     padding-bottom: 15px;
 
-    strong{
+    strong, .center-text{
         font-size: $large-text;
         font-weight: $font-light-weight;
+    }
+    .center-text {
+        fill: $light-bg;
+
     }
 
     h4 {
@@ -62,6 +64,16 @@ $medium-text: 16px;
             float: left;
             text-align: center;
 
+        }
+    }
+
+    .graph {
+        width: 200px;
+        .s-1 {
+            fill: $accent-optimized;
+        }
+        .s-2 {
+            fill: $code-bg;
         }
     }
 }
