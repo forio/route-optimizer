@@ -18,7 +18,7 @@ module.exports = function(grunt) {
                 tasks: ['compass']
             },
             js: {
-                files: [ 'src/scripts/**/*.js'],
+                files: [ 'src/scripts/**/*.js', 'src/scripts/**/*.ejs'],
                 tasks: 'browserify2'
             },
             index: {
