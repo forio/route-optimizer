@@ -3,7 +3,7 @@ Contour.export('donutTextOneValue', function (data, layer, options) {
     var textEl = layer.append('text')
                     .attr('class', 'center-text')
                     .attr('x', 12)
-                    .attr('y', 43) 
+                    .attr('y', 43)
                     .text((data[0].data[visibleIndex].y * 100) + '%');
 
     // var bounds =  _.nw.textBounds(data[0].data[visibleIndex].y, '.center-text');
@@ -18,11 +18,17 @@ module.exports = Backbone.View.extend({
    render: function() {
         var data = [{ x: 'Case A', y: 0.82}, { x: 'Case B', y: 0.18 }];
         new Contour({
-                el: '.pie-gauge',
+                el: this.el,
+                chart: {
+                    width: 70,
+                    height: 70
+                },
                 pie: {
                     piePadding: 0,
                     innerRadius: 28,
                     outerRadius: 35
+                    // innerRadius: 28,
+                    // outerRadius: 35
                 },
                 tooltip: {
                     formatter: function(d) {

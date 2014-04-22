@@ -14,7 +14,7 @@ module.exports = BaseView.extend({
 
     render: function() {
         this.renderSelf();
-        // this.renderChart();
+        this.renderChart();
         return this;
     },
 
@@ -27,8 +27,10 @@ module.exports = BaseView.extend({
         }));
     },
     renderChart: function() {
-        var dv = new DonutView();
-        this.$el.append(dv.render().$el);
+        var dv = new DonutView({
+            el: this.$('.graph')
+        });
+        dv.render();
         return this;
     }
 });
