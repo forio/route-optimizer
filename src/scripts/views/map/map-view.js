@@ -4,7 +4,7 @@ module.exports = Backbone.View.extend({
    render: function() {
         this.renderSelf();
         this.renderWaypoints();
-        // this.renderDirections();
+        this.renderDirections();
         return this;
    },
 
@@ -33,17 +33,22 @@ module.exports = Backbone.View.extend({
         return this;
    },
 
-   renderDirections: function() {
+   drawRoute: function (startindex, endindex) {
         var me = this;
-        for (var i=0; i< this.collection.size() - 1; i++) {
-            this.collection.getDirections(i, i+1).then(function(route){
-                var directionsDisplay = new google.maps.DirectionsRenderer({
-                    map: me.map,
-                    preserveViewport: true,
-                    draggable: false
-                });
-                directionsDisplay.setDirections(route);
+        this.collection.getDirections(startindex, endindex).then(function(route){
+            var directionsDisplay = new google.maps.DirectionsRenderer({
+                map: me.map,
+                preserveViewport: true,
+                draggable: false
             });
+            directionsDisplay.setDirections(route);
+        });
+   },
+
+   renderDirections: function() {
+        for (var i=0; i< this.collection.size() - 1; i++) {
+          this.drawRoute(i, i+1);
         }
+        this.drawRoute(this.collection.size() - 1, 0);
    }
 });

@@ -6,6 +6,16 @@ module.exports = Backbone.Collection.extend({
 
     distances: [],
 
+    comparator: 'order',
+
+    // comparator: function (model){
+    //     var order = model.get('order');
+    //     if (order === null) {
+
+    //     }
+    //  return -(new Date(model.get('lastModified'))).valueOf();
+    // },
+
     getMetric: function(metric) {
         return 34;
     },

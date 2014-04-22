@@ -10,9 +10,11 @@ var StatsView = require('views/stats-view');
 var CodeView = require('views/code-view');
 
 var Optimizer = require('models/route-optimizer-model');
+var ops = require('services/epicenter-operations-service');
 
 $(function() {
 
+    window.ops = ops;
 
     var wp = new WayPoints({});
     wp.fetch().then(function() {
@@ -29,11 +31,11 @@ $(function() {
         $('#content .side').append(wpListView.render().$el);
 
 
-        // var originalMapView = new OriginalMapView({
-        //     collection: wp,
-        //     className: 'A'
-        // });
-        // $('#content .maps').append(originalMapView.render().$el);
+        var originalMapView = new OriginalMapView({
+            collection: wp,
+            className: 'A'
+        });
+        $('#content .maps').append(originalMapView.render().$el);
 
         // var optimizedMapView = new OptimizedMapView({
         //     collection: wp,
