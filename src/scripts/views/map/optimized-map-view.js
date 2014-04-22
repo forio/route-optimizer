@@ -2,8 +2,9 @@ var MapView = require('views/map-view');
 
 module.exports = MapView.extend({
 
-   initialize: function() {
-
-
-   }
+   render: function() {
+        this.renderSelf();
+        this.renderWaypoints();
+        return this;
+    },
 });
