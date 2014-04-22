@@ -1,10 +1,13 @@
-module.exports = Backbone.View.extend({
+var BaseView = require('views/base-view');
+
+module.exports = BaseView.extend({
     events: {
         'click': 'toggleSelected'
     },
 
     initialize: function() {
         this.model.on('change:selected', this.selectPoint, this);
+        BaseView.prototype.initialize.apply(this, arguments);
     },
 
     selectPoint: function() {

@@ -11,45 +11,41 @@ var CodeView = require('views/code-view');
 
 $(function() {
 
-    var wp = new WayPoints([
-            {name: "Forio", latitude:1, longitude:2},
-            {name: "Circa 1890 Hotel", latitude:1, longitude:2},
-            {name: "Fresca", latitude:1, longitude:2},
-            {name: "Radius", latitude:1, longitude:2},
-            {name: "Brainwash", latitude:1, longitude:2},
-            {name: "Forio", latitude:1, longitude:2}
-        ]);
-
-    var wpListView = new WayPointsListView({
-        collection: wp,
-        className: 'waypoints'
+    var wp = new WayPoints({
     });
-    $('#content .side').append(wpListView.render().$el);
+    wp.fetch().then(function() {
+
+        var wpListView = new WayPointsListView({
+            collection: wp,
+            className: 'waypoints'
+        });
+        $('#content .side').append(wpListView.render().$el);
 
 
-    var originalMapView = new OriginalMapView({
-        collection: wp,
-        className: 'A'
+        var originalMapView = new OriginalMapView({
+            collection: wp,
+            className: 'A'
+        });
+        $('#content .maps').append(originalMapView.render().$el);
+
+        // var optimizedMapView = new OptimizedMapView({
+        //     collection: wp,
+        //     className: 'other'
+        // });
+        // $('#content .maps').append(optimizedMapView.render().$el);
+
+        var statsView = new StatsView({
+            original: wp,
+            optimized: wp,
+            el: $('#stats')
+        });
+        statsView.render();
+
+        var cv = new CodeView({
+            el: $('#how-we-did-it .main')
+        });
+        cv.render();
+
+        window.wp = wp;
     });
-    $('#content .maps').append(originalMapView.render().$el);
-
-    // var optimizedMapView = new OptimizedMapView({
-    //     collection: wp,
-    //     className: 'other'
-    // });
-    // $('#content .maps').append(optimizedMapView.render().$el);
-
-    var statsView = new StatsView({
-        original: wp,
-        optimized: wp,
-        el: $('#stats')
-    });
-    statsView.render();
-
-    var cv = new CodeView({
-        el: $('#how-we-did-it .main')
-    });
-    cv.render();
-
-    window.wp = wp;
 });
