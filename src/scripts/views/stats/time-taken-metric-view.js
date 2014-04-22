@@ -5,10 +5,10 @@ module.exports = BaseView.extend({
     caption: 'Travel Time',
     unit: 'hours',
 
-    getOriginal: function () {
-       return 5;
-    },
-    getOptimized: function () {
-       return 6;
+    getData: function (collection) {
+        return _.reduce(collection.routes, function(memo, val) {
+              return memo + val.time;
+        }, 0);
+
     }
 });
