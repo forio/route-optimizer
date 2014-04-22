@@ -2,15 +2,14 @@ Contour.export('donutTextOneValue', function (data, layer, options) {
     var visibleIndex = data[0].data[0].y < data[0].data[1].y ? 1 : 0;
     var textEl = layer.append('text')
                     .attr('class', 'center-text')
-                    .attr('x', 29) //29
-                    .attr('y', 58) //58
+                    .attr('x', 12)
+                    .attr('y', 43) 
                     .text((data[0].data[visibleIndex].y * 100) + '%');
 
     // var bounds =  _.nw.textBounds(data[0].data[visibleIndex].y, '.center-text');
 });
 
 module.exports = Backbone.View.extend({
-
    initialize: function() {
 
 
