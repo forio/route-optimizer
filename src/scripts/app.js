@@ -40,7 +40,8 @@ $(function() {
     $('#content .maps').append(optimizedMapView.render().$el);
 
     var statsView = new StatsView({
-        collection: wp,
+        original: wp,
+        optimized: wp,
         el: $('#stats .main')
     });
     statsView.render();
