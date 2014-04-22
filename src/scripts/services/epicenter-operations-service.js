@@ -1,10 +1,12 @@
 var runsService = require('services/epicenter-runs-service');
 var urlService = require('services/epicenter-url-service');
+var ajaxTransportService = require('services/ajax-transport-service');
 
 module.exports = function() {
 
     var runid = "";
     var apiURL = urlService.getApiURL('operation');
+    var transport = require('services/ajax-transport-service')(apiURL);
 
     return {
 
@@ -13,9 +15,12 @@ module.exports = function() {
             var postData = {name: operation, arguments:[data]};
 
             var doPOST = function (runid) {
-                $.post(apiURL + '/' + runid, postData, function (response) {
-                    $def.resolve(response);
-                });
+                return transport
+                   .post(postData)
+                   .then(function (run){
+                       runid = run.id;
+                       $def.resolve(run.id);
+                   });
             };
 
             runsService.getRunID()

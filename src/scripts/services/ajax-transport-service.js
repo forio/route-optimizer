@@ -1,28 +1,26 @@
-module.exports = function() {
+module.exports = function(baseurl) {
 
     var defaultParams  = {
         contentType: 'application/json',
         crossDomain: true,
-        processData: false
+        processData: false,
+        url: baseurl
     };
 
     return {
-
-        get: function (url, data) {
+        get: function (data) {
             var params = $.extend({}, defaultParams, {
                 data: JSON.stringify(data),
-                method: 'GET',
-                url: url
+                method: 'GET'
             });
             return $.ajax(params);
         },
-        post: function (url, data) {
+        post: function (data) {
             var params = $.extend({}, defaultParams, {
                 data: JSON.stringify(data),
-                method: 'POST',
-                url: url
+                method: 'POST'
             });
             return $.ajax(params);
         }
     };
-}();
+};
