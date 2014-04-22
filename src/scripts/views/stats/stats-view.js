@@ -14,7 +14,7 @@ module.exports = BaseView.extend({
         return this;
     },
     renderSelf: function() {
-        var points = this.original.size();
+        var points = this.model.get('original').size();
 
         this.$el.html(this.template({
             stops: points,
@@ -25,24 +25,21 @@ module.exports = BaseView.extend({
         var dtView = new MetricView({
             caption: 'Distance Traveled',
             unit: 'miles',
-            original: this.original,
-            optimized: this.optimized
+            model: this.model
         });
         $el.append(dtView.render().$el);
 
         var longestSegmentView = new MetricView({
             caption: 'Longest Segment',
             unit: 'miles',
-            original: this.original,
-            optimized: this.optimized
+            model: this.model
         });
         $el.append(longestSegmentView.render().$el);
 
         var travelTimeView = new MetricView({
             caption: 'Travel Time',
             unit: 'hours',
-            original: this.original,
-            optimized: this.optimized
+            model: this.model
         });
         $el.append(travelTimeView.render().$el);
 

@@ -18,8 +18,8 @@ module.exports = BaseView.extend({
     },
 
     renderSelf: function() {
-        var originalVal = this.original.getMetric(this.metric);
-        var optimizedVal = this.optimized.getMetric(this.metric);
+        var originalVal = this.model.get('original').getMetric(this.metric);
+        var optimizedVal = this.model.get('optimized').getMetric(this.metric);
 
         this.$el.html(this.template({
             caption: this.caption,
@@ -29,8 +29,8 @@ module.exports = BaseView.extend({
         }));
     },
     renderChart: function() {
-        var originalVal = this.original.getMetric(this.metric);
-        var optimizedVal = this.optimized.getMetric(this.metric);
+        var originalVal = this.model.get('original').getMetric(this.metric);
+        var optimizedVal = this.model.get('optimized').getMetric(this.metric);
 
         var difference = originalVal / optimizedVal;
         var dv = new DonutView({
