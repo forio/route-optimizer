@@ -1,6 +1,9 @@
 var MarkerView = require('views/waypoint-marker-view');
 
+var API_KEY = "***REMOVED***";
+
 module.exports = Backbone.View.extend({
+
    initialize: function() {
 
 
@@ -15,6 +18,17 @@ module.exports = Backbone.View.extend({
 
    renderSelf: function() {
         this.$el.empty();
+        var mapOptions = {
+            zoom: 13,
+            draggable: false,
+            disableDefaultUI: true,
+            disableDoubleClickZoom: true,
+            scrollwheel: false,
+            center: new google.maps.LatLng(37.772207, -122.434242)
+          };
+          var map = new google.maps.Map(this.el,
+              mapOptions);
+
         return this;
    },
 

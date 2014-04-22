@@ -33,11 +33,11 @@ $(function() {
     });
     $('#content .maps').append(originalMapView.render().$el);
 
-    var optimizedMapView = new OptimizedMapView({
-        collection: wp,
-        className: 'other'
-    });
-    $('#content .maps').append(optimizedMapView.render().$el);
+    // var optimizedMapView = new OptimizedMapView({
+    //     collection: wp,
+    //     className: 'other'
+    // });
+    // $('#content .maps').append(optimizedMapView.render().$el);
 
     var statsView = new StatsView({
         original: wp,
