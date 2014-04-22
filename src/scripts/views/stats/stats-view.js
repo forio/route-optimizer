@@ -24,6 +24,7 @@ module.exports = BaseView.extend({
     renderMetrics: function($el) {
         var dtView = new MetricView({
             caption: 'Distance Traveled',
+            metric: 'distance',
             unit: 'miles',
             model: this.model
         });
@@ -31,6 +32,7 @@ module.exports = BaseView.extend({
 
         var longestSegmentView = new MetricView({
             caption: 'Longest Segment',
+            metric: 'longestSegment',
             unit: 'miles',
             model: this.model
         });
@@ -38,6 +40,7 @@ module.exports = BaseView.extend({
 
         var travelTimeView = new MetricView({
             caption: 'Travel Time',
+            metric: 'travelTime',
             unit: 'hours',
             model: this.model
         });
