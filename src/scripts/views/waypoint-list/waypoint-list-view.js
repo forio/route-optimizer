@@ -14,6 +14,11 @@ module.exports = Backbone.View.extend({
             var iv = new ItemView({model: mdl});
             this.$el.append(iv.render().$el);
         }, this);
+
+        //Loop back
+        var iv = new ItemView({model: this.collection.at(0)});
+        this.$el.append(iv.render().$el);
+
         return this;
    }
 });

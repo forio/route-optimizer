@@ -6,16 +6,16 @@ module.exports = function() {
 
     var runid = "";
     var apiURL = urlService.getApiURL('operation');
-    var transport = require('services/ajax-transport-service')(apiURL);
+    var transport = require('services/ajax-transport-service');
 
     return {
 
         do: function (operation, data) {
             var $def = $.Deferred();
-            var postData = {name: operation, arguments:[data]};
+            var postData = {name: operation, arguments: [data]};
 
             var doPOST = function (runid) {
-                return transport
+                return transport(apiURL + '/' + runid)
                    .post(postData)
                    .then(function (run){
                        runid = run.id;

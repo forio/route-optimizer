@@ -3,7 +3,10 @@ module.exports = Backbone.Model.extend({
         latitude: '',
         longitude: '',
         name: '',
-        selected: false
+        selected: false,
+
+        //order of waypoint in list
+        order: null
     },
 
     getLatLong: function() {

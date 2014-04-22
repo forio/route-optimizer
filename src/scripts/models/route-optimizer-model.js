@@ -35,12 +35,17 @@ module.exports = BaseModel.extend({
 
         or.getDistanceMatrix().then(function (distanceMatrix) {
             me.getOptimizedValues(distanceMatrix).then (function (optimized) {
+                var optimizedIndices = _.shuffle(_.range(1, distanceMatrix[0].length));
 
-                preOptimized.sort(function(){
+                console.log("old order", preOptimized.pluck('name'));
 
+                preOptimized.each(function (model, index){
+                    var newOrder = _.indexOf(optimizedIndices, index+1);
+                    model.set('order', newOrder, {silent: true});
                 });
-
-                $def.resolve(optimized);
+                preOptimized.sort();
+                console.log("new order", optimizedIndices, preOptimized.pluck('name'));
+                $def.resolve(preOptimized);
             });
         });
         return $def;
