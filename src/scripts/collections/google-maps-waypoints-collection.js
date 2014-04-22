@@ -14,10 +14,10 @@ var getMetricSumFromRoute = function (gDirectionsRoutes, metric){
 };
 
 var distanceMatrixToArray = function (gDistanceMatrixResponse) {
-    var returnArray = _(gDistanceMatrixResponse.rows).map(function (gDistanceMatrixResponseRow){
-        return _(gDistanceMatrixResponseRow.elements).map(function (gDistanceMatrixResponseElement){
+    var returnArray = _.map(gDistanceMatrixResponse.rows, function (gDistanceMatrixResponseRow){
+        return _.map(gDistanceMatrixResponseRow.elements, function (gDistanceMatrixResponseElement){
             var distance;
-            if (gDistanceMatrixResponseElement.status === google.maps.DistanceMatrixElementStatus) {
+            if (gDistanceMatrixResponseElement.status === google.maps.DistanceMatrixElementStatus.OK) {
                 distance = gDistanceMatrixResponseElement.distance.value;
             }
             else {
@@ -27,6 +27,7 @@ var distanceMatrixToArray = function (gDistanceMatrixResponse) {
         });
     });
 
+    return returnArray;
 };
 
 module.exports = BaseCollection.extend({
@@ -44,7 +45,7 @@ module.exports = BaseCollection.extend({
     },
 
     getDistanceMatrix: function() {
-        var latLangs = _invoke(this.models, 'getLatLong');
+        var latLangs = _.invoke(this.models, 'getLatLong');
         var dmc = new google.maps.DistanceMatrixService();
 
         var $def = $.Deferred();
@@ -57,8 +58,10 @@ module.exports = BaseCollection.extend({
         };
 
         dmc.getDistanceMatrix(distanceMatrixRequest, function (gDistanceMatrixResponse, gDistanceMatrixStatus) {
-            if(google.maps.DistanceMatrixStatus.OK) {
-                $def.resolve(distanceMatrixToArray(gDistanceMatrixResponse));
+            if(gDistanceMatrixStatus === google.maps.DistanceMatrixStatus.OK) {
+                var arrayResponse = distanceMatrixToArray(gDistanceMatrixResponse);
+                console.log("matric", arrayResponse);
+                $def.resolve(arrayResponse);
             }
             else {
                 $def.reject(gDistanceMatrixStatus);

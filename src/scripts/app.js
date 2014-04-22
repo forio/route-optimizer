@@ -9,13 +9,18 @@ var OptimizedMapView = require('views/optimized-map-view');
 var StatsView = require('views/stats-view');
 var CodeView = require('views/code-view');
 
+var Optimizer = require('models/route-optimizer-model');
+
 $(function() {
 
-    window.ops = require('services/epicenter-operations-service');
-    window.run = require('services/epicenter-runs-service');
 
     var wp = new WayPoints({});
     wp.fetch().then(function() {
+
+        var optimizer = new Optimizer({
+            original: wp
+        });
+        window.optimizer = optimizer;
 
         var wpListView = new WayPointsListView({
             collection: wp,
