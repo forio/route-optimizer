@@ -29,6 +29,10 @@ module.exports = function(grunt) {
                 files: [ 'src/styles/assets/*.*'],
                 tasks: 'copy:assets'
             },
+            data: {
+                files: [ 'src/data/*.*'],
+                tasks: 'copy:data'
+            },
             options: {
                 nospawn: true,
                 livereload: {
@@ -48,7 +52,15 @@ module.exports = function(grunt) {
                     cwd: 'src/styles/assets/',
                     dest: 'public/styles/assets/'
                 }]
-            }
+            },
+            data: {
+                files: [{
+                    src: ['**/*.*'],
+                    expand: true,
+                    cwd: 'src/data/',
+                    dest: 'public/data/'
+                }]
+            },
         },
         connect: {
             options: {
