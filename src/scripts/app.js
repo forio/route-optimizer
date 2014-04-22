@@ -11,6 +11,9 @@ var CodeView = require('views/code-view');
 
 $(function() {
 
+    window.ops = require('services/epicenter-operations-service');
+    window.run = require('services/epicenter-runs-service');
+
     var wp = new WayPoints({});
     wp.fetch().then(function() {
 
@@ -21,11 +24,11 @@ $(function() {
         $('#content .side').append(wpListView.render().$el);
 
 
-        var originalMapView = new OriginalMapView({
-            collection: wp,
-            className: 'A'
-        });
-        $('#content .maps').append(originalMapView.render().$el);
+        // var originalMapView = new OriginalMapView({
+        //     collection: wp,
+        //     className: 'A'
+        // });
+        // $('#content .maps').append(originalMapView.render().$el);
 
         // var optimizedMapView = new OptimizedMapView({
         //     collection: wp,
