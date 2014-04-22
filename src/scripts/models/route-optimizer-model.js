@@ -5,16 +5,19 @@ var operationsService = require('services/epicenter-operations-service');
 
 module.exports = BaseModel.extend({
     defaults: {
-      originalRoutes: null,
-      optimizedWaypoints: null
+      original: null,
+      optimized: null
     },
 
-    initialize: function () {
-        var originalRoutes = new WaypointsCollection();
-        var optimizedRoutes = new WaypointsCollection();
-        this.set(originalRoutes, originalRoutes);
-        this.set(optimizedRoutes, optimizedRoutes);
-
+    initialize: function (options) {
+        if (!options || !options.original) {
+            var original = new WaypointsCollection();
+            this.set('original', original);
+        }
+        if (!options || !options.optimized) {
+            var optimized = new WaypointsCollection();
+            this.set('optimized', optimized);
+        }
         BaseModel.prototype.initialize.apply(this, arguments);
     },
 
@@ -23,12 +26,12 @@ module.exports = BaseModel.extend({
     },
 
     optimize: function () {
-        var or = this.get(originalRoutes);
+        var or = this.get('original');
         var preOptimized = or.clone();
         var me = this;
         var $def = $.Deferred();
 
-        me.set(optimizedWaypoints, preOptimized);
+        me.set('optimized', preOptimized);
 
         or.getDistanceMatrix().then(function (distanceMatrix) {
             me.getOptimizedValues(distanceMatrix).then (function (optimized) {
