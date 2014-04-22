@@ -24,7 +24,9 @@ module.exports = Backbone.View.extend({
             disableDefaultUI: true,
             disableDoubleClickZoom: true,
             scrollwheel: false,
-            center: new google.maps.LatLng(37.772207, -122.434242)
+            center: new google.maps.LatLng(
+37.772207, -122.450550)
+
           };
           var map = new google.maps.Map(this.el,
               mapOptions);
