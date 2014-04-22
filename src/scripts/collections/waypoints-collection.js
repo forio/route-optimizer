@@ -4,6 +4,8 @@ module.exports = Backbone.Collection.extend({
     model: waypointModel,
     url : '/data/books.json',
 
+    distances: [],
+
     getMetric: function(metric) {
         return 34;
     },
