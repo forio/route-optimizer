@@ -47,7 +47,7 @@ module.exports = BaseView.extend({
        var originalVal = this.getData(this.original);
        var optimizedVal = this.getData(this.optimized);
 
-        var difference = originalVal / optimizedVal;
+        var difference = originalVal / optimizedVal || 0;
         var dv = new DonutView({
             el: this.$('.graph'),
             value: difference
