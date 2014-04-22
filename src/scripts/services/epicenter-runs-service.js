@@ -1,9 +1,9 @@
 var urlService = require('services/epicenter-url-service');
-var ajaxTransportService = require('services/ajax-transport-service');
 
 module.exports = function() {
     var runid;
     var runURL = urlService.getApiURL('run');
+    var transport = require('services/ajax-transport-service')(runURL);
 
     return {
         getRunID: function (forceGet) {
@@ -15,11 +15,9 @@ module.exports = function() {
                 model: 'TSPModel.jl'
             };
 
-            var transport = ajaxTransportService;
-
             if (!runid || forceGet) {
                 transport
-                   .post(runURL, params)
+                   .post(params)
                    .then(function (run){
                        runid = run.id;
                        $def.resolve(run.id);
