@@ -17,19 +17,16 @@ module.exports = Backbone.View.extend({
    },
 
    renderSelf: function() {
-        this.$el.empty();
         var mapOptions = {
             zoom: 13,
             draggable: false,
             disableDefaultUI: true,
             disableDoubleClickZoom: true,
             scrollwheel: false,
-            center: new google.maps.LatLng(
-37.772207, -122.450550)
+            center: new google.maps.LatLng(37.772207, -122.450550)
 
           };
-          var map = new google.maps.Map(this.el,
-              mapOptions);
+          var map = new google.maps.Map(this.el,mapOptions);
 
         return this;
    },
