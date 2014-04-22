@@ -33,6 +33,9 @@ var distanceMatrixToArray = function (gDistanceMatrixResponse) {
 module.exports = BaseCollection.extend({
     model: waypointModel,
 
+    //Flag to see if you need to redraw all the routes
+    isDirtyRoutes: true,
+
     getMetric: function(metric) {
         return 34;
     },
@@ -88,16 +91,45 @@ module.exports = BaseCollection.extend({
         var ds = new google.maps.DirectionsService();
         ds.route(request, function(directionsResult, status) {
             if (status === google.maps.DirectionsStatus.OK) {
-                var distance = me.getDistanceFromRoute(directionsResult);
-                console.log('distance between', startModel.get('name'), 'and', destModel.get('name'), 'is', distance);
-                me.distances[startIndex] = distance;
-                $def.resolve(directionsResult);
+                $def.resolve({
+                    gResult: directionsResult,
+                    distance: me.getDistanceFromRoute(directionsResult),
+                    time: me.getDurationromRoute(directionsResult),
+                    from: startModel.get('name'),
+                    to: destModel.get('name')
+                });
             }
             else {
                 $def.reject(status);
             }
         });
 
+        return $def;
+    },
+
+    populateAllRoutes: function () {
+        var $def = $.Deferred();
+        var routes = [];
+
+        if (this.isDirtyRoutes === true) {
+            var $routePromises = [];
+            var me  = this;
+
+            for (var i=0; i< this.size() - 1; i++) {
+                $routePromises.push( this.getDirections(i, i+1));
+            }
+
+            $.when.apply($, $routePromises).done(function () {
+                var responses = _.toArray(arguments);
+
+                me.routes = responses;
+                me.isDirtyRoutes = false;
+                $def.resolve(responses);
+            });
+        }
+        else {
+            $def.resolve(this.routes);
+        }
         return $def;
     }
 });

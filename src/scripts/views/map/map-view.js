@@ -33,22 +33,24 @@ module.exports = Backbone.View.extend({
         return this;
    },
 
-   drawRoute: function (startindex, endindex) {
+   drawRoute: function (route) {
         var me = this;
-        this.collection.getDirections(startindex, endindex).then(function(route){
-            var directionsDisplay = new google.maps.DirectionsRenderer({
-                map: me.map,
-                preserveViewport: true,
-                draggable: false
-            });
-            directionsDisplay.setDirections(route);
+        var directionsDisplay = new google.maps.DirectionsRenderer({
+            map: me.map,
+            preserveViewport: true,
+            draggable: false
         });
+        directionsDisplay.setDirections(route.gResult);
    },
 
    renderDirections: function() {
-        for (var i=0; i< this.collection.size() - 1; i++) {
-          this.drawRoute(i, i+1);
-        }
-        this.drawRoute(this.collection.size() - 1, 0);
+        var me = this;
+        this.collection.populateAllRoutes().then(function (routes){
+            _(routes).each(function (route){
+                me.drawRoute(route);
+            });
+        });
+
+        this.collection.getDirections(this.collection.size() - 1, 0).then(this.drawRoute);
    }
 });
