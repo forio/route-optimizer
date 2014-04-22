@@ -1,6 +1,8 @@
 var BaseModel = require('models/base-model');
 var WaypointsCollection = require('collections/waypoints-collection');
 
+var operationsService = require('services/epicenter-operations-service');
+
 module.exports = BaseModel.extend({
     defaults: {
       originalRoutes: null,
@@ -17,14 +19,7 @@ module.exports = BaseModel.extend({
     },
 
     getOptimizedValues: function (distanceMatrix) {
-        var $def = $.Deferred();
-
-        $.post('/api/operations', distanceMatrix, function (response) {
-            $def.resolve(response);
-        });
-
-        return $def;
-        //
+        return operationsService.do('solve', distanceMatrix);
     },
 
     optimize: function () {
