@@ -1,4 +1,6 @@
-module.exports = Backbone.Model.extend({
+var BaseModel = require('models/waypoint-model');
+
+module.exports = BaseModel.extend({
     defaults: {
         latitude: '',
         longitude: '',
@@ -10,5 +12,4 @@ module.exports = Backbone.Model.extend({
         var myLatlng = new google.maps.LatLng(this.get('latitude'), this.get('longitude'));
         return myLatlng;
     }
-
 });

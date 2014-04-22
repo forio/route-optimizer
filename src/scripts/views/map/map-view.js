@@ -6,7 +6,7 @@ module.exports = Backbone.View.extend({
    render: function() {
         this.renderSelf();
         this.renderWaypoints();
-
+        this.renderDirections();
         return this;
    },
 
@@ -33,5 +33,9 @@ module.exports = Backbone.View.extend({
             mv.render();
         }, this);
         return this;
+   },
+
+   renderDirections: function() {
+
    }
 });

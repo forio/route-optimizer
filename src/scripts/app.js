@@ -1,6 +1,6 @@
 'use strict';
 
-var WayPoints = require('collections/waypoints-collection');
+var WayPoints = require('collections/google-maps-waypoints-collection');
 var WayPointsListView = require('views/waypoint-list-view');
 
 var OriginalMapView = require('views/original-map-view');
@@ -11,8 +11,7 @@ var CodeView = require('views/code-view');
 
 $(function() {
 
-    var wp = new WayPoints({
-    });
+    var wp = new WayPoints({});
     wp.fetch().then(function() {
 
         var wpListView = new WayPointsListView({

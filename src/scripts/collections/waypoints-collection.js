@@ -6,5 +6,10 @@ module.exports = Backbone.Collection.extend({
 
     getMetric: function(metric) {
         return 34;
+    },
+
+    getDirections: function(startIndex, destIndex) {
+
+
     }
 });
