@@ -1,5 +1,5 @@
 module.exports = function() {
-    var baseURL = 'api.forio.com';
+    var baseURL = 'https://api.forio.com';
     return {
         baseURL: baseURL,
 
