@@ -28,7 +28,8 @@ module.exports = BaseView.extend({
     },
     renderChart: function() {
         var dv = new DonutView({
-            el: this.$('.graph')
+            el: this.$('.graph'),
+            value: 0.83
         });
         dv.render();
         return this;

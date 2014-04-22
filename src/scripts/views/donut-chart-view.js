@@ -1,3 +1,5 @@
+var BaseView = require('views/base-view');
+
 Contour.export('donutTextOneValue', function (data, layer, options) {
     var visibleIndex = data[0].data[0].y < data[0].data[1].y ? 1 : 0;
     var textEl = layer.append('text')
@@ -8,15 +10,9 @@ Contour.export('donutTextOneValue', function (data, layer, options) {
 
     // var bounds =  _.nw.textBounds(data[0].data[visibleIndex].y, '.center-text');
 });
-
-module.exports = Backbone.View.extend({
-   initialize: function() {
-
-
-   },
-
+module.exports = BaseView.extend({
    render: function() {
-        var data = [{ x: 'Case A', y: 0.82}, { x: 'Case B', y: 0.18 }];
+        var data = [{ x: 'Gain', y: this.value}, { x: 'Rest', y: 1 - this.value }];
         new Contour({
                 el: this.el,
                 chart: {
