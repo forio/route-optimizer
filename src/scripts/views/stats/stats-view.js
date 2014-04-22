@@ -1,17 +1,34 @@
 var MetricView = require('views/metric-view');
 var BaseView = require('views/base-view');
 
-module.exports = BaseView.extend({
-    render: function() {
-        this.$el.empty();
+var factorial = function(val) {
+    return (val === 1) ? val : val * factorial(val - 1);
+};
 
+module.exports = BaseView.extend({
+    template: require('templates/stats'),
+
+    render: function() {
+        this.renderSelf();
+        this.renderMetrics(this.$('.main'));
+        return this;
+    },
+    renderSelf: function() {
+        var points = this.original.size();
+
+        this.$el.html(this.template({
+            stops: points,
+            possibleRoutes: factorial(points)
+        }));
+    },
+    renderMetrics: function($el) {
         var dtView = new MetricView({
             caption: 'Distance Traveled',
             unit: 'miles',
             original: this.original,
             optimized: this.optimized
         });
-        this.$el.append(dtView.render().$el);
+        $el.append(dtView.render().$el);
 
         var longestSegmentView = new MetricView({
             caption: 'Longest Segment',
@@ -19,7 +36,7 @@ module.exports = BaseView.extend({
             original: this.original,
             optimized: this.optimized
         });
-        this.$el.append(longestSegmentView.render().$el);
+        $el.append(longestSegmentView.render().$el);
 
         var travelTimeView = new MetricView({
             caption: 'Travel Time',
@@ -27,7 +44,7 @@ module.exports = BaseView.extend({
             original: this.original,
             optimized: this.optimized
         });
-        this.$el.append(travelTimeView.render().$el);
+        $el.append(travelTimeView.render().$el);
 
         return this;
     }

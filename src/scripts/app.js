@@ -42,7 +42,7 @@ $(function() {
     var statsView = new StatsView({
         original: wp,
         optimized: wp,
-        el: $('#stats .main')
+        el: $('#stats')
     });
     statsView.render();
 
