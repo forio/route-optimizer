@@ -36,6 +36,8 @@ module.exports = BaseCollection.extend({
     //Flag to see if you need to redraw all the routes
     isDirtyRoutes: true,
 
+    routes: [],
+
     getMetric: function(metric) {
         return 34;
     },
@@ -125,6 +127,8 @@ module.exports = BaseCollection.extend({
                 me.routes = responses;
                 me.isDirtyRoutes = false;
                 $def.resolve(responses);
+
+                me.trigger('routesRecalculated', routes);
             });
         }
         else {

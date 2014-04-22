@@ -11,15 +11,30 @@ module.exports = BaseView.extend({
 
     className: 'metric',
 
+    initialize: function () {
+        this.original = this.model.get('original');
+        this.optimized = this.model.get('optimized');
+
+        this.original.on('routesRecalculated', this.renderSelf, this);
+        this.optimized.on('routesRecalculated', this.renderSelf, this);
+
+        BaseView.prototype.initialize.apply(this, arguments);
+    },
+
+    getData: function (collection) {
+        return collection.getMetric();
+    },
+
     render: function() {
         this.renderSelf();
         this.renderChart();
         return this;
     },
 
+
     renderSelf: function() {
-        var originalVal = this.model.get('original').getMetric(this.metric);
-        var optimizedVal = this.model.get('optimized').getMetric(this.metric);
+        var originalVal = this.getData(this.original);
+        var optimizedVal = this.getData(this.optimized);
 
         this.$el.html(this.template({
             caption: this.caption,
@@ -29,8 +44,8 @@ module.exports = BaseView.extend({
         }));
     },
     renderChart: function() {
-        var originalVal = this.model.get('original').getMetric(this.metric);
-        var optimizedVal = this.model.get('optimized').getMetric(this.metric);
+       var originalVal = this.getData(this.original);
+       var optimizedVal = this.getData(this.optimized);
 
         var difference = originalVal / optimizedVal;
         var dv = new DonutView({

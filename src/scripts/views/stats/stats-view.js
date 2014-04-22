@@ -1,4 +1,3 @@
-var MetricView = require('views/metric-view');
 var BaseView = require('views/base-view');
 
 var factorial = function(val) {
@@ -7,6 +6,12 @@ var factorial = function(val) {
 
 module.exports = BaseView.extend({
     template: require('templates/stats'),
+
+    subViews: [
+        require('views/distance-traveled-metric-view'),
+        require('views/longest-segment-metric-view'),
+        require('views/time-taken-metric-view')
+    ],
 
     render: function() {
         this.renderSelf();
@@ -22,30 +27,11 @@ module.exports = BaseView.extend({
         }));
     },
     renderMetrics: function($el) {
-        var dtView = new MetricView({
-            caption: 'Distance Traveled',
-            metric: 'distance',
-            unit: 'miles',
-            model: this.model
-        });
-        $el.append(dtView.render().$el);
+        _(this.subViews).each(function (View) {
+            var view = new View({model: this.model});
+            $el.append(view.render().$el);
 
-        var longestSegmentView = new MetricView({
-            caption: 'Longest Segment',
-            metric: 'longestSegment',
-            unit: 'miles',
-            model: this.model
-        });
-        $el.append(longestSegmentView.render().$el);
-
-        var travelTimeView = new MetricView({
-            caption: 'Travel Time',
-            metric: 'travelTime',
-            unit: 'hours',
-            model: this.model
-        });
-        $el.append(travelTimeView.render().$el);
-
+        }, this);
         return this;
     }
 });
