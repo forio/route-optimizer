@@ -47,8 +47,9 @@ $(function() {
     statsView.render();
 
     var cv = new CodeView({
+        el: $('#how-we-did-it .main')
     });
-    $('#how-we-did-it .main').append(cv.render().$el);
+    cv.render();
 
     window.wp = wp;
 });
