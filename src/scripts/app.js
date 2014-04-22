@@ -41,7 +41,7 @@ $(function() {
 
     var statsView = new StatsView({
         collection: wp,
-        el: $('.pie-gauge')
+        el: $('#stats .main')
     });
     statsView.render();
 
