@@ -1,12 +1,10 @@
 var MarkerView = require('views/waypoint-marker-view');
 
-var API_KEY = "***REMOVED***";
-
 module.exports = Backbone.View.extend({
    render: function() {
         this.renderSelf();
         this.renderWaypoints();
-        this.renderDirections();
+        // this.renderDirections();
         return this;
    },
 
@@ -36,6 +34,16 @@ module.exports = Backbone.View.extend({
    },
 
    renderDirections: function() {
-
+        var me = this;
+        for (var i=0; i< this.collection.size() - 1; i++) {
+            this.collection.getDirections(i, i+1).then(function(route){
+                var directionsDisplay = new google.maps.DirectionsRenderer({
+                    map: me.map,
+                    preserveViewport: true,
+                    draggable: false
+                });
+                directionsDisplay.setDirections(route);
+            });
+        }
    }
 });
