@@ -21,6 +21,45 @@
                 border-right: 5px solid white;
             }
         }
+
+        .other {
+            position: relative;
+            cursor: pointer;
+
+            &:before, &:after {
+                display: block;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+            }
+            &:before {
+                top: 0;
+                left: 0;
+                content: '';
+                background-color: white;
+                opacity: 0.7;
+                z-index: 9;
+            }
+            &:after {
+                width: 100%;
+                content: 'Generate Optimzed';
+                cursor: pointer;
+                background-color: rgb(230, 166, 64);
+                z-index: 10;
+                color: rgb(255, 255, 255);
+                font-size: 24px;
+                text-align: center;
+                padding: 5px 0;
+            }
+
+            &.generated {
+                cursor: default;
+                &:before, &:after {
+                    display: none;
+                }
+            }
+
+        }
     }
 
 }

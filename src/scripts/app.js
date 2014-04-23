@@ -36,6 +36,7 @@ $(function() {
 
         var optimizedMapView = new OptimizedMapView({
             collection: optimizer.get('optimized'),
+            model: optimizer,
             className: 'other'
         });
         $('#content .maps').append(optimizedMapView.render().$el);
