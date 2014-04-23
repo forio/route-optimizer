@@ -16,7 +16,8 @@ $(function() {
     wp.fetch().then(function() {
 
         var optimizer = new Optimizer({
-            original: wp
+            original: wp,
+            optimized: wp.clone()
         });
         window.optimizer = optimizer;
 

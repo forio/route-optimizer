@@ -38,10 +38,6 @@ module.exports = BaseCollection.extend({
 
     routes: [],
 
-    getMetric: function(metric) {
-        return 34;
-    },
-
     getDistanceFromRoute: function(gDirectionsRoutes) {
         return getMetricSumFromRoute(gDirectionsRoutes, 'distance');
     },
@@ -126,9 +122,9 @@ module.exports = BaseCollection.extend({
 
                 me.routes = responses;
                 me.isDirtyRoutes = false;
-                $def.resolve(responses);
-
                 me.trigger('routesRecalculated', routes);
+                console.log(me);
+                $def.resolve(responses);
             });
         }
         else {

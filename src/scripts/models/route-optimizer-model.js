@@ -10,14 +10,13 @@ module.exports = BaseModel.extend({
     },
 
     initialize: function (options) {
-        if (!options || !options.original) {
-            var original = new WaypointsCollection();
-            this.set('original', original);
-        }
-        if (!options || !options.optimized) {
-            var optimized = new WaypointsCollection();
-            this.set('optimized', optimized);
-        }
+        // if (!options || !options.original) {
+        //     var original = new WaypointsCollection();
+        //     this.set('original', original);
+        // }
+        // if (!options || !options.optimized) {
+        //     this.set('optimized', new WaypointsCollection( this.get('original').models));
+        // }
         BaseModel.prototype.initialize.apply(this, arguments);
     },
 
@@ -31,7 +30,7 @@ module.exports = BaseModel.extend({
         var me = this;
         var $def = $.Deferred();
 
-        me.set('optimized', preOptimized);
+        // me.set('optimized', preOptimized);
 
         or.getDistanceMatrix().then(function (distanceMatrix) {
             me.getOptimizedValues(distanceMatrix).then (function (optimized) {
@@ -39,13 +38,13 @@ module.exports = BaseModel.extend({
 
                 console.log("old order", preOptimized.pluck('name'));
 
-                preOptimized.each(function (model, index){
+                me.get('optimized').each(function (model, index){
                     var newOrder = _.indexOf(optimizedIndices, index+1);
                     model.set('order', newOrder, {silent: true});
                 });
-                preOptimized.sort();
+                me.get('optimized').sort();
                 console.log("new order", optimizedIndices, preOptimized.pluck('name'));
-                $def.resolve(preOptimized);
+                $def.resolve(me.get('optimized'));
             });
         });
         return $def;
