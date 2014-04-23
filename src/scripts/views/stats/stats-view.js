@@ -23,7 +23,7 @@ module.exports = BaseView.extend({
 
         this.$el.html(this.template({
             stops: points,
-            possibleRoutes: factorial(points)
+            possibleRoutes: d3.format(',f')(factorial(points))
         }));
     },
     renderMetrics: function($el) {
