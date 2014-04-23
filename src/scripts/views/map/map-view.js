@@ -62,6 +62,7 @@ module.exports = Backbone.View.extend({
         var directionsDisplay = new google.maps.DirectionsRenderer({
             map: me.map,
             preserveViewport: true,
+            suppressMarkers: true,
             draggable: false
         });
         directionsDisplay.setDirections(route.gResult);
@@ -78,7 +79,7 @@ module.exports = Backbone.View.extend({
     renderDirections: function() {
         this.clearRoutes();
 
-        console.log('render directs', this.className);
+        // console.log('render directs', this.className);
         var me = this;
         this.collection.populateAllRoutes().then(function (routes){
             _(routes).each(function (route){
