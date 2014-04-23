@@ -1,14 +1,43 @@
 var MarkerView = require('views/waypoint-marker-view');
 
 module.exports = Backbone.View.extend({
-   render: function() {
+
+    gDirDisplays: [],
+
+    initialize: function () {
+        this.collection.on('remove', this.handleRouteRemove, this);
+        this.collection.on('add', this.handleRouteAdd, this);
+    },
+
+    handleRouteRemove: function (model) {
+        //TODO:Route between previous and next;
+
+    },
+
+    handleRouteAdd: function (model) {
+        //TODO:Get index
+        //TODO:Remove previous route between prev and next
+        //Add marker
+        this.addMarker(model);
+        //TODO: Add 2 new routes
+    },
+
+    addMarker: function (model) {
+        var mv = new MarkerView({
+            model: model,
+            map: this.map
+        });
+        mv.render();
+    },
+
+    render: function() {
         this.renderSelf();
         this.renderWaypoints();
         this.renderDirections();
         return this;
-   },
+    },
 
-   renderSelf: function() {
+    renderSelf: function() {
         var mapOptions = {
             zoom: 13,
             draggable: false,
@@ -20,20 +49,15 @@ module.exports = Backbone.View.extend({
           };
         this.map = new google.maps.Map(this.el,mapOptions);
         return this;
-   },
+    },
 
-   renderWaypoints: function() {
-        this.collection.each(function(mdl) {
-            var mv = new MarkerView({
-                model: mdl,
-                map: this.map
-            });
-            mv.render();
-        }, this);
+
+    renderWaypoints: function() {
+        this.collection.each(this.addMarker, this);
         return this;
-   },
+    },
 
-   drawRoute: function (route) {
+    drawRoute: function (route) {
         var me = this;
         var directionsDisplay = new google.maps.DirectionsRenderer({
             map: me.map,
@@ -41,16 +65,29 @@ module.exports = Backbone.View.extend({
             draggable: false
         });
         directionsDisplay.setDirections(route.gResult);
-   },
+        this.gDirDisplays.push(directionsDisplay);
+    },
 
-   renderDirections: function() {
+    clearRoutes: function () {
+        _(this.gDirDisplays).each(function (gDirectionDisplay){
+            gDirectionDisplay.setMap(null);
+        });
+        this.gDirDisplays = [];
+    },
+
+    renderDirections: function() {
+        this.clearRoutes();
+
+        console.log('render directs', this.className);
         var me = this;
         this.collection.populateAllRoutes().then(function (routes){
             _(routes).each(function (route){
-                me.drawRoute(route);
+                me.drawRoute.call(me, route);
             });
         });
 
-        this.collection.getDirections(this.collection.size() - 1, 0).then(this.drawRoute);
-   }
+        this.collection.getDirections(this.collection.size() - 1, 0).then(function (route) {
+            me.drawRoute.call(me, route);
+        });
+    }
 });

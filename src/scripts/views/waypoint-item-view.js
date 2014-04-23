@@ -7,7 +7,12 @@ module.exports = BaseView.extend({
 
     initialize: function() {
         this.model.on('change:selected', this.selectPoint, this);
+        this.model.on('remove', this.handleRemove, this);
         BaseView.prototype.initialize.apply(this, arguments);
+    },
+
+    handleRemove: function () {
+        return this.close();
     },
 
     selectPoint: function() {

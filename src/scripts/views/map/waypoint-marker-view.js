@@ -3,15 +3,17 @@ module.exports = BaseView.extend({
 
 
     selectPoint: function() {
-        var isSelected = this.model.get('selected');
-        var method = (isSelected) ? 'addClass' : 'removeClass';
-        this.$el[method]('selected');
-
         this.marker.setAnimation(google.maps.Animation.BOUNCE);
 
-        this.marker.setIcon({
-            fillColor: 'white'
-        });
+        // this.marker.setIcon({
+        //     fillColor: 'white'
+        // });
+    },
+
+    handleRemove: function () {
+        //Removes it
+        this.marker.setMap(null);
+        BaseView.prototype.handleRemove.apply(this, arguments);
     },
 
    render: function() {
