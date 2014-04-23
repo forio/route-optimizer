@@ -24,6 +24,9 @@ module.exports = BaseView.extend({
     getData: function (collection) {
         return collection.getMetric();
     },
+    formatData: function (data) {
+        return data;
+    },
 
     render: function() {
         this.renderSelf();
@@ -33,8 +36,8 @@ module.exports = BaseView.extend({
 
 
     renderSelf: function() {
-        var originalVal = this.getData(this.original);
-        var optimizedVal = this.getData(this.optimized);
+        var originalVal = this.formatData(this.getData(this.original));
+        var optimizedVal = this.formatData(this.getData(this.optimized));
 
         this.$el.html(this.template({
             caption: this.caption,
