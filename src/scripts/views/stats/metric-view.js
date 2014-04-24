@@ -15,8 +15,8 @@ module.exports = BaseView.extend({
         this.original = this.model.get('original');
         this.optimized = this.model.get('optimized');
 
-        this.original.on('routesRecalculated', this.renderSelf, this);
-        this.optimized.on('routesRecalculated', this.renderSelf, this);
+        this.original.on('routesRecalculated', this.render, this);
+        this.optimized.on('routesRecalculated', this.render, this);
 
         BaseView.prototype.initialize.apply(this, arguments);
     },
@@ -50,12 +50,15 @@ module.exports = BaseView.extend({
        var originalVal = this.getData(this.original);
        var optimizedVal = this.getData(this.optimized);
 
-        var difference = originalVal / optimizedVal || 0;
-        var dv = new DonutView({
-            el: this.$('.graph'),
-            value: difference
-        });
-        dv.render();
+        var difference = originalVal / optimizedVal;
+        if (difference && difference !== Infinity) {
+            var dv = new DonutView({
+                el: this.$('.graph-container'),
+                value: difference
+            });
+            dv.render();
+        }
+
         return this;
     }
 });

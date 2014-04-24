@@ -1,17 +1,27 @@
 var BaseView = require('views/base-view');
 
 Contour.export('donutTextOneValue', function (data, layer, options) {
-    var visibleIndex = data[0].data[0].y < data[0].data[1].y ? 1 : 0;
+    var val = data[0].data[0].y;
+    var text = (val !== 0) ? (val * 100) + '%' : '';
     var textEl = layer.append('text')
                     .attr('class', 'center-text')
                     .attr('x', 12)
                     .attr('y', 43)
-                    .text((data[0].data[visibleIndex].y * 100) + '%');
+                    .text(text);
 
     // var bounds =  _.nw.textBounds(data[0].data[visibleIndex].y, '.center-text');
 });
 module.exports = BaseView.extend({
-   render: function() {
+    template: require('templates/donut-chart'),
+
+    render: function () {
+        this.renderSelf();
+        this.renderChart();
+    },
+    renderSelf: function () {
+        this.$el.html(this.template());
+    },
+    renderChart: function() {
         var data = [{ x: 'Gain', y: this.value}, { x: 'Rest', y: 1 - this.value }];
         new Contour({
                 el: this.el,
