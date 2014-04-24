@@ -14,8 +14,6 @@ module TSPSolver
 
 using JuMP
 using GLPKMathProgInterface
-#using Cbc
-#using Base.Test
 
 # extractTour
 # Given a n-by-n matrix representing the solution to an undirected TSP,
