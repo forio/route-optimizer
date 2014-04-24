@@ -23,7 +23,8 @@ module.exports = BaseView.extend({
     },
     renderChart: function() {
         var data = [{ x: 'Gain', y: this.value}, { x: 'Rest', y: 1 - this.value }];
-        new Contour({
+        if (!this.graph) {
+            this.graph =  new Contour({
                 el: this.$('.graph').get(0),
                 chart: {
                     width: 70,
@@ -42,9 +43,14 @@ module.exports = BaseView.extend({
                     }
                 }
             })
-            .pie(data)
+            .pie();
+        }
+
+        this.graph
+            .setData(data)
             .donutTextOneValue(data)
             .render();
+
         return this;
    }
 });
