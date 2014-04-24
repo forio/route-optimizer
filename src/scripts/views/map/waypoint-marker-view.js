@@ -5,7 +5,7 @@ module.exports = BaseView.extend({
 
     getIcon: function (type) {
         var iconDefaults = {
-            url: 'styles/assets/map-markers/marker-sprite-shadow.png',
+            url: 'styles/assets/marker-sprite-shadow.png',
             size: new google.maps.Size(40,40)
         };
 
