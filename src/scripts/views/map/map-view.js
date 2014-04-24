@@ -39,13 +39,19 @@ module.exports = Backbone.View.extend({
     },
 
     renderSelf: function() {
+        var ne = new google.maps.LatLng(37.808413, -122.379703);
+        var sw = new google.maps.LatLng(37.734054, -122.510681);
+
+        var bounds = new google.maps.LatLngBounds(sw, ne);
+
         var mapOptions = {
             zoom: 13,
+            minZoom: 12,
             draggable: false,
             disableDefaultUI: true,
             disableDoubleClickZoom: true,
             scrollwheel: false,
-            center: new google.maps.LatLng(37.772207, -122.450550),
+            // center: new google.maps.LatLng(37.772207, -122.450550),
             styles: [{
                 featureType: 'road.highway',
                 stylers: [{visibility: 'off'}]
@@ -53,6 +59,15 @@ module.exports = Backbone.View.extend({
 
           };
         this.map = new google.maps.Map(this.el,mapOptions);
+        this.map.fitBounds(bounds);
+        var me = this;
+        google.maps.event.addDomListener(window, "resize", function() {
+            console.log('resize');
+            var map = me.map;
+             var center = map.getCenter();
+             google.maps.event.trigger(map, "resize");
+             map.setCenter(center);
+        });
         return this;
     },
 
