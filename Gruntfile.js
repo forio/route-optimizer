@@ -26,7 +26,7 @@ module.exports = function(grunt) {
                 tasks: 'copy:index'
             },
             assets: {
-                files: [ 'src/styles/assets/*.*'],
+                files: [ 'src/styles/assets/**/*.*'],
                 tasks: 'copy:assets'
             },
             data: {

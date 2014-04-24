@@ -5,6 +5,12 @@ module.exports = BaseView.extend({
         'click': 'handleGenerate'
     },
 
+    gRouteOptions: {
+        polylineOptions: {
+            strokeColor: '#e6a640'
+        }
+    },
+
     initialize: function () {
         this.collection.on('sort', this.renderDirections, this);
         this.collection.on('sort', this.removeOverlay, this);
@@ -12,6 +18,7 @@ module.exports = BaseView.extend({
         BaseView.prototype.initialize.apply(this, arguments);
     },
     render: function() {
+
         this.renderSelf();
         this.renderWaypoints();
         return this;
