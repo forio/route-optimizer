@@ -12,6 +12,8 @@
         position: relative;
         padding-left: 20px;
 
+        cursor: pointer;
+
         &:before, &:after {
             @extend .ss-icon;
             position: absolute;
