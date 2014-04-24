@@ -15,8 +15,13 @@ module.exports = BaseView.extend({
     template: require('templates/donut-chart'),
 
     render: function () {
-        this.renderSelf();
-        this.renderChart();
+        if (this.value && this.value !== Infinity) {
+            this.renderSelf();
+            this.renderChart();
+        }
+        else {
+            this.$el.empty();
+        }
     },
     renderSelf: function () {
         this.$el.html(this.template());

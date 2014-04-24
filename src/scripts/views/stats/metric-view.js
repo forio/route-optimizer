@@ -42,8 +42,11 @@ module.exports = BaseView.extend({
     },
 
     renderTable: function() {
-        var originalVal = this.formatData(this.getData(this.original));
-        var optimizedVal = this.formatData(this.getData(this.optimized));
+        var originalData = this.getData(this.original);
+        var optimizedData = this.getData(this.optimized);
+
+        var originalVal = (originalData !== 0) ?  this.formatData(originalData) : '-';
+        var optimizedVal = (optimizedData !== 0) ?  this.formatData(optimizedData) : '-';
 
         this.$('.metric-container').html(this.template({
             caption: this.caption,
@@ -58,13 +61,11 @@ module.exports = BaseView.extend({
 
         var difference = originalVal / optimizedVal;
         var difference = 0.5;
-        if (difference && difference !== Infinity) {
-            var dv = new DonutView({
-                el: this.$('.graph-container'),
-                value: difference
-            });
-            dv.render();
-        }
+        var dv = new DonutView({
+            el: this.$('.graph-container'),
+            value: difference
+        });
+        dv.render();
         return this;
     }
 });

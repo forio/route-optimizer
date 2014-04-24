@@ -9,17 +9,6 @@ module.exports = BaseModel.extend({
       optimized: null
     },
 
-    initialize: function (options) {
-        // if (!options || !options.original) {
-        //     var original = new WaypointsCollection();
-        //     this.set('original', original);
-        // }
-        // if (!options || !options.optimized) {
-        //     this.set('optimized', new WaypointsCollection( this.get('original').models));
-        // }
-        BaseModel.prototype.initialize.apply(this, arguments);
-    },
-
     getOptimizedValues: function (distanceMatrix) {
         return operationsService.do('solve', distanceMatrix);
     },
