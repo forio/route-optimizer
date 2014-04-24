@@ -28,11 +28,10 @@ module.exports = BaseView.extend({
 
 
     selectPoint: function() {
-        this.marker.setAnimation(google.maps.Animation.BOUNCE);
+        var isSelected = this.model.get('selected');
 
-        // this.marker.setIcon({
-        //     fillColor: 'white'
-        // });
+        var iconType = (isSelected) ? 'selected' : 'base';
+        this.marker.setIcon(this.getIcon(iconType));
     },
 
     handleRemove: function () {

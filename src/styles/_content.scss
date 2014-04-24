@@ -14,7 +14,6 @@
         >div {
             width: 50%;
             height: 100%;
-            background: yellow;
             float: left;
 
             &:first-child {
@@ -44,7 +43,7 @@
 
                     @include single-transition(opacity, 0.2s, linear, 0.2s);
                 }
-                
+
                 &:hover{
                    &:before {
                         opacity: 0.5;
@@ -72,7 +71,7 @@
                 h3 {
                     margin: 10px 0;
                 }
-              
+
                 pointer-events: none;
             }
 
