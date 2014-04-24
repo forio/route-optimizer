@@ -93,13 +93,16 @@ end
 ## returns a tour
 function solve(distanceMatrix)
 	n = size(distanceMatrix)[1]
+	n = int(sqrt(n))
+	distanceMatrix = reshape(distanceMatrix, (n, n))
 
 	model = TSPSolver.buildTSP(n, distanceMatrix)
 
 	# Add the fixed constraints
-	model = TSPSolver.addFixedLegs(model, fixedPairs)
+	# model = TSPSolver.addFixedLegs(model, fixedPairs)
 
-	#global tour = TSPSolver.solveTSP(model)
+	global tour = TSPSolver.solveTSP(model)
+	tour = tour .- 1
 	# global tour = randperm(n)
 
 	record(:tour)
