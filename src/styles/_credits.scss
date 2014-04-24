@@ -15,6 +15,10 @@
             max-width: 300px;
             text-align: center;
 
+            &:first-child {
+                padding-left: 0;
+            }
+
             a {
                 color: $code-bg;
                 display: inline-block;
