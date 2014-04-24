@@ -9,10 +9,16 @@
 
         <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCTW23vXahKOwTwLIAKftgLHU9gHF0etXU&sensor=true"> </script>
+
         <!-- bower:js -->
         <script src="vendor/jquery/dist/jquery.js"></script>
-        <script src="vendor/underscore/underscore.js"></script>
+        <script src="vendor/lodash/dist/lodash.min.js"></script>
+        <script src="vendor/d3/d3.min.js"></script>
+        <script src="vendor/backbone/backbone.js"></script>
         <!-- endbower -->
+        <script src="vendor/contour.js"></script>
         <script src="scripts/app.js"></script>
 
         <link rel="stylesheet" media="screen" href="styles/main.css">
@@ -28,28 +34,49 @@
             <h1> Business Analytics with Forio Epicenter using Julia:</h1>
             <h2> Delivery Route Optimization with a Mobile Interface Example </h2>
         </header>
-        <div id="content" class="section">
+        <section id="content" class="section">
             <div class="side">
-                <ul class="waypoints">
-                    <li> Forio </li>
-                    <li>Location 1</li>
-                    <li>Location 2</li>
-                    <li>Location 3</li>
-                    <li>Location 4</li>
-                    <li>Location 5</li>
-                    <li> Forio</li>
-                </ul>
+
             </div>
             <div class="main maps">
-                <div class="A">
-                    A
-                </div>
-                <div class="other">
-                    B
-                </div>
+
             </div>
-        </div>
-        <div id="stats">
-        </div>
+        </section>
+        <section id="stats" class="section">
+
+        </section>
+        <section id="how-we-did-it" class="section">
+            <div class="side">
+                <h3> How we did it</h3>
+            </div>
+            <div class="main">
+
+
+            </div>
+        </section>
+        <section class="section" id="credits">
+            <div class="side">
+                <h3> What we used </h3>
+            </div>
+            <div class="main">
+                <ul>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/epicenter-logo.svg" alt=""> Forio Epicenter </a>
+                    </li>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/mandelbrot-logo.svg" alt=""> Forio Madelbrot </a>
+                    </li>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/contour-logo.svg" alt=""> Forio Contour </a>
+                    </li>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/opensource-logo.svg" alt=""> JuMP  </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <footer>
+            Developed by <a class="logo" href="//forio.com" target="_blank"> <img src="styles/assets/logo-white.svg" alt="/forio"> </a>
+        </footer>
     </body>
 </html>
