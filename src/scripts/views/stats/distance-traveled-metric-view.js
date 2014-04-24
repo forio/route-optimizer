@@ -3,7 +3,7 @@ var BaseView = require('views/metric-view');
 
 module.exports = BaseView.extend({
     caption: 'Distance Traveled',
-    unit: 'miles',
+    unit: 'Miles',
 
     formatData: function (meters) {
         var MILE_CONVERSION_FACTOR = 0.000621371;
