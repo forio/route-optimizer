@@ -17,9 +17,8 @@ module.exports = function() {
             var doPOST = function (runid) {
                 return transport(apiURL + '/' + runid)
                    .post(postData)
-                   .then(function (run){
-                       runid = run.id;
-                       $def.resolve(run.id);
+                   .then(function (response){
+                       $def.resolve(response.result);
                    });
             };
 
