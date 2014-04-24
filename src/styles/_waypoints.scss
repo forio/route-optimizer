@@ -1,5 +1,5 @@
 .waypoints {
-    $line-height: 52px;
+    $line-height: 26px;
     font-weight: $font-light-weight;
 
     font-size: 12px;
@@ -36,7 +36,7 @@
                 height: 18px;
 
                 content: '';
-                margin-top: 17px;
+                margin-top: 4px;
                 margin-left: -3px;
                 z-index: 9;
             }
@@ -50,23 +50,22 @@
                color: $way-point-highlight;
 
                left: -3px;
-               top: 20px;
 
                 z-index: 8;
             }
         }
         &:first-child {
-            margin-top: -18px;
             &:after {
-                padding-bottom: 4px;
-                padding-top: 24px;
-                top: 0;
+               padding-bottom: 4px;
+               padding-top: 17px;
+               top: -6px;
             }
         }
         &:last-child {
             &:after {
                 padding-bottom: 21px;
                 padding-top:4px;
+                top: 7px;
             }
         }
     }

@@ -1,35 +1,57 @@
 'use strict';
 
+var WayPoints = require('collections/google-maps-waypoints-collection');
+var WayPointsListView = require('views/waypoint-list-view');
+
+var OriginalMapView = require('views/original-map-view');
+var OptimizedMapView = require('views/optimized-map-view');
+
+var StatsView = require('views/stats-view');
+var CodeView = require('views/code-view');
+
+var Optimizer = require('models/route-optimizer-model');
+
 $(function() {
-	console.log('Hello there!');
+    var wp = new WayPoints({});
+    wp.fetch().then(function() {
 
-    var formatter = d3.format('%');
+        var optimizer = new Optimizer({
+            original: wp,
+            optimized: wp.clone()
+        });
+        window.optimizer = optimizer;
 
-    Contour.export('donutTextOneValue', function (data, layer, options) {
-        var visibleIndex = data[0].data[0].y < data[0].data[1].y ? 1 : 0;
-        var textEl = layer.append('text')
-            .attr('class', 'center-text')
-            .attr('x', 29) //29
-            .attr('y', 58) //58
-            .text(formatter(data[0].data[visibleIndex].y));
+        var wpListView = new WayPointsListView({
+            collection: optimizer.get('original'),
+            className: 'waypoints'
+        });
+        $('#content .side').append(wpListView.render().$el);
+
+
+        var originalMapView = new OriginalMapView({
+            collection: optimizer.get('original'),
+            className: 'A'
+        });
+        $('#content .maps').append(originalMapView.render().$el);
+
+        var optimizedMapView = new OptimizedMapView({
+            collection: optimizer.get('optimized'),
+            model: optimizer,
+            className: 'other'
+        });
+        $('#content .maps').append(optimizedMapView.render().$el);
+
+        var statsView = new StatsView({
+            model: optimizer,
+            el: $('#stats')
+        });
+        statsView.render();
+
+        var cv = new CodeView({
+            el: $('#how-we-did-it .main')
+        });
+        cv.render();
+
+        window.wp = wp;
     });
-
-    var data = [{ x: 'Case A', y: 0.82}, { x: 'Case B', y: 0.18 }];
-
-    // new Contour({
-    //         el: '.pie-gauge',
-    //         pie: {
-    //             piePadding: 0,
-    //             innerRadius: 40,
-    //             outerRadius: 50
-    //         },
-    //         tooltip: {
-    //             formatter: function(d) {
-    //                 return d.data.x + ': ' + formatter(d.data.y);
-    //             }
-    //         }
-    //     })
-    //     .pie(data)
-    //     .donutTextOneValue(data)
-    //     .render();
 });

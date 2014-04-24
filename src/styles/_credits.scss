@@ -1,4 +1,39 @@
 #credits {
     background-color: $light-bg;
-    height: 400px;
+    padding: 37px 0;
+    padding-bottom: 70px;
+
+    ul {
+        overflow: visible;
+        margin-top: 24px;
+
+        li {
+            list-style: none;
+            float: left;
+            width: 21%;
+            padding: 0 2%;
+            max-width: 300px;
+            text-align: center;
+
+            a {
+                color: $code-bg;
+                display: inline-block;
+                text-align: center;
+
+                &:hover {
+                    text-decoration: none;
+                }
+                img {
+                    background-color: white;
+                    border-radius: 50%;
+                    width: 70px;
+                    height: 70px;
+                    padding: 0 10px;
+                    display: block;
+                    margin: 0 auto;
+                    margin-bottom: 12px;
+                }
+            }
+        }
+    }
 }

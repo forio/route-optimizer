@@ -6,6 +6,7 @@
     "sass-bootstrap": "~3.0.2",
     "d3": "~3.4.6",
     "lodash": "~2.4.1",
-    "prismjs": "*"
+    "prismjs": "*",
+    "backbone": "~1.1.2"
   }
 }
