@@ -9,12 +9,16 @@
 
         <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCTW23vXahKOwTwLIAKftgLHU9gHF0etXU&sensor=true"> </script>
+
         <!-- bower:js -->
         <script src="vendor/jquery/dist/jquery.js"></script>
         <script src="vendor/lodash/dist/lodash.min.js"></script>
         <script src="vendor/d3/d3.min.js"></script>
+        <script src="vendor/backbone/backbone.js"></script>
         <!-- endbower -->
-        <script src="http://forio.com/tools/contour/contour.min.js"></script>
+        <script src="vendor/contour.js"></script>
         <script src="scripts/app.js"></script>
 
         <link rel="stylesheet" media="screen" href="styles/main.css">
@@ -32,115 +36,47 @@
         </header>
         <section id="content" class="section">
             <div class="side">
-                <ul class="waypoints">
-                    <li> Forio </li>
-                    <li>Location 1</li>
-                    <li>Location 2</li>
-                    <li>Location 3</li>
-                    <li>Location 4</li>
-                    <li>Location 5</li>
-                    <li> Forio</li>
-                </ul>
+
             </div>
             <div class="main maps">
-                <div class="A">
-                    A
-                </div>
-                <div class="other">
-                    B
-                </div>
+
             </div>
         </section>
         <section id="stats" class="section">
-            <div class="side">
-                <div>
-                    <h4> Stops </h4>
-                    <strong> 15 </strong>
-                </div>
-                <div>
-                    <h4>Possible Routes</h4>
-                    <strong> 23432,242,343 </strong>
-                </div>
-            </div>
-            <div class="main">
-                <div class="metric">
-                    <h4> Distance Traveled </h4>
-                    <div>
-                        <h5  class="original"> Original </h5>
-                        <span class="value">
-                            <strong  class="original"> 62.8 </strong> miles
-                        </span>
-                    </div>
-                    <div>
-                        <h5 class="optimized"> Optimized </h5>
-                        <span class="value">
-                            <strong class="optimized"> 62.8 </strong> miles
-                        </span>
-                    </div>
-                    <div class="graph-container">
-                        <h6> savings </h6>
-                        <div class="graph pie-gauge">
 
-                        </div>
-                    </div>
-                </div>
-
-                <div class="metric">
-                    <h4> Longest Segment </h4>
-                    <div>
-                        <span class="value">
-                            <strong  class="original"> 62.8 </strong> miles
-                        </span>
-                    </div>
-                    <div>
-                        <span class="value">
-                            <strong class="optimized"> 62.8 </strong> miles
-                        </span>
-                    </div>
-                    <div class="graph-container">
-                        <h6> savings </h6>
-                        <div class="graph">
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="metric">
-                    <h4> Travel Time </h4>
-                    <div>
-                        <span class="value">
-                            <strong  class="original"> 62.8 </strong> miles
-                        </span>
-                    </div>
-                    <div>
-                        <span class="value">
-                            <strong class="optimized"> 62.8 </strong> miles
-                        </span>
-                    </div>
-                    <div class="graph-container">
-                        <h6> savings </h6>
-                        <div class="graph">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
         <section id="how-we-did-it" class="section">
             <div class="side">
                 <h3> How we did it</h3>
             </div>
-            <div class="main"></div>
+            <div class="main">
+
+
+            </div>
         </section>
         <section class="section" id="credits">
             <div class="side">
                 <h3> What we used </h3>
             </div>
-            <div class="main"></div>
+            <div class="main">
+                <ul>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/epicenter-logo.svg" alt=""> Forio Epicenter </a>
+                    </li>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/mandelbrot-logo.svg" alt=""> Forio Madelbrot </a>
+                    </li>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/contour-logo.svg" alt=""> Forio Contour </a>
+                    </li>
+                    <li>
+                        <a href=""><img src="styles/assets/logos/opensource-logo.svg" alt=""> JuMP  </a>
+                    </li>
+                </ul>
+            </div>
         </section>
         <footer>
             Developed by <a class="logo" href="//forio.com" target="_blank"> <img src="styles/assets/logo-white.svg" alt="/forio"> </a>
         </footer>
-        <script src="vendor/prismjs/prism.min.js"></script>
     </body>
 </html>

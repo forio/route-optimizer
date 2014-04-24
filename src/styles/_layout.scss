@@ -11,7 +11,7 @@ $sidebarPadding: 30px;
         padding-left: $sidebarPadding;
     }
     .main {
-        width: calc(100% - #{$sidebarwidth} - #{$sidebarPadding});
+        width: calc(100% - #{$sidebarwidth});
         float: left;
     }
 }

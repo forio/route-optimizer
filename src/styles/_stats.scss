@@ -1,4 +1,4 @@
-$section-height: 238px;
+$section-height: 258px;
 
 #stats {
     height: $section-height;
@@ -7,6 +7,8 @@ $section-height: 238px;
 
     padding-top: 15px;
     padding-bottom: 15px;
+
+    overflow: hidden;
 
     strong, .center-text{
         font-size: $large-text;
@@ -27,7 +29,7 @@ $section-height: 238px;
 
         >div:first-child {
             padding-top: 37px;
-            padding-bottom: 37px;
+            padding-bottom: 10px;
         }
 
     }
@@ -37,8 +39,6 @@ $section-height: 238px;
 
         h4 {
             margin-bottom: 15px;
-            text-align: center;
-
         }
 
         .original {
@@ -48,8 +48,11 @@ $section-height: 238px;
             color: $accent-optimized;
         }
 
+        .unit {
+            font-size: 14px;
+            color: $light-bg;
+        }
         h5,.value {
-            display: inline-block;
             margin-bottom: 0;
         }
         h5 {
@@ -64,16 +67,30 @@ $section-height: 238px;
             float: left;
             text-align: center;
 
+            .metric-container {
+                width: 300px;
+                text-align: right;
+            }
+
+            h6 {
+                margin-right: 12px;
+                margin-top: 17px;
+            }
+
+            .graph {
+                width: 70px;
+                margin-left: auto;
+                margin-right: 0;
+                .s-1 {
+                    fill: $accent-optimized;
+                }
+                .s-2 {
+                    fill: $code-bg;
+                }
+            }
+
         }
     }
 
-    .graph {
-        width: 200px;
-        .s-1 {
-            fill: $accent-optimized;
-        }
-        .s-2 {
-            fill: $code-bg;
-        }
-    }
+
 }

@@ -1,0 +1,417 @@
+ <!-- HTML generated using hilite.me --><div class="code-container" style="overflow:auto;width:auto;border-width:.1em .1em .1em .8em;"><table><tr><td><pre style="margin: 0; line-height: 125%" class="line-numbers">
+   1
+   2
+   3
+   4
+   5
+   6
+   7
+   8
+   9
+  10
+  11
+  12
+  13
+  14
+  15
+  16
+  17
+  18
+  19
+  20
+  21
+  22
+  23
+  24
+  25
+  26
+  27
+  28
+  29
+  30
+  31
+  32
+  33
+  34
+  35
+  36
+  37
+  38
+  39
+  40
+  41
+  42
+  43
+  44
+  45
+  46
+  47
+  48
+  49
+  50
+  51
+  52
+  53
+  54
+  55
+  56
+  57
+  58
+  59
+  60
+  61
+  62
+  63
+  64
+  65
+  66
+  67
+  68
+  69
+  70
+  71
+  72
+  73
+  74
+  75
+  76
+  77
+  78
+  79
+  80
+  81
+  82
+  83
+  84
+  85
+  86
+  87
+  88
+  89
+  90
+  91
+  92
+  93
+  94
+  95
+  96
+  97
+  98
+  99
+ 100
+ 101
+ 102
+ 103
+ 104
+ 105
+ 106
+ 107
+ 108
+ 109
+ 110
+ 111
+ 112
+ 113
+ 114
+ 115
+ 116
+ 117
+ 118
+ 119
+ 120
+ 121
+ 122
+ 123
+ 124
+ 125
+ 126
+ 127
+ 128
+ 129
+ 130
+ 131
+ 132
+ 133
+ 134
+ 135
+ 136
+ 137
+ 138
+ 139
+ 140
+ 141
+ 142
+ 143
+ 144
+ 145
+ 146
+ 147
+ 148
+ 149
+ 150
+ 151
+ 152
+ 153
+ 154
+ 155
+ 156
+ 157
+ 158
+ 159
+ 160
+ 161
+ 162
+ 163
+ 164
+ 165
+ 166
+ 167
+ 168
+ 169
+ 170
+ 171
+ 172
+ 173
+ 174
+ 175
+ 176
+ 177
+ 178
+ 179
+ 180
+ 181
+ 182
+ 183
+ 184
+ 185
+ 186
+ 187
+ 188
+ 189
+ 190
+ 191
+ 192
+ 193
+ 194
+ 195
+ 196
+ 197
+ 198
+ 199
+ 200
+ 201
+ 202
+ 203
+ 204
+ 205
+ 206
+ 207
+ 208</pre></td><td><pre style="line-height: 125%" class="code"><span style="color: #252529">## Original code taken from TSP example for JuMP.jl</span>
+ <span style="color: #66d9ef">module</span> <span style="color: #f8f8f2">TSPSolver</span>
+
+ <span style="color: #252529">#############################################################################</span>
+ <span style="color: #252529"># JuMP</span>
+ <span style="color: #252529"># An algebraic modelling langauge for Julia</span>
+ <span style="color: #252529"># See http://github.com/JuliaOpt/JuMP.jl</span>
+ <span style="color: #252529">#############################################################################</span>
+ <span style="color: #252529"># tsp.jl</span>
+ <span style="color: #252529">#</span>
+ <span style="color: #252529"># Solves the travelling salesman problem using integer programming and </span>
+ <span style="color: #252529"># lazy generation of the subtour elimination constraints.</span>
+ <span style="color: #252529">#############################################################################</span>
+
+ <span style="color: #66d9ef">using</span> <span style="color: #f8f8f2">JuMP</span>
+ <span style="color: #66d9ef">using</span> <span style="color: #f8f8f2">GLPKMathProgInterface</span>
+ <span style="color: #252529">#using Cbc</span>
+ <span style="color: #252529">#using Base.Test</span>
+
+ <span style="color: #252529"># extractTour</span>
+ <span style="color: #252529"># Given a n-by-n matrix representing the solution to an undirected TSP,</span>
+ <span style="color: #252529"># extract the tour as a vector</span>
+ <span style="color: #252529"># Input:</span>
+ <span style="color: #252529">#  n        Number of cities</span>
+ <span style="color: #252529">#  sol      n-by-n 0-1 symmetric matrix representing solution</span>
+ <span style="color: #252529"># Output:</span>
+ <span style="color: #252529">#  tour     n+1 length vector of tour, starting and ending at 1</span>
+ <span style="color: #66d9ef">function</span><span style="color: #a6e22e"> extractTour</span><span style="color: #f8f8f2">(n,</span> <span style="color: #f8f8f2">sol)</span>
+     <span style="color: #f8f8f2">tour</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]</span>  <span style="color: #252529"># Start at city 1 always</span>
+     <span style="color: #f8f8f2">cur_city</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span>
+     <span style="color: #f8f8f2">println(sol)</span>
+     <span style="color: #66d9ef">while</span> <span style="color: #f8f8f2">true</span>
+         <span style="color: #252529"># Look for first arc out of current city</span>
+         <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">j</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n</span>
+             <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">sol[cur_city,j]</span> <span style="color: #f92672">&gt;=</span> <span style="color: #ae81ff">1</span><span style="color: #f92672">-</span><span style="color: #ae81ff">1e-6</span>
+                 <span style="color: #252529"># Found next city</span>
+                 <span style="color: #f8f8f2">push</span><span style="color: #f92672">!</span><span style="color: #f8f8f2">(tour,</span> <span style="color: #f8f8f2">j)</span>
+                 <span style="color: #252529"># Don&#39;t ever use this arc again</span>
+                 <span style="color: #f8f8f2">sol[cur_city,</span> <span style="color: #f8f8f2">j]</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0.0</span>
+                 <span style="color: #f8f8f2">sol[j,</span> <span style="color: #f8f8f2">cur_city]</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0.0</span>
+                 <span style="color: #252529"># Move to next city</span>
+                 <span style="color: #f8f8f2">cur_city</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">j</span>
+                 <span style="color: #66d9ef">break</span>
+             <span style="color: #66d9ef">end</span>
+         <span style="color: #66d9ef">end</span>
+         <span style="color: #252529"># If we have come back to 1, stop</span>
+         <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">cur_city</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">1</span>
+             <span style="color: #66d9ef">break</span>
+         <span style="color: #66d9ef">end</span>
+     <span style="color: #66d9ef">end</span>  <span style="color: #252529"># end while</span>
+     <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">tour</span>
+ <span style="color: #66d9ef">end</span>
+
+ <span style="color: #252529"># findSubtour</span>
+ <span style="color: #252529"># Given a n-by-n matrix representing solution to the relaxed</span>
+ <span style="color: #252529"># undirected TSP problem, find a set of nodes belonging to a subtour</span>
+ <span style="color: #252529"># Input:</span>
+ <span style="color: #252529">#  n        Number of cities</span>
+ <span style="color: #252529">#  sol      n-by-n 0-1 symmetric matrix representing solution</span>
+ <span style="color: #252529"># Outputs:</span>
+ <span style="color: #252529">#  subtour  n length vector of booleans, true iff in a particular subtour</span>
+ <span style="color: #252529">#  subtour_length   Number of cities in subtour (if n, no subtour found)</span>
+ <span style="color: #66d9ef">function</span><span style="color: #a6e22e"> findSubtour</span><span style="color: #f8f8f2">(n,</span> <span style="color: #f8f8f2">sol)</span>
+     <span style="color: #252529"># Initialize to no subtour</span>
+     <span style="color: #f8f8f2">subtour</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">fill(false,n)</span>
+     <span style="color: #252529"># Always start looking at city 1</span>
+     <span style="color: #f8f8f2">cur_city</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span>
+     <span style="color: #f8f8f2">subtour[cur_city]</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">true</span>
+     <span style="color: #f8f8f2">subtour_length</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span>
+     <span style="color: #66d9ef">while</span> <span style="color: #f8f8f2">true</span>
+         <span style="color: #252529"># Find next node that we haven&#39;t yet visited</span>
+         <span style="color: #f8f8f2">found_city</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">false</span>
+         <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">j</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n</span>
+             <span style="color: #66d9ef">if</span> <span style="color: #f92672">!</span><span style="color: #f8f8f2">subtour[j]</span>
+                 <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">sol[cur_city,</span> <span style="color: #f8f8f2">j]</span> <span style="color: #f92672">&gt;=</span> <span style="color: #ae81ff">1</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1e-6</span>
+                     <span style="color: #252529"># Arc to unvisited city, follow it</span>
+                     <span style="color: #f8f8f2">cur_city</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">j</span>
+                     <span style="color: #f8f8f2">subtour[j]</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">true</span>
+                     <span style="color: #f8f8f2">found_city</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">true</span>
+                     <span style="color: #f8f8f2">subtour_length</span> <span style="color: #f92672">+=</span> <span style="color: #ae81ff">1</span>
+                     <span style="color: #66d9ef">break</span>  <span style="color: #252529"># Move on to next city</span>
+                 <span style="color: #66d9ef">end</span>
+             <span style="color: #66d9ef">end</span>
+         <span style="color: #66d9ef">end</span>
+         <span style="color: #66d9ef">if</span> <span style="color: #f92672">!</span><span style="color: #f8f8f2">found_city</span>
+             <span style="color: #252529"># We are done</span>
+             <span style="color: #66d9ef">break</span>
+         <span style="color: #66d9ef">end</span>
+     <span style="color: #66d9ef">end</span>
+     <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">subtour,</span> <span style="color: #f8f8f2">subtour_length</span>
+ <span style="color: #66d9ef">end</span>
+
+ <span style="color: #252529"># solveTSP</span>
+ <span style="color: #252529"># Given a matrix of city locations, solve the TSP</span>
+ <span style="color: #252529"># Inputs:</span>
+ <span style="color: #252529">#   n       Number of cities</span>
+ <span style="color: #252529">#   cities  n-by-2 matrix of (x,y) city locations</span>
+ <span style="color: #252529"># Output:</span>
+ <span style="color: #252529">#   path    Vector with order to cities are visited in</span>
+ <span style="color: #66d9ef">function</span><span style="color: #a6e22e"> buildTSP</span><span style="color: #f8f8f2">(n,</span> <span style="color: #f8f8f2">dist)</span>
+
+     <span style="color: #252529"># Calculate pairwise distance matrix</span>
+     <span style="color: #252529"># dist = zeros(n, n)</span>
+     <span style="color: #252529"># for i = 1:n</span>
+     <span style="color: #252529">#     for j = i:n</span>
+     <span style="color: #252529">#         d = norm(cities[i,1:2] - cities[j,1:2])</span>
+     <span style="color: #252529">#         dist[i,j] = d</span>
+     <span style="color: #252529">#         dist[j,i] = d</span>
+     <span style="color: #252529">#     end</span>
+     <span style="color: #252529"># end</span>
+
+     <span style="color: #252529"># Create a model that will use GLPK to solve</span>
+     <span style="color: #f8f8f2">m</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">Model(solver</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">GLPKSolverMIP())</span>
+
+     <span style="color: #252529"># x[i,j] is 1 iff we travel between i and j, 0 otherwise</span>
+     <span style="color: #252529"># Although we define all n^2 variables, we will only use</span>
+     <span style="color: #252529"># the upper triangle</span>
+     <span style="color: #f8f8f2">@defVar(m,</span> <span style="color: #f8f8f2">x[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n,</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n],</span> <span style="color: #f8f8f2">Bin)</span>
+
+     <span style="color: #252529"># Minimize length of tour</span>
+     <span style="color: #f8f8f2">@setObjective(m,</span> <span style="color: #f8f8f2">Min,</span> <span style="color: #f8f8f2">sum{dist[i,j]</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">x[i,j],</span> <span style="color: #f8f8f2">i</span><span style="color: #f92672">=</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n,j</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">i:n})</span>
+
+     <span style="color: #252529"># Make x_ij and x_ji be the same thing (undirectional)</span>
+     <span style="color: #252529"># Don&#39;t allow self-arcs</span>
+     <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n</span>
+         <span style="color: #f8f8f2">@addConstraint(m,</span> <span style="color: #f8f8f2">x[i,i]</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+         <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">j</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">(i</span><span style="color: #f92672">+</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">):n</span>
+             <span style="color: #f8f8f2">@addConstraint(m,</span> <span style="color: #f8f8f2">x[i,j]</span> <span style="color: #f92672">==</span> <span style="color: #f8f8f2">x[j,i])</span>
+         <span style="color: #66d9ef">end</span>
+     <span style="color: #66d9ef">end</span>
+
+     <span style="color: #252529"># We must enter and leave every city once and only once</span>
+     <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n</span>
+         <span style="color: #f8f8f2">@addConstraint(m,</span> <span style="color: #f8f8f2">sum{x[i,j],</span> <span style="color: #f8f8f2">j</span><span style="color: #f92672">=</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n}</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">2</span><span style="color: #f8f8f2">)</span>
+     <span style="color: #66d9ef">end</span>
+
+     <span style="color: #66d9ef">function</span><span style="color: #a6e22e"> subtour</span><span style="color: #f8f8f2">(cb)</span>
+         <span style="color: #252529"># Optional: display tour starting at city 1</span>
+         <span style="color: #252529"># println(&quot;----\nInside subtour callback&quot;)</span>
+         <span style="color: #f8f8f2">println(</span><span style="color: #e6db74">&quot;Current tour starting at city 1:&quot;</span><span style="color: #f8f8f2">)</span>
+         <span style="color: #f8f8f2">println(extractTour(n,</span> <span style="color: #f8f8f2">getValue(x)))</span>
+
+         <span style="color: #252529"># Find any set of cities in a subtour</span>
+         <span style="color: #f8f8f2">subtour,</span> <span style="color: #f8f8f2">subtour_length</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">findSubtour(n,</span> <span style="color: #f8f8f2">getValue(x))</span>
+
+         <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">subtour_length</span> <span style="color: #f92672">==</span> <span style="color: #f8f8f2">n</span>
+             <span style="color: #252529"># This &quot;subtour&quot; is actually all cities, so we are done</span>
+             <span style="color: #f8f8f2">println(</span><span style="color: #e6db74">&quot;Solution visits all cities&quot;</span><span style="color: #f8f8f2">)</span>
+             <span style="color: #f8f8f2">println(</span><span style="color: #e6db74">&quot;----&quot;</span><span style="color: #f8f8f2">)</span>
+             <span style="color: #66d9ef">return</span>
+         <span style="color: #66d9ef">end</span>
+
+         <span style="color: #252529"># Subtour found - add lazy constraint</span>
+         <span style="color: #252529"># We will build it up piece-by-piece</span>
+         <span style="color: #f8f8f2">arcs_from_subtour</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">AffExpr()</span>
+
+         <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n</span>
+             <span style="color: #66d9ef">if</span> <span style="color: #f92672">!</span><span style="color: #f8f8f2">subtour[i]</span>
+                 <span style="color: #252529"># If this city isn&#39;t in subtour, skip it</span>
+                 <span style="color: #66d9ef">continue</span>
+             <span style="color: #66d9ef">end</span>
+             <span style="color: #252529"># Want to include all arcs from this city, which is in</span>
+             <span style="color: #252529"># the subtour, to all cities not in the subtour</span>
+             <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">j</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">:n</span>
+                 <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">==</span> <span style="color: #f8f8f2">j</span>
+                     <span style="color: #252529"># Self-arc</span>
+                     <span style="color: #66d9ef">continue</span>
+                 <span style="color: #66d9ef">elseif</span> <span style="color: #f8f8f2">subtour[j]</span>
+                     <span style="color: #252529"># Both ends in same subtour</span>
+                     <span style="color: #66d9ef">continue</span>
+                 <span style="color: #66d9ef">else</span>
+                     <span style="color: #252529"># j isn&#39;t in subtour</span>
+                     <span style="color: #f8f8f2">arcs_from_subtour</span> <span style="color: #f92672">+=</span> <span style="color: #f8f8f2">x[i,j]</span>
+                 <span style="color: #66d9ef">end</span>
+             <span style="color: #66d9ef">end</span>
+         <span style="color: #66d9ef">end</span>
+
+         <span style="color: #252529"># Add the new subtour elimination constraint we built</span>
+         <span style="color: #252529"># println(&quot;Adding subtour elimination cut&quot;)</span>
+         <span style="color: #252529"># println(&quot;----&quot;)</span>
+         <span style="color: #f8f8f2">addLazyConstraint(cb,</span> <span style="color: #f8f8f2">arcs_from_subtour</span> <span style="color: #f92672">&gt;=</span> <span style="color: #ae81ff">2</span><span style="color: #f8f8f2">)</span>
+     <span style="color: #66d9ef">end</span>  <span style="color: #252529"># End function subtour</span>
+
+     <span style="color: #252529"># Solve the problem with our cut generator</span>
+     <span style="color: #f8f8f2">setLazyCallback(m,</span> <span style="color: #f8f8f2">subtour)</span>
+     <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">m</span>
+ <span style="color: #66d9ef">end</span> <span style="color: #252529"># end buildTSP</span>
+
+ <span style="color: #66d9ef">function</span><span style="color: #a6e22e"> solveTSP</span><span style="color: #f8f8f2">(m)</span>
+     <span style="color: #f8f8f2">solve(m)</span>
+
+     <span style="color: #f8f8f2">n</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">int(sqrt(m</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">numCols))</span>
+     <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">extractTour(n,</span> <span style="color: #f8f8f2">getValue(m</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">dictList[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]))</span>
+ <span style="color: #66d9ef">end</span>  <span style="color: #252529"># end solveTSP</span>
+
+ <span style="color: #252529"># Add fixed leg constraints to the model. </span>
+ <span style="color: #252529"># This has no check for feasibility issues.</span>
+ <span style="color: #66d9ef">function</span><span style="color: #a6e22e"> addFixedLegs</span><span style="color: #f8f8f2">(model,</span> <span style="color: #f8f8f2">fixedPairs)</span>
+
+     <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">pair</span> <span style="color: #66d9ef">in</span> <span style="color: #f8f8f2">fixedPairs</span>
+         <span style="color: #f8f8f2">@addConstraint(model,</span> <span style="color: #f8f8f2">x[pair[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">],pair[</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">]]</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span>
+         <span style="color: #f8f8f2">@addConstraint(model,</span> <span style="color: #f8f8f2">x[pair[</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">],pair[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]]</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span>
+     <span style="color: #66d9ef">end</span>
+
+     <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">model</span>
+ <span style="color: #66d9ef">end</span>
+
+ <span style="color: #66d9ef">end</span>
+ </pre></td></tr></table></div>

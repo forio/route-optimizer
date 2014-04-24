@@ -18,7 +18,7 @@ module.exports = function(grunt) {
                 tasks: ['compass']
             },
             js: {
-                files: [ 'src/scripts/**/*.js'],
+                files: [ 'src/scripts/**/*.js', 'src/scripts/**/*.ejs'],
                 tasks: 'browserify2'
             },
             index: {
@@ -26,8 +26,12 @@ module.exports = function(grunt) {
                 tasks: 'copy:index'
             },
             assets: {
-                files: [ 'src/styles/assets/*.*'],
+                files: [ 'src/styles/assets/**/*.*'],
                 tasks: 'copy:assets'
+            },
+            data: {
+                files: [ 'src/data/*.*'],
+                tasks: 'copy:data'
             },
             options: {
                 nospawn: true,
@@ -48,7 +52,15 @@ module.exports = function(grunt) {
                     cwd: 'src/styles/assets/',
                     dest: 'public/styles/assets/'
                 }]
-            }
+            },
+            data: {
+                files: [{
+                    src: ['**/*.*'],
+                    expand: true,
+                    cwd: 'src/data/',
+                    dest: 'public/data/'
+                }]
+            },
         },
         connect: {
             options: {
@@ -90,6 +102,11 @@ module.exports = function(grunt) {
                                 cwd: 'src/scripts/views/',
                                 src: ['**/*.js'],
                                 dest: 'views/'
+                            },
+                            {
+                                cwd: 'src/scripts/services/',
+                                src: ['**/*.js'],
+                                dest: 'services/'
                             },
                             {
                                 cwd: 'src/scripts/models/',

@@ -1,4 +1,28 @@
 #how-we-did-it {
     background-color: $code-bg;
     color: $light-bg;
+
+    padding-top: 74px;
+    h3 {
+        margin-top: 0;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    .code-container {
+
+    }
+    .line-numbers {
+        background: $light-bg;
+        color: $code-bg;
+        padding-top: 14px;
+        padding-right: 6px;
+    }
+    .code {
+        // margin-top: 10px;
+        margin-bottom: 0;
+        padding-left: 20px;
+    }
 }
