@@ -56,14 +56,10 @@ module.exports = BaseView.extend({
         }));
     },
     renderChart: function() {
-       var originalVal = this.getData(this.original);
-       var optimizedVal = this.getData(this.optimized);
-
-        var difference = originalVal / optimizedVal;
-        var difference = 0.5;
         var dv = new DonutView({
             el: this.$('.graph-container'),
-            value: difference
+            model: this.model,
+            dataSource: this.getData
         });
         dv.render();
         return this;
