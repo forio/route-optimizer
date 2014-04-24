@@ -10,6 +10,7 @@ module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     var ejs = require('ejsify');
+    var UglifyJS = require("uglify-js");
 
     grunt.initConfig({
         watch: {
@@ -86,59 +87,78 @@ module.exports = function(grunt) {
             }
         },
         browserify2: {
-            dev: {
+            options: {
+                expose: {
+                    files: [
+                        {
+                            cwd: 'src/scripts/',
+                            src: ['**/*.ejs'],
+                            dest: 'templates/'
+                        },
+                        {
+                            cwd: 'src/scripts/views/',
+                            src: ['**/*.js'],
+                            dest: 'views/'
+                        },
+                        {
+                            cwd: 'src/scripts/services/',
+                            src: ['**/*.js'],
+                            dest: 'services/'
+                        },
+                        {
+                            cwd: 'src/scripts/models/',
+                            src: ['**/*.js'],
+                            dest: 'models/'
+                        },
+                        {
+                            cwd: 'src/scripts/collections/',
+                            src: ['**/*.js'],
+                            dest: 'collections/'
+                        }
+                    ]
+                },
                 entry: './src/scripts/app.js',
                 compile: './public/scripts/app.js',
-                debug: true,
-                options: {
-                    expose: {
-                        files: [
-                            {
-                                cwd: 'src/scripts/',
-                                src: ['**/*.ejs'],
-                                dest: 'templates/'
-                            },
-                            {
-                                cwd: 'src/scripts/views/',
-                                src: ['**/*.js'],
-                                dest: 'views/'
-                            },
-                            {
-                                cwd: 'src/scripts/services/',
-                                src: ['**/*.js'],
-                                dest: 'services/'
-                            },
-                            {
-                                cwd: 'src/scripts/models/',
-                                src: ['**/*.js'],
-                                dest: 'models/'
-                            },
-                            {
-                                cwd: 'src/scripts/collections/',
-                                src: ['**/*.js'],
-                                dest: 'collections/'
-                            }
-                        ]
-                    }
-                },
                 beforeHook: function (bundle) {
                     return bundle.transform(ejs);
+                }
+            },
+            dev: {
+                options: {
+                    debug: true
+                }
+            },
+            production: {
+                options: {
+                    debug: false
+                },
+                afterHook: function(src) {
+                    var result = UglifyJS.minify(src, {fromString: true});
+                    return result.code;
                 }
             }
         },
 
 
         compass: {
+            options: {
+                sassDir: 'src/styles',
+                cssDir: 'public/styles',
+                imagesDir: 'public/styles/assets/images',
+                javascriptsDir: 'public/scripts',
+                fontsDir: 'public/styles/assets/fonts',
+                relativeAssets: true
+            },
             dev: {
                 options: {
-                    sassDir: 'src/styles',
-                    cssDir: 'public/styles',
-                    imagesDir: 'public/styles/assets/images',
-                    javascriptsDir: 'public/scripts',
-                    fontsDir: 'public/styles/assets/fonts',
-                    environment: 'dev',
+                    environment: 'development',
                     outputStyle: 'expanded',
-                    relativeAssets: true
+                }
+            },
+            production: {
+                options: {
+                    outputStyle: 'compressed',
+                    environment: 'production'
                 }
             }
         }
