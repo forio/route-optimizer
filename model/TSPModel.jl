@@ -3,7 +3,7 @@
 module TSPModel
 
 
-#include("tsp.jl")
+include("tsp.jl")
 
 using Epicenter
 
@@ -94,13 +94,13 @@ end
 function solve(distanceMatrix)
 	n = size(distanceMatrix)[1]
 
-	#model = TSPSolver.buildTSP(n, distanceMatrix)
+	model = TSPSolver.buildTSP(n, distanceMatrix)
 
 	# Add the fixed constraints
-	# model = TSPSolver.addFixedLegs(model, fixedPairs)
+	model = TSPSolver.addFixedLegs(model, fixedPairs)
 
 	#global tour = TSPSolver.solveTSP(model)
-	global tour = randperm(n)
+	# global tour = randperm(n)
 
 	record(:tour)
 	return tour
