@@ -25,9 +25,12 @@ module.exports = BaseView.extend({
     },
     removeOverlay: function () {
         this.$el.addClass('generated');
+        $('.generate h3').text("Generate Optimized");
+
     },
     handleGenerate: function () {
         if (!this.$el.hasClass('generated')) {
+            $('.generate h3').text("Generating..");
             var me = this;
             this.model.optimize();
         }
