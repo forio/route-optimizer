@@ -157,14 +157,35 @@ module.exports = function(grunt) {
             },
             production: {
                 options: {
+                    force: true,
                     outputStyle: 'compressed',
                     environment: 'production'
                 }
+            }
+        },
+
+        uglify: {
+            options: {
+                compress: false,
+                sourceMap: false,
+                sourceMapIncludeSources: false
+            },
+            dev: {
+                files: []
+            },
+            production: {
+                options: {
+                    compress: true,
+                    sourceMap: false
+                },
+                files: []
             }
         }
     });
 
     grunt.registerTask('init', ['compass:dev', 'browserify2']);
+
+    grunt.registerTask('production', ['compass:production', 'browserify2:production']);
     grunt.registerTask('server', ['copy', 'init', 'connect:livereload', 'open', 'watch']);
 
 
