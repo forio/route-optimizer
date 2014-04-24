@@ -15,8 +15,8 @@ module.exports = BaseView.extend({
         this.original = this.model.get('original');
         this.optimized = this.model.get('optimized');
 
-        this.original.on('routesRecalculated', this.render, this);
-        this.optimized.on('routesRecalculated', this.render, this);
+        this.original.on('routesRecalculated', this.renderTable, this);
+        this.optimized.on('routesRecalculated', this.renderTable, this);
 
         BaseView.prototype.initialize.apply(this, arguments);
     },
@@ -29,17 +29,18 @@ module.exports = BaseView.extend({
     },
 
     render: function() {
-        this.renderSelf();
+        this.$el.append('<div class="metric-container"> </div>');
+        this.$el.append('<div class="graph-container"> </div>');
+        this.renderTable();
         this.renderChart();
         return this;
     },
 
-
-    renderSelf: function() {
+    renderTable: function() {
         var originalVal = this.formatData(this.getData(this.original));
         var optimizedVal = this.formatData(this.getData(this.optimized));
 
-        this.$el.html(this.template({
+        this.$('.metric-container').html(this.template({
             caption: this.caption,
             unit: this.unit,
             optimized: optimizedVal,
@@ -59,7 +60,6 @@ module.exports = BaseView.extend({
             });
             dv.render();
         }
-
         return this;
     }
 });
