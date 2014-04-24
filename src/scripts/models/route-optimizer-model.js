@@ -33,13 +33,13 @@ module.exports = BaseModel.extend({
         // me.set('optimized', preOptimized);
 
         or.getDistanceMatrix().then(function (distanceMatrix) {
-            me.getOptimizedValues(distanceMatrix).then (function (optimized) {
-                var optimizedIndices = _.shuffle(_.range(1, distanceMatrix[0].length));
-
+            me.getOptimizedValues(distanceMatrix).then (function (optimizedIndices) {
                 console.log("old order", preOptimized.pluck('name'));
 
+                optimizedIndices.pop(); // Model returns back 0 as last item, don't need that
+
                 me.get('optimized').each(function (model, index){
-                    var newOrder = _.indexOf(optimizedIndices, index+1);
+                    var newOrder = _.indexOf(optimizedIndices, index);
                     model.set('order', newOrder, {silent: true});
                 });
                 me.get('optimized').sort();
