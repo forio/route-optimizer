@@ -29,11 +29,16 @@ module.exports = BaseView.extend({
     },
 
     render: function() {
-        this.$el.append('<div class="metric-container"> </div>');
-        this.$el.append('<div class="graph-container"> </div>');
+        this.renderSelf();
         this.renderTable();
         this.renderChart();
         return this;
+    },
+
+    renderSelf: function () {
+        this.$el.empty();
+        this.$el.append('<div class="metric-container"> </div>');
+        this.$el.append('<div class="graph-container"> </div>');
     },
 
     renderTable: function() {
