@@ -30,16 +30,17 @@ $(function() {
 
         var originalMapView = new OriginalMapView({
             collection: optimizer.get('original'),
-            className: 'A'
+            el: $('.maps .original')
         });
-        $('#content .maps').append(originalMapView.render().$el);
+        originalMapView.render();
 
         var optimizedMapView = new OptimizedMapView({
             collection: optimizer.get('optimized'),
             model: optimizer,
-            className: 'other'
+            el: $('.maps .optimized .map')
         });
-        $('#content .maps').append(optimizedMapView.render().$el);
+        optimizedMapView.render();
+
 
         var statsView = new StatsView({
             model: optimizer,
