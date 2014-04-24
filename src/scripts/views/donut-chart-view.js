@@ -24,7 +24,7 @@ module.exports = BaseView.extend({
     renderChart: function() {
         var data = [{ x: 'Gain', y: this.value}, { x: 'Rest', y: 1 - this.value }];
         new Contour({
-                el: this.el,
+                el: this.$('.graph').get(0),
                 chart: {
                     width: 70,
                     height: 70
