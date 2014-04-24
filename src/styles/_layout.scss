@@ -1,4 +1,5 @@
-$sidebarwidth: 245px;
+$sidebarwidth: 235px;
+$sidebarPadding: 30px;
 
 .section {
     overflow: auto;
@@ -7,6 +8,7 @@ $sidebarwidth: 245px;
     .side {
         width: $sidebarwidth;
         float: left;
+        padding-left: $sidebarPadding;
     }
     .main {
         width: calc(100% - #{$sidebarwidth});
