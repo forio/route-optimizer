@@ -51,6 +51,7 @@ module.exports = BaseView.extend({
        var optimizedVal = this.getData(this.optimized);
 
         var difference = originalVal / optimizedVal;
+        var difference = 0.5;
         if (difference && difference !== Infinity) {
             var dv = new DonutView({
                 el: this.$('.graph-container'),
