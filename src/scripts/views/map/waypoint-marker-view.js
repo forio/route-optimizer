@@ -21,6 +21,11 @@ module.exports = BaseView.extend({
          this.marker = new google.maps.Marker({
               position: myLatlng,
               map: this.map,
+              icon: {
+                    url: 'styles/assets/map-markers/marker.png',
+                    anchor: new google.maps.Point(58,74),
+                    origin: new google.maps.Point(0,0)
+                },
               title: this.model.get('name')
           });
        return this;
