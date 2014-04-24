@@ -3,6 +3,7 @@ var MarkerView = require('views/waypoint-marker-view');
 module.exports = Backbone.View.extend({
 
     gDirDisplays: [],
+    gRouteOptions: {},
 
     initialize: function () {
         this.collection.on('remove', this.handleRouteRemove, this);
@@ -44,7 +45,11 @@ module.exports = Backbone.View.extend({
             disableDefaultUI: true,
             disableDoubleClickZoom: true,
             scrollwheel: false,
-            center: new google.maps.LatLng(37.772207, -122.450550)
+            center: new google.maps.LatLng(37.772207, -122.450550),
+            styles: [{
+                featureType: 'road.highway',
+                stylers: [{visibility: 'off'}]
+            }]
 
           };
         this.map = new google.maps.Map(this.el,mapOptions);
@@ -59,12 +64,12 @@ module.exports = Backbone.View.extend({
 
     drawRoute: function (route) {
         var me = this;
-        var directionsDisplay = new google.maps.DirectionsRenderer({
+        var directionsDisplay = new google.maps.DirectionsRenderer($.extend({}, {
             map: me.map,
             preserveViewport: true,
             suppressMarkers: true,
             draggable: false
-        });
+        }, this.gRouteOptions));
         directionsDisplay.setDirections(route.gResult);
         this.gDirDisplays.push(directionsDisplay);
     },

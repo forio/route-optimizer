@@ -8,7 +8,7 @@ module TSPModel
 using Epicenter
 
 export init,
-       setFixed, 
+       setFixed,
        removeFixed,
        solve,
        reset
@@ -19,7 +19,7 @@ global fixedPairs,
 export fixedPairs,
        tour
 
-# Initialize the model. So far, this means that we need to reset the 
+# Initialize the model. So far, this means that we need to reset the
 # global variables.
 function init()
 	reset()
@@ -45,7 +45,7 @@ function parseFixed(fixed)
 end
 
 ## Sets the fixed arcs of the model.
-## 
+##
 function setFixed(newFixed)
 
 	status = "success"
@@ -89,7 +89,7 @@ function removeFixed(toRemove)
 	return status
 end
 
-## Solve takes a 2d array of distances and 
+## Solve takes a 2d array of distances and
 ## returns a tour
 function solve(distanceMatrix)
 	n = size(distanceMatrix)[1]
