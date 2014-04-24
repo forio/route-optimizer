@@ -20,14 +20,22 @@
             }
 
             a {
+                opacity: 0.7;
                 color: $code-bg;
                 display: inline-block;
                 text-align: center;
+                @include single-transition(opacity, 0.1s, linear, 0.1s);
 
-                &:hover {
-                    text-decoration: none;
-                }
+                  &:hover {
+                      text-decoration: none;
+                      opacity: 1;
+                  }
                 img {
+                    @include single-transition(transform, 0.2s, linear, 0.2s);
+                    &:hover {
+                        @include scale(1.1);
+                    }
+
                     background-color: white;
                     border-radius: 50%;
                     width: 70px;
