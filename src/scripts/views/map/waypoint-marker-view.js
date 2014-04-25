@@ -19,7 +19,7 @@ module.exports = BaseView.extend({
                 origin: new google.maps.Point(0,80)
             },
             base: {
-                anchor: new google.maps.Point(30,40),
+                anchor: new google.maps.Point(32,37),
                 origin: new google.maps.Point(0,40)
             }
         };
