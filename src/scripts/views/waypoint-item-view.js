@@ -2,7 +2,8 @@ var BaseView = require('views/base-view');
 
 module.exports = BaseView.extend({
     events: {
-        'click': 'toggleSelected'
+        'mouseover': 'toggleSelected',
+        'mouseout': 'toggleSelected'
     },
 
     initialize: function() {
