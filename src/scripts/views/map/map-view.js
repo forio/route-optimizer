@@ -19,8 +19,16 @@ module.exports = Backbone.View.extend({
         //TODO:Get index
         //TODO:Remove previous route between prev and next
         //Add marker
+
+        var newModelIndex = this.collection.indexOf(model);
+
         this.addMarker(model);
-        //TODO: Add 2 new routes
+        this.addDirection(model);
+
+        if (newModelIndex  < this.collection.size() - 1) {
+            var nextPoint = this.collection.at(newModelIndex + 1);
+            this.addDirection(model);
+        }
     },
 
     addMarker: function (model) {
@@ -29,6 +37,15 @@ module.exports = Backbone.View.extend({
             map: this.map
         });
         mv.render();
+    },
+    addDirection: function (model) {
+        var me = this;
+        var newModelIndex = this.collection.indexOf(model);
+        if (newModelIndex > 0) {
+            this.collection.getDirections(newModelIndex - 1, newModelIndex).done(function (route) {
+                me.drawRoute.call(me, route);
+            });
+        }
     },
 
     render: function() {
@@ -103,17 +120,6 @@ module.exports = Backbone.View.extend({
 
     renderDirections: function() {
         this.clearRoutes();
-
-        // console.log('render directs', this.className);
-        var me = this;
-        this.collection.populateAllRoutes().then(function (routes){
-            _(routes).each(function (route){
-                me.drawRoute.call(me, route);
-            });
-        });
-
-        this.collection.getDirections(this.collection.size() - 1, 0).then(function (route) {
-            me.drawRoute.call(me, route);
-        });
+        this.collection.each(this.addDirection, this);
     }
 });

@@ -7,5 +7,6 @@
     {"name": "Books Inc Castro", "latitude": 37.764768, "longitude": -122.432210},
     {"name": "Books Inc Marina", "latitude": 37.800214, "longitude": -122.440251},
     {"name": "Bookshop West Portal", "latitude": 37.740055, "longitude": -122.466842 },
-    {"name": "Booksmith", "latitude": 37.769760, "longitude": -122.449363 }
+    {"name": "Booksmith", "latitude": 37.769760, "longitude": -122.449363 },
+    {"name": "Forio", "latitude": 37.776861, "longitude": -122.410573 }
 ]
