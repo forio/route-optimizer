@@ -28,6 +28,10 @@ using GLPKMathProgInterface
 function extractTour(n, sol)
     tour = [1]  # Start at city 1 always
     cur_city = 1
+<<<<<<< Updated upstream
+=======
+    println(sol)
+>>>>>>> Stashed changes
     while true
     	#println("Tour: $tour")
         # Look for first arc out of current city
@@ -99,16 +103,6 @@ end
 #   path    Vector with order to cities are visited in
 function buildTSP(n, dist)
 
-    # Calculate pairwise distance matrix
-    # dist = zeros(n, n)
-    # for i = 1:n
-    #     for j = i:n
-    #         d = norm(cities[i,1:2] - cities[j,1:2])
-    #         dist[i,j] = d
-    #         dist[j,i] = d
-    #     end
-    # end
-
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
 
@@ -136,17 +130,23 @@ function buildTSP(n, dist)
 
     function subtour(cb)
         # Optional: display tour starting at city 1
+<<<<<<< Updated upstream
         # println("----\nInside subtour callback")
         # println("Current tour starting at city 1:")
         # print(extractTour(n, getValue(x)))
+=======
+        println("----\nInside subtour callback")
+        println("Current tour starting at city 1:")
+        println(extractTour(n, getValue(x)))
+>>>>>>> Stashed changes
 
         # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
 
         if subtour_length == n
             # This "subtour" is actually all cities, so we are done
-            # println("Solution visits all cities")
-            # println("----")
+            println("Solution visits all cities")
+            println("----")
             return
         end
         
@@ -176,8 +176,8 @@ function buildTSP(n, dist)
         end
         
         # Add the new subtour elimination constraint we built
-        # println("Adding subtour elimination cut")
-        # println("----")
+        println("Adding subtour elimination cut")
+        println("----")
         addLazyConstraint(cb, arcs_from_subtour >= 2)
     end  # End function subtour
 
@@ -192,17 +192,5 @@ function solveTSP(m)
     n = int(sqrt(m.numCols))
     return extractTour(n, getValue(m.dictList[1]))
 end  # end solveTSP
-
-# Add fixed leg constraints to the model. 
-# This has no check for feasibility issues.
-function addFixedLegs(model, fixedPairs)
-
-    for pair in fixedPairs
-        @addConstraint(model, x[pair[1],pair[2]] == 1)
-        @addConstraint(model, x[pair[2],pair[1]] == 1)
-    end
-
-    return model
-end
 
 end
