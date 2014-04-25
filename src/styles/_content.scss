@@ -27,53 +27,8 @@
 
             .map {
                 height: 100%;
-
-                &:before {
-                    top: 0;
-                    left: 0;
-                    content: '';
-                    background-color: white;
-                    opacity: 0.7;
-                    z-index: 9;
-
-                    display: block;
-                    position: absolute;
-                    right: 0;
-                    bottom: 0;
-
-                    @include single-transition(opacity, 0.2s, linear, 0.2s);
-                }
-
-                &:hover{
-                   &:before {
-                        opacity: 0.5;
-                    }
-                }
-
-                &.generated {
-                    cursor: default;
-                    &:before, &:after {
-                        display: none;
-                    }
-                    +.generate {
-                        display: none;
-                    }
-                }
             }
-            .generate {
-                width: 100%;
-                background-color: $accent-optimized;
-                color:white;
-                position: absolute;
-                text-align: center;
-                left: 0;
-                bottom: 0;
-                h3 {
-                    margin: 10px 0;
-                }
 
-                pointer-events: none;
-            }
 
             // &:before, &:after {
             //     display: block;

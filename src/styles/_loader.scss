@@ -1,0 +1,55 @@
+.generate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color:white;
+
+    text-align: center;
+
+    h3 {
+        padding: 10px 0;
+        margin: 0 0;
+        background-color: $accent-optimized;
+        display: block;
+
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 9;
+        height: 40px;
+        padding-bottom: 37px;
+    }
+
+
+    &.generated {
+       display: none;
+    }
+
+
+    &:before {
+        top: 0;
+        left: 0;
+        content: '';
+        background-color: white;
+        opacity: 0.7;
+        z-index: 9;
+
+        display: block;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+
+        @include single-transition(opacity, 0.1s, linear, 0.1s);
+    }
+
+    &:hover{
+       &:before {
+            opacity: 0.5;
+        }
+    }
+}
+
+

@@ -5,8 +5,10 @@ var operationsService = require('services/epicenter-operations-service');
 
 module.exports = BaseModel.extend({
     defaults: {
-      original: null,
-      optimized: null
+        original: null,
+        optimized: null,
+        //Already has optimal route
+        generated: false
     },
 
     getOptimizedValues: function (distanceMatrix) {
