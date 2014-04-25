@@ -1,7 +1,10 @@
 var BaseView = require('views/waypoint-item-view');
 module.exports = BaseView.extend({
 
-
+    initialize: function() {
+        _.bindAll(this, 'toggleSelected');
+        BaseView.prototype.initialize.apply(this, arguments);
+    },
 
     getIcon: function (type) {
         var iconDefaults = {
@@ -13,14 +16,18 @@ module.exports = BaseView.extend({
             flag: {
                 anchor: new google.maps.Point(22,40),
                 origin: new google.maps.Point(0,0),
+                type: 'flag'
+
             },
             selected: {
                 anchor: new google.maps.Point(32,37),
-                origin: new google.maps.Point(0,80)
+                origin: new google.maps.Point(0,80),
+                type: 'selected'
             },
             base: {
                 anchor: new google.maps.Point(32,37),
-                origin: new google.maps.Point(0,40)
+                origin: new google.maps.Point(0,40),
+                type: 'base'
             }
         };
         return $.extend({}, iconDefaults, overrides[type]);
@@ -40,6 +47,11 @@ module.exports = BaseView.extend({
         BaseView.prototype.handleRemove.apply(this, arguments);
     },
 
+    toggleSelected: function() {
+        var isSelected = this.marker.getIcon().type === 'selected';
+        this.model.set({selected: !isSelected});
+    },
+
    render: function() {
         var myLatlng = this.model.getLatLong();
 
@@ -53,6 +65,9 @@ module.exports = BaseView.extend({
               icon: this.getIcon(iconType),
               title: this.model.get('name')
           });
+         google.maps.event.addListener(this.marker, 'mouseover', this.toggleSelected);
+         google.maps.event.addListener(this.marker, 'mouseout', this.toggleSelected);
+
        return this;
    }
 });
