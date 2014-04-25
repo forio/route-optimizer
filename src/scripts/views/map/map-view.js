@@ -39,14 +39,10 @@ module.exports = Backbone.View.extend({
     },
 
     renderSelf: function() {
-        var ne = new google.maps.LatLng(37.808413, -122.379703);
-        var sw = new google.maps.LatLng(37.734054, -122.510681);
-
-        var bounds = new google.maps.LatLngBounds(sw, ne);
+        var bounds = this.getBounds();
 
         var mapOptions = {
             zoom: 13,
-            minZoom: 12,
             draggable: false,
             disableDefaultUI: true,
             disableDoubleClickZoom: true,
@@ -62,11 +58,11 @@ module.exports = Backbone.View.extend({
         this.map.fitBounds(bounds);
         var me = this;
         google.maps.event.addDomListener(window, "resize", function() {
-            console.log('resize');
             var map = me.map;
-             var center = map.getCenter();
-             google.maps.event.trigger(map, "resize");
-             map.setCenter(center);
+            var bounds = me.getBounds();
+            map.fitBounds(bounds);
+            google.maps.event.trigger(map, "resize");
+            map.fitBounds(bounds);
         });
         return this;
     },
@@ -75,6 +71,15 @@ module.exports = Backbone.View.extend({
     renderWaypoints: function() {
         this.collection.each(this.addMarker, this);
         return this;
+    },
+
+    getBounds: function () {
+        var latLongs = _.invoke(this.collection.models, 'getLatLong');
+        var bounds = new google.maps.LatLngBounds();
+        _(latLongs).each(function (latlng) {
+            bounds.extend(latlng);
+        });
+        return bounds;
     },
 
     drawRoute: function (route) {
