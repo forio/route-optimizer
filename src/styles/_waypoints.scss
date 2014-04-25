@@ -22,23 +22,39 @@
 
         &:before { //Bulled
             color: $accent-original;
+            content: '';
+            border: 1px solid $accent-original;
+            background-color: $accent-original;
+            border-radius: 50%;
 
-            content:'🌑';
-            font-size: 11px;
-            left: -6px;
-            top: 1px;
+            width: 12px;
+            height: 12px;
+            left: -7px;
+            top: 7px;
+
+            @include single-transition(background-color, 0.1s, linear, 0.1s);
+
+        }
+
+        &.selected {
+            &:before {
+                border: 1px solid $accent-original;
+                background-color: $light-bg;
+            }
         }
 
         &:first-child, &:last-child {
             &:before { //Red circle outline
                 color: $way-point-highlight;
                 border: 2px solid $way-point-highlight;
+                background-color: transparent;
+
                 border-radius: 50%;
                 width: 18px;
                 height: 18px;
 
                 content: '';
-                margin-top: 4px;
+                margin-top: -2px;
                 margin-left: -3px;
                 z-index: 9;
             }
@@ -51,7 +67,7 @@
                line-height: 8px;
                color: $way-point-highlight;
 
-               left: -3px;
+               left: -4px;
 
                 z-index: 8;
             }
