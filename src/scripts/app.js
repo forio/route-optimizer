@@ -8,6 +8,7 @@ var OptimizedMapView = require('views/optimized-map-view');
 
 var StatsView = require('views/stats-view');
 var CodeView = require('views/code-view');
+var LoaderView = require('views/loader-view');
 
 var Optimizer = require('models/route-optimizer-model');
 
@@ -40,6 +41,12 @@ $(function() {
             el: $('.maps .optimized .map')
         });
         optimizedMapView.render();
+
+        var loaderView = new LoaderView({
+            model: optimizer,
+            el: $('.maps .optimized .generate')
+        });
+        loaderView.render();
 
 
         var statsView = new StatsView({
