@@ -89,13 +89,14 @@ module.exports = BaseCollection.extend({
         var ds = new google.maps.DirectionsService();
         ds.route(request, function(directionsResult, status) {
             if (status === google.maps.DirectionsStatus.OK) {
-                $def.resolve({
+                var route = {
                     gResult: directionsResult,
                     distance: me.getDistanceFromRoute(directionsResult),
                     time: me.getDurationromRoute(directionsResult),
                     from: startModel.get('name'),
                     to: destModel.get('name')
-                });
+                };
+                $def.resolve(route);
             }
             else {
                 $def.reject(status);
