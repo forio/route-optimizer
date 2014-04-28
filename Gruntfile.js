@@ -16,11 +16,11 @@ module.exports = function(grunt) {
         watch: {
             compass: {
                 files: ['src/styles/**/*.scss'],
-                tasks: ['compass']
+                tasks: ['compass:dev']
             },
             js: {
                 files: [ 'src/scripts/**/*.js', 'src/scripts/**/*.ejs'],
-                tasks: 'browserify2'
+                tasks: 'browserify2:dev'
             },
             index: {
                 files: [ 'src/index.html'],
