@@ -18,7 +18,7 @@ module.exports = function() {
             if (!runid || forceGet) {
                 transport
                    .post(params)
-                   .then(function (run){
+                   .done(function (run){
                        runid = run.id;
                        $def.resolve(run.id);
                    });

@@ -23,7 +23,7 @@ module.exports = function() {
             };
 
             runsService.getRunID()
-                .then(doPOST)
+                .done(doPOST)
                 .fail(function (){
                     //Run must've gone out of memory
                     runsService.getRunID(true).then(doPOST);

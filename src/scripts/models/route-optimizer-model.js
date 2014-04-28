@@ -23,8 +23,8 @@ module.exports = BaseModel.extend({
 
         // me.set('optimized', preOptimized);
 
-        or.getDistanceMatrix().then(function (distanceMatrix) {
-            me.getOptimizedValues(distanceMatrix).then (function (optimizedIndices) {
+        or.getDistanceMatrix().done(function (distanceMatrix) {
+            me.getOptimizedValues(distanceMatrix).done (function (optimizedIndices) {
                 console.log("old order", preOptimized.pluck('name'));
 
                 optimizedIndices.pop(); // Model returns back 0 as last item, don't need that
