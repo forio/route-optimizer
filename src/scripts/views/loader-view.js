@@ -5,7 +5,7 @@ var $lastProgressItem = null;
 
 var progressText = {
     'distance_matrix': 'Analyzing <strong> <%= waypoints %> </strong> locations.',
-    'optimze': 'Calculating Optimized Route: Evaluating <strong> <%= possibleRoutes %> </strong> possible routes.',
+    'optimze': 'Evaluating <strong> <%= possibleRoutes %> </strong> possible routes.',
     'drawing': 'Plotting Optimized Route.'
 };
 
