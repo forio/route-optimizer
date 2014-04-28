@@ -23,9 +23,11 @@ module.exports = BaseModel.extend({
 
         // me.set('optimized', preOptimized);
 
+        $def.notify("Generating Distance Matrix");
         or.getDistanceMatrix().done(function (distanceMatrix) {
+            $def.notify("Calculating optimized values");
             me.getOptimizedValues(distanceMatrix).done (function (optimizedIndices) {
-                console.log("old order", preOptimized.pluck('name'));
+                $def.notify("Generating new routes");
 
                 optimizedIndices.pop(); // Model returns back 0 as last item, don't need that
 
@@ -34,7 +36,7 @@ module.exports = BaseModel.extend({
                     model.set('order', newOrder, {silent: true});
                 });
                 me.get('optimized').sort();
-                console.log("new order", optimizedIndices, preOptimized.pluck('name'));
+                // console.log("new order", optimizedIndices, preOptimized.pluck('name'));
                 $def.resolve(me.get('optimized'));
             });
         });
