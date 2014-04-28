@@ -123,13 +123,13 @@ module.exports = Backbone.View.extend({
         // this.collection.each(this.addDirection, this);
         // console.log('render directs', this.className);
         var me = this;
-        this.collection.populateAllRoutes().then(function (routes){
+        this.collection.populateAllRoutes().done(function (routes){
             _(routes).each(function (route){
                 me.drawRoute.call(me, route);
             });
         });
 
-        this.collection.getDirections(this.collection.size() - 1, 0).then(function (route) {
+        this.collection.getDirections(this.collection.size() - 1, 0).done(function (route) {
             me.drawRoute.call(me, route);
         });
     }

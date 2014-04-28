@@ -14,7 +14,7 @@ var Optimizer = require('models/route-optimizer-model');
 
 $(function() {
     var wp = new WayPoints({});
-    wp.fetch().then(function() {
+    wp.fetch().done(function() {
 
         var optimizer = new Optimizer({
             original: wp,
