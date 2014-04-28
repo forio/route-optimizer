@@ -8,7 +8,21 @@ module.exports = BaseModel.extend({
         original: null,
         optimized: null,
         //Already has optimal route
-        generated: false
+        generated: false,
+
+        waypoints: function () {
+            return this.get('original').size();
+        },
+
+        possibleRoutes: function () {
+            var factorial = function(val) {
+                return (val === 1) ? val : val * factorial(val - 1);
+            };
+
+            var waypoints = this.get('original').size();
+            var possiblities = factorial(waypoints);
+            return possiblities;
+        }
     },
 
     getOptimizedValues: function (distanceMatrix) {
@@ -23,11 +37,11 @@ module.exports = BaseModel.extend({
 
         // me.set('optimized', preOptimized);
 
-        $def.notify("Generating Distance Matrix");
+        $def.notify('distance_matrix');
         or.getDistanceMatrix().done(function (distanceMatrix) {
-            $def.notify("Calculating optimized values");
+            $def.notify('optimze');
             me.getOptimizedValues(distanceMatrix).done (function (optimizedIndices) {
-                $def.notify("Generating new routes");
+                $def.notify('drawing');
 
                 optimizedIndices.pop(); // Model returns back 0 as last item, don't need that
 
