@@ -33,7 +33,7 @@ module.exports = function(theme) {
                 collection: optimizer.get('original'),
                 className: 'waypoints'
             });
-            $('#content .side').append(wpListView.render().$el);
+            $('#content .side').html(wpListView.render().$el);
 
 
             var originalMapView = new OriginalMapView({
