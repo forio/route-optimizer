@@ -1,3 +1,16 @@
+@-webkit-keyframes rot {
+    0% {@include rotate(0deg);}
+    100% {@include rotate(359deg);}
+}
+@-moz-keyframes rot {
+    0% {@include rotate(0deg);}
+    100% {@include rotate(359deg);}
+}
+@keyframes rot {
+    0% {@include rotate(0deg);}
+    100% {@include rotate(359deg);}
+}
+
 .generate {
     position: absolute;
     top: 0;
@@ -7,22 +20,6 @@
     color:white;
 
     text-align: center;
-
-    h3 {
-        padding: 10px 0;
-        margin: 0 0;
-        background-color: $accent-optimized;
-        display: block;
-
-        position: absolute;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        z-index: 9;
-        height: 40px;
-        padding-bottom: 37px;
-    }
-
 
     &.generated {
        display: none;
@@ -48,6 +45,88 @@
     &:hover{
        &:before {
             opacity: 0.5;
+        }
+    }
+
+
+    .step-container {
+        padding: 10px 0;
+        margin: 0 0;
+        background-color: $accent-optimized;
+        display: block;
+
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 9;
+
+        @include single-transition(height, 0.1s, linear, 0.1s);
+        height: 40px;
+    }
+
+    h3 {
+        margin-top: -4px;
+    }
+    .steps {
+        display: none;
+
+        width: 300px;
+        margin: 0 auto;
+        text-align: left;
+    }
+    &.in-progress {
+        .step-container {
+            height: 300px;
+
+            li {
+                list-style: none;
+                padding: 10px 0;
+                padding-left: 8px;
+                position: relative;
+
+                &:before{
+                    content: '';
+
+                    position: absolute;
+                    left: -18px;
+                    top: 10px;
+
+
+                    display: inline-block;
+                }
+
+                &.progress {
+                    &:before {
+                        $border-size: 4px;
+
+                        border-bottom: $border-size solid rgba(0, 0, 0, .1);
+                        border-left: $border-size solid rgba(0, 0, 0, .1);
+                        border-right: $border-size solid rgba(0, 0, 0, .1);
+                        border-top: $border-size solid rgba(0, 0, 0, .4);
+                        border-radius: 100%;
+                        height: 16px;
+                        width: 16px;
+                        top: 11px;
+                        -webkit-animation: rot .6s infinite linear;
+
+                    }
+                }
+                &.complete {
+                    &:before {
+                        @extend .ss-icon;
+                        content:'✓';
+                        color: rgba(0, 0, 0, .4);
+                    }
+                }
+            }
+        }
+
+        .steps {
+            display: block;
+        }
+        h3 {
+            display: none;
         }
     }
 }
