@@ -61,7 +61,6 @@ module.exports = BaseCollection.extend({
         dmc.getDistanceMatrix(distanceMatrixRequest, function (gDistanceMatrixResponse, gDistanceMatrixStatus) {
             if(gDistanceMatrixStatus === google.maps.DistanceMatrixStatus.OK) {
                 var arrayResponse = distanceMatrixToArray(gDistanceMatrixResponse);
-                console.log("matric", arrayResponse);
                 $def.resolve(arrayResponse);
             }
             else {
@@ -124,7 +123,6 @@ module.exports = BaseCollection.extend({
                 me.routes = responses;
                 me.isDirtyRoutes = false;
                 me.trigger('routesRecalculated', routes);
-                console.log(me);
                 $def.resolve(responses);
             });
         }
