@@ -1,17 +1,8 @@
 var waypointModel = require('models/google-maps-point-model');
-var BaseCollection = require('collections/waypoints-collection');
 
-var getMetricSumFromRoute = function (gDirectionsRoutes, metric){
-    var sum = 0;
-    _(gDirectionsRoutes).each(function(gDirectionsRoute){
-        _(gDirectionsRoute).each(function (gDirectionLegs){
-            _(gDirectionLegs.legs).each(function (leg) {
-                sum += leg[metric].value;
-            });
-        });
-    });
-    return sum;
-};
+var BaseCollection = require('collections/waypoints-collection');
+var RoutesCollection = require('collections/routes-collection');
+var RouteModel = require('models/routes-model');
 
 var distanceMatrixToArray = function (gDistanceMatrixResponse) {
     var returnArray = _.map(gDistanceMatrixResponse.rows, function (gDistanceMatrixResponseRow){
@@ -38,29 +29,21 @@ module.exports = BaseCollection.extend({
 
     routes: [],
 
-    getDistanceFromRoute: function(gDirectionsRoutes) {
-        return getMetricSumFromRoute(gDirectionsRoutes, 'distance');
-    },
-    getDurationromRoute: function(gDirectionsRoutes) {
-        return getMetricSumFromRoute(gDirectionsRoutes, 'duration');
-    },
-
     getMetric: function (type) {
         var metrics = {};
-        mertrics.totalDistanceTravelled = _.reduce(this.routes, function(memo, val) {
-            return memo + val.distance;
+        mertrics.totalDistanceTravelled = _.reduce(this.routes, function(memo, routeModel) {
+            return memo + routeModel.get('distance');
         }, 0);
 
         metrics.longestSegment = _.max(this.routes, function(route) {
-            return route.distance;
+            return route.get('distance');
         }).distance;
 
-        metrics.timeTaken =  _.reduce(this.routes, function(memo, val) {
-              return memo + val.time;
+        metrics.timeTaken =  _.reduce(this.routes, function(memo, routeModel) {
+              return memo + routeModel.get('time');
         }, 0);
 
         return mertrics[type];
-
     },
 
     getDistanceMatrix: function() {
@@ -106,13 +89,11 @@ module.exports = BaseCollection.extend({
         var ds = new google.maps.DirectionsService();
         ds.route(request, function(directionsResult, status) {
             if (status === google.maps.DirectionsStatus.OK) {
-                var route = {
+                var route = new RouteModel({
                     gResult: directionsResult,
-                    distance: me.getDistanceFromRoute(directionsResult),
-                    time: me.getDurationromRoute(directionsResult),
                     from: startModel.get('name'),
                     to: destModel.get('name')
-                };
+                });
                 $def.resolve(route);
             }
             else {

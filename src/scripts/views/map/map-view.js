@@ -107,7 +107,7 @@ module.exports = Backbone.View.extend({
             suppressMarkers: true,
             draggable: false
         }, this.gRouteOptions));
-        directionsDisplay.setDirections(route.gResult);
+        directionsDisplay.setDirections(route.get('gResult'));
         this.gDirDisplays.push(directionsDisplay);
     },
 
