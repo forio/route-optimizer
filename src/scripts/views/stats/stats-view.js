@@ -1,9 +1,5 @@
 var BaseView = require('views/base-view');
 
-var factorial = function(val) {
-    return (val === 1) ? val : val * factorial(val - 1);
-};
-
 module.exports = BaseView.extend({
     template: require('templates/stats'),
 
@@ -22,8 +18,8 @@ module.exports = BaseView.extend({
         var points = this.model.get('original').size();
 
         this.$el.html(this.template({
-            stops: points,
-            possibleRoutes: d3.format(',f')(factorial(points))
+            stops: this.model.get('waypoints'),
+            possibleRoutes: d3.format(',f')(this.model.get('possibleRoutes'))
         }));
     },
     renderMetrics: function($el) {
