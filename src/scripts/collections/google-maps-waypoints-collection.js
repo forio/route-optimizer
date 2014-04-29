@@ -45,6 +45,24 @@ module.exports = BaseCollection.extend({
         return getMetricSumFromRoute(gDirectionsRoutes, 'duration');
     },
 
+    getMetric: function (type) {
+        var metrics = {};
+        mertrics.totalDistanceTravelled = _.reduce(this.routes, function(memo, val) {
+            return memo + val.distance;
+        }, 0);
+
+        metrics.longestSegment = _.max(this.routes, function(route) {
+            return route.distance;
+        }).distance;
+
+        metrics.timeTaken =  _.reduce(this.routes, function(memo, val) {
+              return memo + val.time;
+        }, 0);
+
+        return mertrics[type];
+
+    },
+
     getDistanceMatrix: function() {
         var latLangs = _.invoke(this.models, 'getLatLong');
         var dmc = new google.maps.DistanceMatrixService();

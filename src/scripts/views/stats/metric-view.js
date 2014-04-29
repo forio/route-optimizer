@@ -22,7 +22,7 @@ module.exports = BaseView.extend({
     },
 
     getData: function (collection) {
-        return collection.getMetric();
+        return collection.getMetric(this.metric);
     },
     formatData: function (data) {
         return data;
