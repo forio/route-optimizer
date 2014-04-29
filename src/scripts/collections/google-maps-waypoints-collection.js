@@ -2,7 +2,7 @@ var waypointModel = require('models/google-maps-point-model');
 
 var BaseCollection = require('collections/waypoints-collection');
 var RoutesCollection = require('collections/routes-collection');
-var RouteModel = require('models/routes-model');
+var RouteModel = require('models/route-model');
 
 var distanceMatrixToArray = function (gDistanceMatrixResponse) {
     var returnArray = _.map(gDistanceMatrixResponse.rows, function (gDistanceMatrixResponseRow){
@@ -31,19 +31,17 @@ module.exports = BaseCollection.extend({
 
     getMetric: function (type) {
         var metrics = {};
-        mertrics.totalDistanceTravelled = _.reduce(this.routes, function(memo, routeModel) {
+        metrics.totalDistanceTravelled = _.reduce(this.routes, function(memo, routeModel) {
             return memo + routeModel.get('distance');
         }, 0);
 
-        metrics.longestSegment = _.max(this.routes, function(route) {
-            return route.get('distance');
-        }).distance;
+        metrics.longestSegment = (this.routes.length) ? _.max(_.pluck(_.invoke(this.routes, 'toJSON'), 'distance')) : 0;
 
         metrics.timeTaken =  _.reduce(this.routes, function(memo, routeModel) {
               return memo + routeModel.get('time');
         }, 0);
 
-        return mertrics[type];
+        return metrics[type];
     },
 
     getDistanceMatrix: function() {
