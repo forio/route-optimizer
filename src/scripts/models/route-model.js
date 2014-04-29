@@ -16,13 +16,14 @@ var getMetricSumFromRoute = function (gDirectionsRoutes, metric){
 module.exports = BaseModel.extend({
     defaults: {
         from: '',
+        gResult: null,
         to: '',
 
         distance: function() {
-            return getMetricSumFromRoute(gDirectionsRoutes, 'distance');
+            return getMetricSumFromRoute(this.get('gResult'), 'distance');
         },
         time: function() {
-            return getMetricSumFromRoute(gDirectionsRoutes, 'duration');
+            return getMetricSumFromRoute(this.get('gResult'), 'duration');
         }
     }
 });
