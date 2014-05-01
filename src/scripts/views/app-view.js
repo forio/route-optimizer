@@ -7,13 +7,17 @@ var StatsView = require('views/stats-view');
 var CodeView = require('views/code-view');
 var LoaderView = require('views/loader-view');
 
-var ScenariosView = require('views/scenario-switcher-view');
+var ScenariosView = require('views/scenarios-view');
 
 var Optimizer = require('models/route-optimizer-model');
 
 
 module.exports = Backbone.View.extend({
     template: require('templates/app'),
+
+    intialize: function () {
+        // this.collection.on('reset', this.render, this)
+    },
 
     setScenario: function(scenario) {
         if (!scenario) {
@@ -39,11 +43,18 @@ module.exports = Backbone.View.extend({
     renderContents: function () {
         var wp = this.collection;
 
+
         var optimizer = new Optimizer({
             original: wp,
             optimized: wp.clone()
         });
         window.optimizer = optimizer;
+
+        var sv = new ScenariosView({
+            tagName: 'header'
+        });
+        this.$el.prepend(sv.render().$el);
+
 
         var wpListView = new WayPointsListView({
             collection: optimizer.get('original'),
