@@ -1,7 +1,25 @@
 var Router = require('./router');
-var base = require('./base');
+var AppView = require('views/app-view');
+var WayPoints = require('collections/google-maps-waypoints-collection');
 
-var router = new Router({
-    app: base
+$(function() {
+    // if (!theme) {
+    //     theme = 'book-crawl';
+    // }
+    // var url = 'data/' + theme + '.json';
+
+    var wp = new WayPoints();
+
+    var app = new AppView({
+        collection: wp,
+        el: 'body'
+    });
+    // app.render();
+
+    var router = new Router({
+        app: app
+    });
+    Backbone.history.start({ pushState: false, root: '/'});
+
 });
-Backbone.history.start({ pushState: false, root: '/'});
+
