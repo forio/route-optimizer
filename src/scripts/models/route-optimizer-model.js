@@ -55,11 +55,6 @@ module.exports = BaseModel.extend({
             });
         });
         return $def;
-    },
-
-    getLatLong: function() {
-        var myLatlng = new google.maps.LatLng(this.get('latitude'), this.get('longitude'));
-        return myLatlng;
     }
 
 });

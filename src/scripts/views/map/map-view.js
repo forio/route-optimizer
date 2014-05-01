@@ -107,7 +107,7 @@ module.exports = Backbone.View.extend({
             suppressMarkers: true,
             draggable: false
         }, this.gRouteOptions));
-        directionsDisplay.setDirections(route.get('gResult'));
+        directionsDisplay.setDirections(route.gResult);
         this.gDirDisplays.push(directionsDisplay);
     },
 
@@ -123,14 +123,13 @@ module.exports = Backbone.View.extend({
         // this.collection.each(this.addDirection, this);
         // console.log('render directs', this.className);
         var me = this;
-        this.collection.populateAllRoutes().done(function (routes){
-            _(routes).each(function (route){
-                me.drawRoute.call(me, route);
-            });
+        this.collection.populateAllRoutes().done(function (gResult){
+                console.log("drawing", gResult);
+                me.drawRoute.call(me, gResult);
         });
 
-        this.collection.getDirections(this.collection.size() - 1, 0).done(function (route) {
-            me.drawRoute.call(me, route);
-        });
+        // this.collection.getDirections(this.collection.size() - 1, 0).done(function (gResult) {
+        //     me.drawRoute.call(me, gResult);
+        // });
     }
 });
