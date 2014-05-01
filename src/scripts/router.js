@@ -12,7 +12,7 @@ module.exports = (function() {
         },
 
         dashboard: function (routeID) {
-            this.app(routeID);
+            this.app.setScenario(routeID);
         }
     });
 }());
