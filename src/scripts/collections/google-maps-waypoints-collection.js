@@ -27,17 +27,26 @@ module.exports = BaseCollection.extend({
     //Flag to see if you need to redraw all the routes
     isDirtyRoutes: true,
 
-    routes: [],
+    routes: {},
+
+    initialize: function () {
+        this.routes =  {
+            gResult: null,
+            legs: []
+        };
+
+        BaseCollection.prototype.initialize.apply(this, arguments);
+    },
 
     getMetric: function (type) {
         var metrics = {};
-        metrics.totalDistanceTravelled = _.reduce(this.routes, function(memo, routeModel) {
+        metrics.totalDistanceTravelled = _.reduce(this.routes.legs, function(memo, routeModel) {
             return memo + routeModel.get('distance');
         }, 0);
 
-        metrics.longestSegment = (this.routes.length) ? _.max(_.pluck(_.invoke(this.routes, 'toJSON'), 'distance')) : 0;
+        metrics.longestSegment = (this.routes.legs.length) ? _.max(_.pluck(_.invoke(this.routes.legs, 'toJSON'), 'distance')) : 0;
 
-        metrics.timeTaken =  _.reduce(this.routes, function(memo, routeModel) {
+        metrics.timeTaken =  _.reduce(this.routes.legs, function(memo, routeModel) {
               return memo + routeModel.get('time');
         }, 0);
 
@@ -71,7 +80,7 @@ module.exports = BaseCollection.extend({
     },
 
 
-    getDirections: function(startIndex, destIndex) {
+    getDirections: function(startIndex, destIndex, waypoints) {
         var startModel = this.at(startIndex);
         var destModel = this.at(destIndex);
 
@@ -83,16 +92,24 @@ module.exports = BaseCollection.extend({
             travelMode: google.maps.TravelMode.DRIVING
         });
 
+        if (waypoints) {
+            request.waypoints = waypoints;
+        }
+
         var me = this;
         var ds = new google.maps.DirectionsService();
         ds.route(request, function(directionsResult, status) {
             if (status === google.maps.DirectionsStatus.OK) {
-                var route = new RouteModel({
-                    gResult: directionsResult,
-                    from: startModel.get('name'),
-                    to: destModel.get('name')
+                me.routes.gResult = directionsResult;
+
+                _(directionsResult.routes[0].legs).each(function(leg, index) {
+                    var route = new RouteModel({
+                        distance: leg.distance.value,
+                        time: leg.duration.value
+                    });
+                    me.routes.legs.push(route);
                 });
-                $def.resolve(route);
+                $def.resolve(me.routes);
             }
             else {
                 $def.reject(status);
@@ -105,22 +122,17 @@ module.exports = BaseCollection.extend({
     populateAllRoutes: function () {
         var $def = $.Deferred();
         var routes = [];
+        var me = this;
 
         if (this.isDirtyRoutes === true) {
-            var $routePromises = [];
-            var me  = this;
 
-            for (var i=0; i< this.size() - 1; i++) {
-                $routePromises.push( this.getDirections(i, i+1));
-            }
-
-            $.when.apply($, $routePromises).done(function () {
-                var responses = _.toArray(arguments);
-
-                me.routes = responses;
-                me.isDirtyRoutes = false;
-                me.trigger('routesRecalculated', routes);
-                $def.resolve(responses);
+            var models = this.slice(1, this.length - 1);
+            var waypoints = _.map(models, function (mdl) {
+                return {location: mdl.getLatLong(), stopover: true};
+            });
+            this.getDirections(0, 0, waypoints).then(function (response) {
+                me.trigger('routesRecalculated');
+                $def.resolve(response);
             });
         }
         else {

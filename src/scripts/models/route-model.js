@@ -17,13 +17,13 @@ module.exports = BaseModel.extend({
     defaults: {
         from: '',
         gResult: null,
-        to: '',
+        to: ''
 
-        distance: function() {
-            return getMetricSumFromRoute(this.get('gResult'), 'distance');
-        },
-        time: function() {
-            return getMetricSumFromRoute(this.get('gResult'), 'duration');
-        }
+        // distance: function() {
+        //     return getMetricSumFromRoute(this.get('gResult'), 'distance');
+        // },
+        // time: function() {
+        //     return getMetricSumFromRoute(this.get('gResult'), 'duration');
+        // }
     }
 });
