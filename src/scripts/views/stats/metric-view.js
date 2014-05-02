@@ -15,8 +15,8 @@ module.exports = BaseView.extend({
         this.original = this.model.get('original');
         this.optimized = this.model.get('optimized');
 
-        this.original.on('routesRecalculated', this.renderTable, this);
-        this.optimized.on('routesRecalculated', this.renderTable, this);
+        this.original.on('routesRecalculated reset', this.renderTable, this);
+        this.optimized.on('routesRecalculated reset', this.renderTable, this);
 
         BaseView.prototype.initialize.apply(this, arguments);
     },

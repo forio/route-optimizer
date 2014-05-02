@@ -16,7 +16,7 @@ module.exports = BaseModel.extend({
 
         possibleRoutes: function () {
             var factorial = function(val) {
-                return (val === 1) ? val : val * factorial(val - 1);
+                return (val <= 1) ? val : val * factorial(val - 1);
             };
 
             var waypoints = this.get('original').size();
