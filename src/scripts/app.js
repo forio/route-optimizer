@@ -1,13 +1,11 @@
 var Router = require('./router');
 var AppView = require('views/app-view');
-var WayPoints = require('collections/google-maps-waypoints-collection');
+var Optimizer = require('models/route-optimizer-model');
 
 $(function() {
-    var wp = new WayPoints();
-
-
+    var om = new Optimizer();
     var app = new AppView({
-        collection: wp,
+        model: om,
         el: 'body'
     });
     app.render();
