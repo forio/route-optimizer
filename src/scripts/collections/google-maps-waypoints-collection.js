@@ -121,10 +121,12 @@ module.exports = BaseCollection.extend({
 
     populateAllRoutes: function () {
         var $def = $.Deferred();
-        var routes = [];
         var me = this;
-
         if (this.isDirtyRoutes === true) {
+            this.routes =  {
+                gResult: null,
+                legs: []
+            };
 
             var models = this.slice(1, this.length - 1);
             var waypoints = _.map(models, function (mdl) {
