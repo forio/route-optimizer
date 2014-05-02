@@ -7,8 +7,11 @@ module.exports = BaseModel.extend({
     defaults: {
         original: null,
         optimized: null,
+
         //Already has optimal route
         generated: false,
+
+        currentScenario: '',
 
         waypoints: function () {
             return this.get('original').size();
@@ -29,14 +32,14 @@ module.exports = BaseModel.extend({
         var wp = new WaypointsCollection();
         this.set('original', wp);
         this.set('optimized', wp.clone());
+
+        this.on('change:currentScenario', this.load, this);
         BaseModel.prototype.initialize.apply(this, arguments);
     },
 
 
-    load: function (dataset) {
-        if (!dataset) {
-            dataset = 'book-crawl';
-        }
+    load: function () {
+        var dataset = this.get('currentScenario');
         this.get('original').url = 'data/' + dataset + '.json';
 
         var me = this;
