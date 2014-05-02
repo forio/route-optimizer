@@ -126,7 +126,7 @@ module.exports = BaseCollection.extend({
     populateAllRoutes: function () {
         var $def = $.Deferred();
         var me = this;
-        if (this.isDirtyRoutes === true) {
+        if (this.isDirtyRoutes === true && this.models.length) {
             this.resetRoutes();
 
             var models = this.slice(1, this.length - 1);
