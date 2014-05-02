@@ -6,8 +6,9 @@ module.exports = Backbone.View.extend({
     gRouteOptions: {},
 
     initialize: function () {
-        this.collection.on('remove', this.handleRouteRemove, this);
-        this.collection.on('add', this.handleRouteAdd, this);
+        this.collection.on('reset', this.render, this);
+        // this.collection.on('remove', this.handleRouteRemove, this);
+        // this.collection.on('add', this.handleRouteAdd, this);
     },
 
     handleRouteRemove: function (model) {
@@ -56,7 +57,13 @@ module.exports = Backbone.View.extend({
     },
 
     renderSelf: function() {
-        var bounds = this.getBounds();
+        if (this.map) {
+            var bounds = this.getBounds();
+            this.map.fitBounds(bounds);
+
+            return this;
+        }
+
 
         var mapOptions = {
             zoom: 13,
@@ -72,7 +79,6 @@ module.exports = Backbone.View.extend({
 
           };
         this.map = new google.maps.Map(this.el,mapOptions);
-        this.map.fitBounds(bounds);
         var me = this;
         google.maps.event.addDomListener(window, "resize", function() {
             var map = me.map;
@@ -123,13 +129,10 @@ module.exports = Backbone.View.extend({
         // this.collection.each(this.addDirection, this);
         // console.log('render directs', this.className);
         var me = this;
-        this.collection.populateAllRoutes().done(function (gResult){
-                console.log("drawing", gResult);
-                me.drawRoute.call(me, gResult);
+        this.collection.populateAllRoutes().done(function (route){
+                if (route.gResult) {
+                    me.drawRoute.call(me, route);
+                }
         });
-
-        // this.collection.getDirections(this.collection.size() - 1, 0).done(function (gResult) {
-        //     me.drawRoute.call(me, gResult);
-        // });
     }
 });

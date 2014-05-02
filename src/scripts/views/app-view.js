@@ -48,24 +48,6 @@ module.exports = BaseView.extend({
         this.scenarioView.render();
 
 
-        var originalMapView = new OriginalMapView({
-            collection: optimizer.get('original'),
-            el: $('.maps .original')
-        });
-        originalMapView.render();
-
-        var optimizedMapView = new OptimizedMapView({
-            collection: optimizer.get('optimized'),
-            model: optimizer,
-            el: $('.maps .optimized .map')
-        });
-        optimizedMapView.render();
-
-        var loaderView = new LoaderView({
-            model: optimizer,
-            el: $('.maps .optimized .generate')
-        });
-        loaderView.render();
 
 
 
@@ -88,6 +70,25 @@ module.exports = BaseView.extend({
             el: $('#how-we-did-it .main')
         });
         cv.render();
+
+        var originalMapView = new OriginalMapView({
+            collection: this.model.get('original'),
+            el: $('.maps .original')
+        });
+        originalMapView.render();
+
+        var optimizedMapView = new OptimizedMapView({
+            collection: this.model.get('optimized'),
+            model: this.model,
+            el: $('.maps .optimized .map')
+        });
+        optimizedMapView.render();
+
+        var loaderView = new LoaderView({
+            model: this.model,
+            el: $('.maps .optimized .generate')
+        });
+        loaderView.render();
 
         return this;
     }
