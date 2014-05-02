@@ -5,10 +5,13 @@ module.exports = Backbone.Router.extend({
     },
 
     initialize: function (options) {
-        this.app = options.app;
+        this.app = options.model;
     },
 
     dashboard: function (routeID) {
-        this.app.setScenario(routeID);
+        if (!routeID) {
+            routeID = 'book-crawl';
+        }
+        this.app.set('currentScenario', routeID);
     }
 });

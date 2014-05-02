@@ -15,14 +15,6 @@ var BaseView = require('views/base-view');
 module.exports = BaseView.extend({
     template: require('templates/app'),
 
-    initialize: function () {
-        this.model.on('load', this.handleScenarioSelect, this);
-        BaseView.prototype.initialize.apply(this, arguments);
-    },
-
-    setScenario: function(scenario) {
-       return this.model.load(scenario);
-    },
 
     render: function () {
         this.renderSelf();
@@ -33,27 +25,12 @@ module.exports = BaseView.extend({
         this.$el.html(this.template());
         return this;
     },
-
-    handleScenarioSelect: function () {
-        // this.scenarioView.select
-        this.renderRoutes();
-    },
-
-    renderRoutes: function () {
-        var optimizer = this.model;
-
+    renderContents: function () {
         this.scenarioView = new ScenariosView({
             el: this.$('header')
         });
         this.scenarioView.render();
 
-
-
-
-
-    },
-
-    renderContents: function () {
         var statsView = new StatsView({
             model: this.model,
             el: $('#stats')
