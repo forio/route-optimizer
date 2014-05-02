@@ -27,7 +27,8 @@ module.exports = BaseView.extend({
     },
     renderContents: function () {
         this.scenarioView = new ScenariosView({
-            el: this.$('header')
+            el: this.$('header'),
+            model: this.model
         });
         this.scenarioView.render();
 
