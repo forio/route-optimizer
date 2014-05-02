@@ -16,19 +16,12 @@ module.exports = BaseView.extend({
     template: require('templates/app'),
 
     initialize: function () {
-        this.collection.on('reset', this.handleScenarioSelect, this);
-
+        this.model.on('load', this.handleScenarioSelect, this);
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
     setScenario: function(scenario) {
-        if (!scenario) {
-            scenario = 'book-crawl';
-        }
-        this.collection.url = 'data/' + scenario + '.json';
-        var me = this;
-
-        this.collection.fetch({reset: true});
+       return this.model.load(scenario);
     },
 
     render: function () {
@@ -47,18 +40,12 @@ module.exports = BaseView.extend({
     },
 
     renderRoutes: function () {
-        var wp = this.collection;
+        var optimizer = this.model;
 
         this.scenarioView = new ScenariosView({
             el: this.$('header')
         });
         this.scenarioView.render();
-
-        var optimizer = new Optimizer({
-            original: wp,
-            optimized: wp.clone()
-        });
-        window.optimizer = optimizer;
 
 
         var wpListView = new WayPointsListView({

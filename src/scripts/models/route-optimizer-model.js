@@ -1,5 +1,5 @@
 var BaseModel = require('models/base-model');
-var WaypointsCollection = require('collections/waypoints-collection');
+var WaypointsCollection = require('collections/google-maps-waypoints-collection');
 
 var operationsService = require('services/epicenter-operations-service');
 
@@ -25,12 +25,25 @@ module.exports = BaseModel.extend({
         }
     },
 
+    initialize: function () {
+        var wp = new WaypointsCollection();
+        this.set('original', wp);
+        this.set('optimized', wp.clone());
+        BaseModel.prototype.initialize.apply(this, arguments);
+    },
+
+
     load: function (dataset) {
         if (!dataset) {
             dataset = 'book-crawl';
         }
         this.get('original').url = 'data/' + dataset + '.json';
-        return this.get('original').fetch({reset: true});
+
+        var me = this;
+        this.get('original').fetch({reset: true}).then(function (data) {
+            me.get('optimized').reset(data);
+            me.trigger('load', data);
+        });
     },
 
     getOptimizedValues: function (distanceMatrix) {
