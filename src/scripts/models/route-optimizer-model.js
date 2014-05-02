@@ -25,17 +25,23 @@ module.exports = BaseModel.extend({
         }
     },
 
+    load: function (dataset) {
+        if (!dataset) {
+            dataset = 'book-crawl';
+        }
+        this.get('original').url = 'data/' + dataset + '.json';
+        return this.get('original').fetch({reset: true});
+    },
+
     getOptimizedValues: function (distanceMatrix) {
         return operationsService.do('solve', distanceMatrix);
     },
 
     optimize: function () {
         var or = this.get('original');
-        var preOptimized = or.clone();
         var me = this;
         var $def = $.Deferred();
 
-        // me.set('optimized', preOptimized);
 
         $def.notify('distance_matrix');
         or.getDistanceMatrix().done(function (distanceMatrix) {
@@ -50,7 +56,6 @@ module.exports = BaseModel.extend({
                     model.set('order', newOrder, {silent: true});
                 });
                 me.get('optimized').sort();
-                // console.log("new order", optimizedIndices, preOptimized.pluck('name'));
                 $def.resolve(me.get('optimized'));
             });
         });

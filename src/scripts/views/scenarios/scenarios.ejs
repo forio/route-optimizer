@@ -1,8 +1,8 @@
 <a class="logo" href="//forio.com" target="_blank"> <img src="styles/assets/logo.svg" alt="/forio"> </a>
-<h1> Optimize Your
+<h1> Optimize Your  <%= selected %>
     <select id="lstScenarioSwitcher">
         <% _(scenarios).each(function(name, url){ %>
-            <option value="<%= url %>"> <%= name %> </option>
+            <option value="<%= url %>" <% if(url === selected) { %> selected <% } %> > <%= selected %> <%= name %> </option>
         <% }) %>
     </select>
     with Julia and Forio Epicenter
