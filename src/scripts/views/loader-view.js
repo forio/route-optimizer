@@ -17,7 +17,7 @@ module.exports = BaseView.extend({
     },
 
     initialize: function () {
-        this.model.get('optimized').on('sort', this.removeOverlay, this);
+        this.model.on('change:generated', this.handleGenerateChange, this);
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
@@ -37,15 +37,6 @@ module.exports = BaseView.extend({
         this.$el.html(this.template());
         return this;
     },
-    removeOverlay: function () {
-        this.$el.removeClass('in-progress');
-        this.$el.addClass('generated');
-
-        this.model.set('generated', true);
-
-        $('.generate h3').text("Generate Optimized");
-
-    },
     handleGenerate: function () {
         if (!this.model.get('generated')) {
             this.$el.addClass('in-progress');
@@ -56,6 +47,18 @@ module.exports = BaseView.extend({
             $progressIndicator.progress(function (type) {
                 me.addProgressItem(type);
             });
+        }
+    },
+
+    handleGenerateChange: function () {
+        if (!this.model.get('generated')) {
+            this.$el.removeClass('generated');
+        }
+        else {
+            this.$el.removeClass('in-progress');
+            this.$el.addClass('generated');
+
+            $('.generate h3').text("Generate Optimized");
         }
     }
 });
