@@ -48,13 +48,6 @@ module.exports = BaseView.extend({
         this.scenarioView.render();
 
 
-        var wpListView = new WayPointsListView({
-            collection: optimizer.get('original'),
-            className: 'waypoints'
-        });
-        $('#content .side').html(wpListView.render().$el);
-
-
         var originalMapView = new OriginalMapView({
             collection: optimizer.get('original'),
             el: $('.maps .original')
@@ -84,6 +77,12 @@ module.exports = BaseView.extend({
 
     renderContents: function () {
 
+
+        var wpListView = new WayPointsListView({
+            collection: this.model.get('original'),
+            className: 'waypoints'
+        });
+        $('#content .side').html(wpListView.render().$el);
 
         var cv = new CodeView({
             el: $('#how-we-did-it .main')

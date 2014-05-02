@@ -4,8 +4,7 @@ module.exports = Backbone.View.extend({
     tagName: 'ul',
 
    initialize: function() {
-
-
+        this.collection.on('reset', this.render, this);
    },
 
    render: function() {
@@ -16,8 +15,11 @@ module.exports = Backbone.View.extend({
         }, this);
 
         //Loop back
-        var iv = new ItemView({model: this.collection.at(0)});
-        this.$el.append(iv.render().$el);
+        if (this.collection.length) {
+            var iv = new ItemView({model: this.collection.at(0)});
+            this.$el.append(iv.render().$el);
+        }
+
 
         return this;
    }
