@@ -10,14 +10,10 @@ var LoaderView = require('views/loader-view');
 var ScenariosView = require('views/scenarios-view');
 
 var Optimizer = require('models/route-optimizer-model');
+var BaseView = require('views/base-view');
 
-
-module.exports = Backbone.View.extend({
+module.exports = BaseView.extend({
     template: require('templates/app'),
-
-    intialize: function () {
-        // this.collection.on('reset', this.render, this)
-    },
 
     setScenario: function(scenario) {
         if (!scenario) {
@@ -26,7 +22,7 @@ module.exports = Backbone.View.extend({
         this.collection.url = 'data/' + scenario + '.json';
         var me = this;
         this.collection.fetch({reset: true}).done(function () {
-            me.render();
+            me.handleScenarioSelect();
         });
     },
 
@@ -40,20 +36,24 @@ module.exports = Backbone.View.extend({
         return this;
     },
 
-    renderContents: function () {
+    handleScenarioSelect: function () {
+        // this.scenarioView.select
+        this.renderRoutes();
+    },
+
+    renderRoutes: function () {
         var wp = this.collection;
 
+        this.scenarioView = new ScenariosView({
+            el: this.$('header')
+        });
+        this.scenarioView.render();
 
         var optimizer = new Optimizer({
             original: wp,
             optimized: wp.clone()
         });
         window.optimizer = optimizer;
-
-        var sv = new ScenariosView({
-            tagName: 'header'
-        });
-        this.$el.prepend(sv.render().$el);
 
 
         var wpListView = new WayPointsListView({
@@ -88,6 +88,10 @@ module.exports = Backbone.View.extend({
             el: $('#stats')
         });
         statsView.render();
+    },
+
+    renderContents: function () {
+
 
         var cv = new CodeView({
             el: $('#how-we-did-it .main')
