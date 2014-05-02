@@ -43,6 +43,7 @@ module.exports = BaseModel.extend({
         this.get('original').fetch({reset: true}).then(function (data) {
             me.get('optimized').reset(data);
             me.trigger('load', data);
+            me.set('generated', false);
         });
     },
 
@@ -69,6 +70,8 @@ module.exports = BaseModel.extend({
                     model.set('order', newOrder, {silent: true});
                 });
                 me.get('optimized').sort();
+                me.set('generated', true);
+
                 $def.resolve(me.get('optimized'));
             });
         });
