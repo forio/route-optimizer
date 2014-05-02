@@ -15,15 +15,20 @@ var BaseView = require('views/base-view');
 module.exports = BaseView.extend({
     template: require('templates/app'),
 
+    initialize: function () {
+        this.collection.on('reset', this.handleScenarioSelect, this);
+
+        BaseView.prototype.initialize.apply(this, arguments);
+    },
+
     setScenario: function(scenario) {
         if (!scenario) {
             scenario = 'book-crawl';
         }
         this.collection.url = 'data/' + scenario + '.json';
         var me = this;
-        this.collection.fetch({reset: true}).done(function () {
-            me.handleScenarioSelect();
-        });
+
+        this.collection.fetch({reset: true});
     },
 
     render: function () {
