@@ -13,19 +13,23 @@ module.exports = BaseView.extend({
         'change select': 'handleScenarioSelect'
     },
 
+    initialize: function () {
+        this.model.on('change:currentScenario', this.select, this);
+    },
+
     handleScenarioSelect: function (evt) {
         var url = $(evt.target).val();
         window.location.hash = url;
     },
 
-    select: function (url) {
-        this.$('select').val(url);
+    select: function (model) {
+        this.$('select').val(model.get('currentScenario'));
     },
 
     render: function() {
         this.$el.html(this.template({
             scenarios: this.scenarios,
-            selected: this.currentLocation
+            selected: this.model.get('currentScenario')
         }));
         return this;
     }
