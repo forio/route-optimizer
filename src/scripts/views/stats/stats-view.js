@@ -9,6 +9,11 @@ module.exports = BaseView.extend({
         require('views/time-taken-metric-view')
     ],
 
+    initialize: function () {
+        this.model.on('change:waypoints', this.renderSelf, this);
+        BaseView.prototype.initialize.apply(this, arguments);
+    },
+
     render: function() {
         this.renderSelf();
         this.renderMetrics(this.$('.main'));
