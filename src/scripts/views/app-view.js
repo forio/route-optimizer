@@ -36,7 +36,7 @@ module.exports = BaseView.extend({
 
     render: function () {
         this.renderSelf();
-        this.renderMaps();
+        // this.renderMaps();
         this.renderContents();
     },
 
