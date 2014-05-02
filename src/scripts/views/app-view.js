@@ -15,9 +15,28 @@ var BaseView = require('views/base-view');
 module.exports = BaseView.extend({
     template: require('templates/app'),
 
+    initialize: function () {
+        this.model.on('load', this.renderMaps, this);
+    },
+
+    renderMaps: function () {
+        var originalMapView = new OriginalMapView({
+            collection: this.model.get('original'),
+            el: $('.maps .original')
+        });
+        originalMapView.render();
+
+        var optimizedMapView = new OptimizedMapView({
+            collection: this.model.get('optimized'),
+            model: this.model,
+            el: $('.maps .optimized .map')
+        });
+        optimizedMapView.render();
+    },
 
     render: function () {
         this.renderSelf();
+        this.renderMaps();
         this.renderContents();
     },
 
@@ -49,18 +68,7 @@ module.exports = BaseView.extend({
         });
         cv.render();
 
-        var originalMapView = new OriginalMapView({
-            collection: this.model.get('original'),
-            el: $('.maps .original')
-        });
-        originalMapView.render();
 
-        var optimizedMapView = new OptimizedMapView({
-            collection: this.model.get('optimized'),
-            model: this.model,
-            el: $('.maps .optimized .map')
-        });
-        optimizedMapView.render();
 
         var loaderView = new LoaderView({
             model: this.model,

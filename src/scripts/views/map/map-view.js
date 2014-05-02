@@ -6,7 +6,7 @@ module.exports = Backbone.View.extend({
     gRouteOptions: {},
 
     initialize: function () {
-        this.collection.on('reset', this.render, this);
+        // this.collection.on('reset', this.render, this);
         // this.collection.on('remove', this.handleRouteRemove, this);
         // this.collection.on('add', this.handleRouteAdd, this);
     },
@@ -79,17 +79,21 @@ module.exports = Backbone.View.extend({
 
           };
         this.map = new google.maps.Map(this.el,mapOptions);
+        this.fitBounds();
         var me = this;
         google.maps.event.addDomListener(window, "resize", function() {
             var map = me.map;
-            var bounds = me.getBounds();
-            map.fitBounds(bounds);
+            me.fitBounds();
             google.maps.event.trigger(map, "resize");
             map.fitBounds(bounds);
         });
         return this;
     },
 
+    fitBounds: function () {
+        var bounds = this.getBounds();
+        this.map.fitBounds(bounds);
+    },
 
     renderWaypoints: function() {
         this.collection.each(this.addMarker, this);
