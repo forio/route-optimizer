@@ -30,12 +30,16 @@ module.exports = BaseCollection.extend({
     routes: {},
 
     initialize: function () {
+        this.resetRoutes();
+        this.on('reset', this.resetRoutes, this);
+        BaseCollection.prototype.initialize.apply(this, arguments);
+    },
+
+    resetRoutes: function () {
         this.routes =  {
             gResult: null,
             legs: []
         };
-
-        BaseCollection.prototype.initialize.apply(this, arguments);
     },
 
     getMetric: function (type) {
@@ -123,10 +127,7 @@ module.exports = BaseCollection.extend({
         var $def = $.Deferred();
         var me = this;
         if (this.isDirtyRoutes === true) {
-            this.routes =  {
-                gResult: null,
-                legs: []
-            };
+            this.resetRoutes();
 
             var models = this.slice(1, this.length - 1);
             var waypoints = _.map(models, function (mdl) {

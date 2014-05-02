@@ -10,19 +10,24 @@ module.exports = BaseView.extend({
     ],
 
     initialize: function () {
-        this.model.on('change:waypoints', this.renderSelf, this);
+        this.model.on('change:waypoints', this.renderOverview, this);
+        this.model.on('load', this.renderOverview, this);
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
     render: function() {
         this.renderSelf();
-        this.renderMetrics(this.$('.main'));
+        this.renderOverview();
+        this.renderMetrics();
         return this;
     },
-    renderSelf: function() {
-        var points = this.model.get('original').size();
-
-        this.$el.html(this.template({
+    renderSelf: function () {
+          this.$el.empty();
+          this.$el.append('<div class="side"> </div>');
+          this.$el.append('<div class="main"> </div>');
+      },
+    renderOverview: function ($el) {
+        this.$('.side').html(this.template({
             stops: this.model.get('waypoints'),
             possibleRoutes: d3.format(',f')(this.model.get('possibleRoutes'))
         }));
@@ -30,7 +35,7 @@ module.exports = BaseView.extend({
     renderMetrics: function($el) {
         _(this.subViews).each(function (View) {
             var view = new View({model: this.model});
-            $el.append(view.render().$el);
+            this.$('.main').append(view.render().$el);
 
         }, this);
         return this;

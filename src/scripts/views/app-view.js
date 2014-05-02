@@ -68,15 +68,15 @@ module.exports = BaseView.extend({
         loaderView.render();
 
 
-        var statsView = new StatsView({
-            model: optimizer,
-            el: $('#stats')
-        });
-        statsView.render();
+
     },
 
     renderContents: function () {
-
+        var statsView = new StatsView({
+            model: this.model,
+            el: $('#stats')
+        });
+        statsView.render();
 
         var wpListView = new WayPointsListView({
             collection: this.model.get('original'),
