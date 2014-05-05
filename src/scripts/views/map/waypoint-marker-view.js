@@ -3,6 +3,9 @@ module.exports = BaseView.extend({
 
     initialize: function() {
         _.bindAll(this, 'toggleSelected');
+
+        this.model.on('change:latitude', this.updateLocation, this);
+
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
@@ -50,6 +53,11 @@ module.exports = BaseView.extend({
     toggleSelected: function() {
         var isSelected = this.marker.getIcon().type === 'selected';
         this.model.set({selected: !isSelected});
+    },
+
+    updateLocation: function() {
+        var myLatlng = this.model.getLatLong();
+        this.marker.setPosition(myLatlng);
     },
 
    render: function() {

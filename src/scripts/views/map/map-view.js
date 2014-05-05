@@ -8,7 +8,7 @@ module.exports = Backbone.View.extend({
     initialize: function () {
         // this.collection.on('reset', this.render, this);
         // this.collection.on('remove', this.handleRouteRemove, this);
-        // this.collection.on('add', this.handleRouteAdd, this);
+        // this.collection.on('add', this.render, this);
     },
 
     handleRouteRemove: function (model) {
@@ -133,9 +133,9 @@ module.exports = Backbone.View.extend({
         // this.collection.each(this.addDirection, this);
         var me = this;
         this.collection.populateAllRoutes().done(function (route){
-                if (route.gResult) {
-                    me.drawRoute.call(me, route);
-                }
+            if (route.gResult) {
+                me.drawRoute.call(me, route);
+            }
         });
     }
 });
