@@ -36,6 +36,10 @@ module.exports = BaseModel.extend({
         op.name = "optimized";
         this.set('optimized', op);
 
+        wp.on('add', function () {
+            op.reset(wp.getValidModels());
+        });
+
         this.on('change:currentScenario', this.load, this);
         BaseModel.prototype.initialize.apply(this, arguments);
     },
@@ -47,7 +51,7 @@ module.exports = BaseModel.extend({
 
         var me = this;
         this.get('original').fetch({reset: true}).then(function (data) {
-            me.get('optimized').reset(data);
+            me.get('optimized').reset(data, {silent: true});
             me.trigger('load', data);
             me.set('generated', false);
         });
