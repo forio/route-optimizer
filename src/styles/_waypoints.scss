@@ -87,4 +87,19 @@
             }
         }
     }
+
+    button {
+        background-color: $code-bg;
+        border: 1px solid $code-bg;
+
+        color: $light-bg;
+        box-shadow: none;
+        width: 28px;
+        @include single-transition(background-color, 0.05s, linear, 0);
+
+        &:hover {
+            color: $code-bg;
+            background-color: $light-bg;
+        }
+    }
 }
