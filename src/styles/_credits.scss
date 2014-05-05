@@ -9,21 +9,11 @@
 
         li {
             list-style: none;
-            float: left;
-            width: 21%;
-            padding: 0 2%;
-            max-width: 300px;
-            text-align: center;
-
-            &:first-child {
-                padding-left: 0;
-            }
+            padding: 10px 0;
 
             a {
                 opacity: 0.7;
                 color: $code-bg;
-                display: inline-block;
-                text-align: center;
                 @include single-transition(opacity, 0.1s, linear, 0.1s);
 
                   &:hover {
@@ -44,6 +34,15 @@
                     display: block;
                     margin: 0 auto;
                     margin-bottom: 12px;
+                }
+
+                img, h4, span {
+                    display: inline-block;
+                }
+                h4 {
+                    margin: auto 30px;
+                    color: $code-bg;
+                    width: 160px
                 }
             }
         }
