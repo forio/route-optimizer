@@ -7,15 +7,20 @@ module.exports = BaseView.extend({
         }
     },
     initialize: function () {
-        //FIXIME: Getting called multiple times
         this.collection.on('sort', this.renderDirections, this);
-        this.collection.on('reset', this.renderWaypoints, this);
+        this.collection.on('reset', this.render, this);
         BaseView.prototype.initialize.apply(this, arguments);
     },
+
+    handleReset: function () {
+        this.renderWaypoints();
+    },
+
     render: function() {
 
         this.renderSelf();
         this.renderWaypoints();
+        this.fitBounds();
         return this;
     }
 });

@@ -1,36 +1,18 @@
 var MarkerView = require('views/waypoint-marker-view');
+var BaseView = Backbone.View;
 
-module.exports = Backbone.View.extend({
+module.exports = BaseView.extend({
 
     gDirDisplays: [],
+    markers: [],
+
     gRouteOptions: {},
 
     initialize: function () {
-        // this.collection.on('reset', this.render, this);
-        // this.collection.on('remove', this.handleRouteRemove, this);
-        this.collection.on('add', this.renderDirections, this);
+        this.collection.on('reset', this.clearMarkers, this);
+        BaseView.prototype.initialize.apply(this, arguments);
     },
 
-    handleRouteRemove: function (model) {
-        //TODO:Route between previous and next;
-
-    },
-
-    handleRouteAdd: function (model) {
-        //TODO:Get index
-        //TODO:Remove previous route between prev and next
-        //Add marker
-
-        var newModelIndex = this.collection.indexOf(model);
-
-        this.addMarker(model);
-        this.addDirection(model);
-
-        if (newModelIndex  < this.collection.size() - 1) {
-            var nextPoint = this.collection.at(newModelIndex + 1);
-            this.addDirection(model);
-        }
-    },
 
     addMarker: function (model) {
         var mv = new MarkerView({
@@ -38,7 +20,14 @@ module.exports = Backbone.View.extend({
             map: this.map
         });
         mv.render();
+        this.markers.push(mv);
     },
+    clearMarkers: function () {
+        _(this.markers).each(function (mv) {
+            mv.handleRemove();
+        });
+    },
+
     addDirection: function (model) {
         var me = this;
         var newModelIndex = this.collection.indexOf(model);
@@ -91,8 +80,10 @@ module.exports = Backbone.View.extend({
     },
 
     fitBounds: function () {
-        if (this.collection.getValidModels().length <= 1) {
-            this.map.setCenter(this.collection.getValidModels()[0].getLatLong());
+        var valid = this.collection.getValidModels();
+        if (valid.length === 1) {
+            this.map.setZoom(13);
+            this.map.setCenter(valid[0].getLatLong());
         }
         else {
             var bounds = this.getBounds();
