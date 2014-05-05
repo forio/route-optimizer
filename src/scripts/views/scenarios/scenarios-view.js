@@ -4,6 +4,7 @@ module.exports = BaseView.extend({
     template: require('templates/scenarios'),
 
     scenarios: {
+        'custom': 'Personalized Travel Plan',
         'art-gallery': 'San Francisco Art Tour',
         'book-crawl': 'San Francisco Book Crawl',
         'sf-sightseeing': 'San Francisco Sight-Seeing'
