@@ -73,10 +73,10 @@ module.exports = BaseView.extend({
         this.map = new google.maps.Map(this.el,mapOptions);
         this.fitBounds();
         var me = this;
-        google.maps.event.addDomListener(window, "resize", function() {
+        google.maps.event.addDomListener(window, 'resize', function() {
             var map = me.map;
             me.fitBounds();
-            google.maps.event.trigger(map, "resize");
+            google.maps.event.trigger(map, 'resize');
             map.fitBounds(bounds);
         });
         return this;
