@@ -10,8 +10,11 @@ module.exports = BaseView.extend({
     ],
 
     initialize: function () {
-        this.model.on('change:waypoints', this.renderOverview, this);
+        var original = this.model.get('original');
+
+        original.on('add', this.renderOverview, this);
         this.model.on('load', this.renderOverview, this);
+
         BaseView.prototype.initialize.apply(this, arguments);
     },
 

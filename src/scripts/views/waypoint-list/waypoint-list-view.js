@@ -35,7 +35,6 @@ module.exports = Backbone.View.extend({
             this.addItem(this.collection.at(0), false);
         }
         else {
-            var newMdl = this.collection.add({});
             // this.addItem(newMdl, true);
         }
 

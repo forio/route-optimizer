@@ -8,7 +8,7 @@ module.exports = Backbone.View.extend({
     initialize: function () {
         // this.collection.on('reset', this.render, this);
         // this.collection.on('remove', this.handleRouteRemove, this);
-        // this.collection.on('add', this.render, this);
+        this.collection.on('add', this.renderDirections, this);
     },
 
     handleRouteRemove: function (model) {
@@ -91,8 +91,13 @@ module.exports = Backbone.View.extend({
     },
 
     fitBounds: function () {
-        var bounds = this.getBounds();
-        this.map.fitBounds(bounds);
+        if (this.collection.getValidModels().length <= 1) {
+            this.map.setCenter(this.collection.getValidModels()[0].getLatLong());
+        }
+        else {
+            var bounds = this.getBounds();
+            this.map.fitBounds(bounds);
+        }
     },
 
     renderWaypoints: function() {
@@ -101,7 +106,7 @@ module.exports = Backbone.View.extend({
     },
 
     getBounds: function () {
-        var latLongs = _.invoke(this.collection.models, 'getLatLong');
+        var latLongs = _.invoke(this.collection.getValidModels(), 'getLatLong');
         var bounds = new google.maps.LatLngBounds();
         _(latLongs).each(function (latlng) {
             bounds.extend(latlng);
@@ -135,6 +140,7 @@ module.exports = Backbone.View.extend({
         this.collection.populateAllRoutes().done(function (route){
             if (route.gResult) {
                 me.drawRoute.call(me, route);
+                me.fitBounds();
             }
         });
     }
