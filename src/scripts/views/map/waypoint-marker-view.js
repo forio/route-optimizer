@@ -5,8 +5,6 @@ module.exports = BaseView.extend({
         _.bindAll(this, 'toggleSelected');
 
         this.model.on('change:latitude', this.updateLocation, this);
-        this.model.on('remove', this.handleRemove, this);
-
         BaseView.prototype.initialize.apply(this, arguments);
     },
 

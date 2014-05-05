@@ -46,6 +46,10 @@ module.exports = BaseView.extend({
     handleInput: function(evt) {
         var $target = $(evt.target);
         this.model.set('name', $target.val());
+
+        if(evt.which == 13) {
+            this.$('button').trigger('click');
+        }
     }
 
 });
