@@ -57,8 +57,15 @@ module.exports = BaseCollection.extend({
         return metrics[type];
     },
 
+    getValidModels: function(){
+        return _.reject(this.models, function(mdl){
+            return !mdl.get('latitude');
+        });
+    },
+
     getDistanceMatrix: function() {
-        var latLangs = _.invoke(this.models, 'getLatLong');
+        var validModels = this.getValidModels();
+        var latLangs = _.invoke(validModels, 'getLatLong');
         var dmc = new google.maps.DistanceMatrixService();
 
         var $def = $.Deferred();
@@ -126,10 +133,12 @@ module.exports = BaseCollection.extend({
     populateAllRoutes: function () {
         var $def = $.Deferred();
         var me = this;
-        if (this.isDirtyRoutes === true && this.models.length) {
+        var validModels = this.getValidModels();
+
+        if (this.isDirtyRoutes === true && validModels.length) {
             this.resetRoutes();
 
-            var models = this.slice(1, this.length - 1);
+            var models = validModels.slice(1, this.length - 1);
             var waypoints = _.map(models, function (mdl) {
                 return {location: mdl.getLatLong(), stopover: true};
             });

@@ -32,7 +32,8 @@ module.exports = BaseView.extend({
                 me.model.set({
                     name: prettyName,
                     latitude: bestResult.geometry.location.lat(),
-                    longitude: bestResult.geometry.location.lng()
+                    longitude: bestResult.geometry.location.lng(),
+                    result: results
                 });
             }
             else {
