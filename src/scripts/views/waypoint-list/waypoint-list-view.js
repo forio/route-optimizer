@@ -1,6 +1,7 @@
 var ItemView = require('views/waypoint-list-item-view');
 var EditableItemView = require('views/editable-list-item-view');
 
+var MAX_ALLOWED = 9;
 module.exports = Backbone.View.extend({
     tagName: 'ul',
 
@@ -22,8 +23,11 @@ module.exports = Backbone.View.extend({
 
    render: function() {
         this.$el.empty();
+        var isMaxSize = this.collection.length == MAX_ALLOWED;
+
         this.collection.each(function(mdl, index) {
-            this.addItem(mdl, (index === this.collection.length - 1) );
+            var isLastOne = index === this.collection.length - 1;
+            this.addItem(mdl, (isLastOne && !isMaxSize) );
         }, this);
 
         //Loop back
