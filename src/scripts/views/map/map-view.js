@@ -9,7 +9,7 @@ module.exports = BaseView.extend({
     gRouteOptions: {},
 
     initialize: function () {
-        this.collection.on('reset', this.clearMarkers, this);
+        // this.collection.on('reset', this.clearMarkers, this);
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
@@ -26,6 +26,7 @@ module.exports = BaseView.extend({
         _(this.markers).each(function (mv) {
             mv.handleRemove();
         });
+        this.markers = [];
     },
 
     addDirection: function (model) {
@@ -39,6 +40,8 @@ module.exports = BaseView.extend({
     },
 
     render: function() {
+        // this.clearMarkers();
+
         this.renderSelf();
         this.renderWaypoints();
         this.renderDirections();
@@ -92,6 +95,7 @@ module.exports = BaseView.extend({
     },
 
     renderWaypoints: function() {
+        this.clearMarkers();
         this.collection.each(this.addMarker, this);
         return this;
     },
