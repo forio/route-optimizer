@@ -14,6 +14,10 @@ module.exports = Backbone.View.extend({
         var View = (isEditable === true) ? EditableItemView : ItemView;
         var iv = new View({model: mdl});
         this.$el.append(iv.render().$el);
+
+        mdl.on('change:latitude', function() {
+            this.collection.add({});
+        }, this);
    },
 
    render: function() {
