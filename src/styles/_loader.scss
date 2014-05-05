@@ -1,12 +1,4 @@
-@-webkit-keyframes rot {
-    0% {@include rotate(0deg);}
-    100% {@include rotate(359deg);}
-}
-@-moz-keyframes rot {
-    0% {@include rotate(0deg);}
-    100% {@include rotate(359deg);}
-}
-@keyframes rot {
+@include keyframes(rot) {
     0% {@include rotate(0deg);}
     100% {@include rotate(359deg);}
 }
@@ -109,7 +101,7 @@
                         height: 16px;
                         width: 16px;
                         top: 11px;
-                        -webkit-animation: rot .6s infinite linear;
+                        @include animation('rot .6s infinite linear');
 
                     }
                 }
