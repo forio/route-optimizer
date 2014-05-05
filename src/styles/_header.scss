@@ -22,9 +22,11 @@ header {
         line-height: 12px;
     }
     .logo {
-        height: $logo-height;
+        height: 33px;
         display: inline-block;
         margin-right: 15px;
+
+        vertical-align: bottom;
 
         img {
             height: $logo-height;
@@ -33,7 +35,6 @@ header {
 
     select {
        box-shadow: none;
-       background-color: red;
        background-image: none;
        -webkit-appearance: none;
        -moz-appearance: none;
@@ -41,6 +42,7 @@ header {
        border: 0;
        display: inline-block;
        width: 100%;
+       outline: none;
     }
     .scen-selector{
        border: 1px solid #53535c;
@@ -53,10 +55,27 @@ header {
        margin: 0 4px;
        width: 239px;
        pointer-events: fill;
-       background-color: yellow;
 
         padding-right: 0;
         &:after {
+            $width: 6px;
+
+            width: 0;
+            height: 0;
+            border-left: $width solid transparent;
+            border-right: $width solid transparent;
+            content: " ";
+
+            border-top: $width solid $light-bg;
+            position: absolute;
+            right: 8px;
+            top: 11px;
+            pointer-events: none;
+
+        }
+        &:before {
+            background-color: $code-bg;
+
            display: block;
            content: " ";
            border: 1px solid #53535c;
