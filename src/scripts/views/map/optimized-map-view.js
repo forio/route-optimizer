@@ -7,6 +7,7 @@ module.exports = BaseView.extend({
         }
     },
     initialize: function () {
+        //FIXIME: Getting called multiple times
         this.collection.on('sort', this.renderDirections, this);
         this.collection.on('reset', this.renderWaypoints, this);
         BaseView.prototype.initialize.apply(this, arguments);

@@ -36,6 +36,7 @@ module.exports = BaseCollection.extend({
     },
 
     resetRoutes: function () {
+        console.log('reset', this.name);
         this.routes =  {
             gResult: null,
             legs: []
@@ -106,6 +107,7 @@ module.exports = BaseCollection.extend({
             if (status === google.maps.DirectionsStatus.OK) {
                 me.routes.gResult = directionsResult;
 
+                console.log(me.routes);
                 _(directionsResult.routes[0].legs).each(function(leg, index) {
                     var route = new RouteModel({
                         distance: leg.distance.value,

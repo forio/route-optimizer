@@ -50,6 +50,7 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
+        console.log('render', this.collection.name);
         this.renderSelf();
         this.renderWaypoints();
         this.renderDirections();
@@ -131,7 +132,6 @@ module.exports = Backbone.View.extend({
     renderDirections: function() {
         this.clearRoutes();
         // this.collection.each(this.addDirection, this);
-        // console.log('render directs', this.className);
         var me = this;
         this.collection.populateAllRoutes().done(function (route){
                 if (route.gResult) {
