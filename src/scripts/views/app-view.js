@@ -20,10 +20,7 @@ module.exports = BaseView.extend({
     },
 
     renderMaps: function () {
-
         this.originalMapView.render();
-
-
         this.optimizedMapView.render();
     },
 
