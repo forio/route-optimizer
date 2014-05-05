@@ -6,11 +6,15 @@
     ul {
         overflow: visible;
         margin-top: 24px;
+        padding-left: 0;
 
         li {
             list-style: none;
             padding: 10px 0;
 
+            &:first-child {
+                padding-top: 0;
+            }
             a {
                 opacity: 0.7;
                 color: $code-bg;
