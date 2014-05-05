@@ -40,6 +40,8 @@ module.exports = BaseView.extend({
     handleGenerate: function () {
         if (!this.model.get('generated')) {
             this.$el.addClass('in-progress');
+            this.$('.steps').empty();
+
             $('.generate h3').text("Generating..");
             $progressIndicator = this.model.optimize();
 
@@ -57,8 +59,7 @@ module.exports = BaseView.extend({
         else {
             this.$el.removeClass('in-progress');
             this.$el.addClass('generated');
-
-            $('.generate h3').text("Generate Optimized");
+            this.$('.generate h3').text("Generate Optimized");
         }
     }
 });
