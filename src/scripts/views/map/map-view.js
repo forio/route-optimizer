@@ -50,7 +50,6 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-        console.log('render', this.collection.name);
         this.renderSelf();
         this.renderWaypoints();
         this.renderDirections();
