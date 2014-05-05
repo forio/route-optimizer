@@ -42,7 +42,7 @@ module.exports = BaseView.extend({
             this.$el.addClass('in-progress');
             this.$('.steps').empty();
 
-            $('.generate h3').text("Generating..");
+            // $('.generate h3').text("Generating..");
             $progressIndicator = this.model.optimize();
 
             var me = this;
@@ -55,11 +55,12 @@ module.exports = BaseView.extend({
     handleGenerateChange: function () {
         if (!this.model.get('generated')) {
             this.$el.removeClass('generated');
+            // $('.generate h3').text("Generating..");
         }
         else {
             this.$el.removeClass('in-progress');
             this.$el.addClass('generated');
-            this.$('.generate h3').text("Generate Optimized");
+            // this.$('.generate h3').text("Generate Optimized");
         }
     }
 });
