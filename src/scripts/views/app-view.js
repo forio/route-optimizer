@@ -20,18 +20,11 @@ module.exports = BaseView.extend({
     },
 
     renderMaps: function () {
-        var originalMapView = new OriginalMapView({
-            collection: this.model.get('original'),
-            el: $('.maps .original')
-        });
-        originalMapView.render();
 
-        var optimizedMapView = new OptimizedMapView({
-            collection: this.model.get('optimized'),
-            model: this.model,
-            el: $('.maps .optimized .map')
-        });
-        optimizedMapView.render();
+        this.originalMapView.render();
+
+
+        this.optimizedMapView.render();
     },
 
     render: function () {
@@ -45,6 +38,16 @@ module.exports = BaseView.extend({
         return this;
     },
     renderContents: function () {
+        this.originalMapView = new OriginalMapView({
+            collection: this.model.get('original'),
+            el: this.$('.maps .original')
+        });
+        this.optimizedMapView = new OptimizedMapView({
+            collection: this.model.get('optimized'),
+            model: this.model,
+            el: this.$('.maps .optimized .map')
+        });
+
         this.scenarioView = new ScenariosView({
             el: this.$('header'),
             model: this.model

@@ -31,7 +31,10 @@ module.exports = BaseModel.extend({
     initialize: function () {
         var wp = new WaypointsCollection();
         this.set('original', wp);
-        this.set('optimized', wp.clone());
+
+        var op = wp.clone();
+        op.name = "optimized";
+        this.set('optimized', op);
 
         this.on('change:currentScenario', this.load, this);
         BaseModel.prototype.initialize.apply(this, arguments);

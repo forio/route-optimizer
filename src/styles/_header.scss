@@ -15,6 +15,7 @@ header {
     h1 {
         font-size: 16px;
         line-height: 16px;
+        vertical-align: text-top;
     }
     h2 {
         font-size: 12px;
@@ -27,6 +28,44 @@ header {
 
         img {
             height: $logo-height;
+        }
+    }
+
+    select {
+       box-shadow: none;
+       background-color: red;
+       background-image: none;
+       -webkit-appearance: none;
+       -moz-appearance: none;
+       appearance: none;
+       border: 0;
+       display: inline-block;
+       width: 100%;
+    }
+    .scen-selector{
+       border: 1px solid #53535c;
+       display: inline-block;
+       padding: 6px 8px;
+       font-size: 16px;
+       line-height: 16px;
+       color: #494952;
+       position: relative;
+       margin: 0 4px;
+       width: 239px;
+       pointer-events: fill;
+       background-color: yellow;
+
+        padding-right: 0;
+        &:after {
+           display: block;
+           content: " ";
+           border: 1px solid #53535c;
+           position: absolute;
+           right: -1px;
+           top: -1px;
+           width: 30px;
+           height: 30px;
+           pointer-events: none;
         }
     }
 }
