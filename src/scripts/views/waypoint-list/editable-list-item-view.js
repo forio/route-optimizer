@@ -24,22 +24,28 @@ module.exports = BaseView.extend({
 
         var address = this.$(':text').val();
         var me = this;
-        geocoder.geocode({ 'address': address}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var bestResult = results[0];
+        if (this.model.get('latitude')) {
+            this.model.trigger('change:latitude');
+        }
+        else {
+            geocoder.geocode({ 'address': address}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var bestResult = results[0];
 
-                var prettyName = bestResult.formatted_address.split(',')[0];
-                me.model.set({
-                    name: prettyName,
-                    latitude: bestResult.geometry.location.lat(),
-                    longitude: bestResult.geometry.location.lng(),
-                    result: results
-                });
-            }
-            else {
+                    var prettyName = bestResult.formatted_address.split(',')[0];
+                    me.model.set({
+                        name: prettyName,
+                        latitude: bestResult.geometry.location.lat(),
+                        longitude: bestResult.geometry.location.lng(),
+                        result: results
+                    });
+                }
+                else {
 
-            }
-        });
+                }
+            });
+        }
+
 
     },
 
