@@ -42,6 +42,7 @@ module.exports = function(grunt) {
             }
         },
         copy: {
+
             index: {
                 src: 'src/index.html',
                 dest: 'public/index.html'
@@ -52,6 +53,14 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'src/styles/assets/',
                     dest: 'public/styles/assets/'
+                }]
+            },
+            vendor: {
+                files: [{
+                    src: ['**/*.*'],
+                    expand: true,
+                    cwd: 'src/scripts/vendor/',
+                    dest: 'public/vendor/'
                 }]
             },
             data: {
@@ -183,10 +192,10 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('init', ['compass:dev', 'browserify2:dev']);
+    grunt.registerTask('init', ['copy', 'compass:dev', 'browserify2:dev']);
 
-    grunt.registerTask('production', ['compass:production', 'browserify2:production']);
-    grunt.registerTask('server', ['copy', 'init', 'connect:livereload', 'open', 'watch']);
+    grunt.registerTask('production', ['copy', 'compass:production', 'browserify2:production']);
+    grunt.registerTask('server', ['init', 'connect:livereload', 'open', 'watch']);
 
 
     grunt.registerTask('default', ['watch']);
