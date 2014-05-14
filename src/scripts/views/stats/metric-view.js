@@ -59,7 +59,7 @@ module.exports = BaseView.extend({
         var dv = new DonutView({
             el: this.$('.graph-container'),
             model: this.model,
-            dataSource: this.getData
+            dataSource: this.getData.bind(this)
         });
         dv.render();
         return this;
