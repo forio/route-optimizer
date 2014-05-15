@@ -138,7 +138,7 @@ module.exports = BaseCollection.extend({
         if (this.isDirtyRoutes === true && validModels.length) {
             this.resetRoutes();
 
-            var models = validModels.slice(1, this.length - 1);
+            var models = validModels.slice(1, this.length);
             var waypoints = _.map(models, function (mdl) {
                 return {location: mdl.getLatLong(), stopover: true};
             });
