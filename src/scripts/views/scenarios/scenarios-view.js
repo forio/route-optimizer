@@ -7,7 +7,8 @@ module.exports = BaseView.extend({
         'custom': 'Personalized Travel Plan',
         // 'art-gallery': 'San Francisco Art Tour',
         'book-crawl': 'San Francisco Book Crawl',
-        'sf-sightseeing': 'San Francisco Sight-Seeing'
+        'sf-sightseeing': 'San Francisco Sight-Seeing',
+        'business-deliver': 'Business Delivery'
     },
 
     events: {
