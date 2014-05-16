@@ -77,6 +77,7 @@ module.exports = BaseView.extend({
             var map = me.map;
             me.fitBounds();
             google.maps.event.trigger(map, 'resize');
+            var bounds = me.getBounds();
             map.fitBounds(bounds);
         });
         return this;
