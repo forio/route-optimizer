@@ -1,5 +1,6 @@
 var BaseModel = require('models/base-model');
 var WaypointsCollection = require('collections/google-maps-waypoints-collection');
+var WaypointLoader = require('../collections/loader/waypoint-loader');
 
 var operationsService = require('services/epicenter-operations-service');
 
@@ -47,10 +48,11 @@ module.exports = BaseModel.extend({
 
     load: function () {
         var dataset = this.get('currentScenario');
-        this.get('original').url = 'data/' + dataset + '.json';
+        var factory = new WaypointLoader();
+        var loader = factory.loaderFactory(dataset);
 
         var me = this;
-        this.get('original').fetch({reset: true}).then(function (data) {
+        loader.fetch(this.get('original'), {reset: true}).then(function (data) {
             me.get('optimized').reset(data, {silent: true});
             me.trigger('load', data);
             me.set('generated', false);
