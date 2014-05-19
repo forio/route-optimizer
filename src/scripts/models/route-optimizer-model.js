@@ -53,7 +53,7 @@ module.exports = BaseModel.extend({
 
         var me = this;
         loader.fetch(this.get('original'), {reset: true}).then(function (data) {
-            me.get('optimized').reset(data, {silent: true});
+            me.get('optimized').reset(data);
             me.trigger('load', data);
             me.set('generated', false);
         });

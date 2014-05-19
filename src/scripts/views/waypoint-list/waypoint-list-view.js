@@ -8,6 +8,7 @@ module.exports = Backbone.View.extend({
    initialize: function() {
         this.collection.on('reset', this.render, this);
         this.collection.on('add', this.render, this);
+        this.model.on('change:currentScenario', this.render, this);
    },
 
    addItem: function (mdl, isEditable) {
@@ -25,10 +26,11 @@ module.exports = Backbone.View.extend({
    render: function() {
         this.$el.empty();
         var isMaxSize = this.collection.length == MAX_ALLOWED;
+        var isCustom = this.model.get('currentScenario') === 'custom';
 
         this.collection.each(function(mdl, index) {
             var isLastOne = index === this.collection.length - 1;
-            this.addItem(mdl, (isLastOne && !isMaxSize) );
+            this.addItem(mdl, (isLastOne && !isMaxSize && isCustom) );
         }, this);
 
         //Loop back

@@ -11,6 +11,7 @@ var ScenariosView = require('views/scenarios-view');
 
 var Optimizer = require('models/route-optimizer-model');
 var BaseView = require('views/base-view');
+var SaveCustomView = require('views/save-custom-view');
 
 module.exports = BaseView.extend({
     template: require('templates/app'),
@@ -58,9 +59,17 @@ module.exports = BaseView.extend({
 
         var wpListView = new WayPointsListView({
             collection: this.model.get('original'),
+            model: this.model,
             className: 'waypoints'
         });
         $('#content .side').html(wpListView.render().$el);
+
+        var saveCustomView = new SaveCustomView({
+            collection: this.model.get('original'),
+            model: this.model,
+            className: 'saveroute'
+        });
+        $('#content .side').append(saveCustomView.render().$el);
 
         var cv = new CodeView({
             el: $('#how-we-did-it .main')

@@ -15,7 +15,7 @@ module.exports = function () {
     return {
         loaderFactory: function (scenario) {
             var mapped = factoryMapping[scenario];
-            return new mapped(scenario) || new DataApiLoader(scenario);
+            return mapped && new mapped(scenario) || new DataApiLoader(scenario);
         }
     };
 };
