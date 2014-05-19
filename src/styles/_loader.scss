@@ -44,7 +44,7 @@
 
     .step-container {
         padding: 10px 0;
-        margin: 0 0;
+        margin: auto auto;
         background-color: $accent-optimized;
         display: block;
 
@@ -52,6 +52,7 @@
         right: 0;
         left: 0;
         bottom: 0;
+        top: 0;
         z-index: 9;
 
         @include single-transition(height, 0.1s, linear, 0.1s);
