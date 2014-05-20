@@ -11,16 +11,25 @@ module.exports = function (scenario) {
     var defaultParams = {
         account: 'showcase',
         project: 'route-optimizer',
-        collection: 'routes'
+        collection: 'routes/' + scenario
     };
-
-    options = $.extend(defaultParams, options);
 
     return {
         fetch: function (collection, options) {
-            var apiParams = $.extend(defaultParams, { collection: 'routes/' + scenario + '/waypoints' })
-            collection.url = urlService.getDataApiURL(apiParams);
-            return collection.fetch(options);
+            collection.url = urlService.getDataApiURL(defaultParams);
+            var oldParse = collection.parse;
+            collection.parse = function (data) {
+                return data.waypoints;
+            };
+            return collection.fetch(options).done( function (data) {
+                // Play nice with other loaders that do not require a custom parser
+                collection.parse = oldParse;
+                if (options.model) {
+                    options.model.set('routeName', data.routeName);
+                }
+            }).fail( function (error) {
+                collection.parse = oldParse;
+            });
         }
     };
 };

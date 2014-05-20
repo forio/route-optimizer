@@ -104,6 +104,30 @@
     }
 }
 
-.saveroute {
-    margin-top: 15px;
+.save-container {
+    font-size: 12px;
+    margin-right: 5px;
+
+    input {
+        width:100%;
+        display:block;
+        height: 30px
+    }
+
+    .save-button {
+        display: none;
+        background-color: $accent-optimized;
+        @include single-transition(height, 0.1s, linear, 0.1s);
+        color: white;
+        cursor: pointer;
+        text-align: center;
+        position: relative;
+
+        h4 {
+            padding: 10px 0;
+            margin: 0;
+            height: 40px;
+        }
+    }    
 }
+
