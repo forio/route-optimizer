@@ -5,10 +5,11 @@ var DataAPIService = require('services/epicenter-data-service');
 
 var MAX_ALLOWED = 9;
 module.exports = Backbone.View.extend({
-    tagName: 'div',
+    template: require('templates/save-custom'),
 
     events: {
-        'click button': 'saveRoute'
+        'click .save-button': 'saveRoute',
+        'keyup input': 'validateName',
     },
 
    initialize: function() {
@@ -22,11 +23,19 @@ module.exports = Backbone.View.extend({
             var name = wp.get('name');
             return name && name !== ''; 
         });
-        var payload = { waypoints: _.map(waypoints, function (wp) { return wp.toJSON() } ) };
+        var routeName = this.$('input').val();
+        var payload = { routeName: routeName, waypoints: _.map(waypoints, function (wp) { return wp.toJSON() } ) };
         DataAPIService.saveRoute(payload).done( function (collectionId) {
             window.location.hash = collectionId;
         });
         console.log(payload);
+   },
+
+   validateName: function (e) {
+        var val = $(e.target).val();
+        var button = this.$('.save-button');
+        var toggle = val !== '' ? button.fadeIn : button.fadeOut;
+        toggle.call(button, 'fast');
    },
 
    render: function() {
@@ -37,7 +46,7 @@ module.exports = Backbone.View.extend({
 
         // Only in the custom scneario saving is availble. Should we limit to only when all points were specified?
         if (isCustom) {
-            this.$el.html('<button>Save Route</button>');
+            this.$el.html(this.template());
         }
 
         return this;

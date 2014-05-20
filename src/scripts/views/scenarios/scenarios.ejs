@@ -1,9 +1,9 @@
 <a class="logo" href="//forio.com" target="_blank"> <img src="styles/assets/logo.svg" alt="/forio"> </a>
-<h1> Optimize Your  <%= selected %>
+<h1> Optimize Your
     <div class="scen-selector">
         <select id="lstScenarioSwitcher">
             <% _(scenarios).each(function(name, url){ %>
-                <option value="<%= url %>" <% if(url === selected) { %> selected <% } %> > <%= selected %> <%= name %> </option>
+                <option value="<%= url %>" <% if(url === selected) { %> selected <% } %> > <%= name %> </option>
             <% }) %>
         </select>
     </div>

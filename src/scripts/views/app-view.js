@@ -66,8 +66,7 @@ module.exports = BaseView.extend({
 
         var saveCustomView = new SaveCustomView({
             collection: this.model.get('original'),
-            model: this.model,
-            className: 'saveroute'
+            model: this.model
         });
         $('#content .side').append(saveCustomView.render().$el);
 
