@@ -8,7 +8,8 @@ module.exports = BaseView.extend({
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
-    getIcon: function (type) {
+    getIcon: function () {
+        var type = this.iconType();
         var iconDefaults = {
             url: 'styles/assets/marker-sprite-shadow.png',
             size: new google.maps.Size(40,40)
@@ -35,12 +36,20 @@ module.exports = BaseView.extend({
         return $.extend({}, iconDefaults, overrides[type]);
     },
 
+    iconType: function () {
+        var isSelected = this.model.get('selected');
+        var coll = this.model.collection;
+        var modelIndex = coll.indexOf(this.model);
+
+        if (modelIndex === 0) {
+            return 'flag';
+        } else {
+            return (isSelected) ? 'selected' : 'base';
+        }
+    },
 
     selectPoint: function() {
-        var isSelected = this.model.get('selected');
-
-        var iconType = (isSelected) ? 'selected' : 'base';
-        this.marker.setIcon(this.getIcon(iconType));
+        this.marker.setIcon(this.getIcon());
     },
 
     handleRemove: function () {
@@ -61,19 +70,14 @@ module.exports = BaseView.extend({
 
    render: function() {
         var myLatlng = this.model.getLatLong();
-
-        var coll = this.model.collection;
-        var modelIndex = coll.indexOf(this.model);
-        var iconType = (modelIndex === 0 ) ? 'flag' : 'base';
-
-         this.marker = new google.maps.Marker({
-              position: myLatlng,
-              map: this.map,
-              icon: this.getIcon(iconType),
-              title: this.model.get('name')
-          });
-         google.maps.event.addListener(this.marker, 'mouseover', this.toggleSelected);
-         google.maps.event.addListener(this.marker, 'mouseout', this.toggleSelected);
+        this.marker = new google.maps.Marker({
+            position: myLatlng,
+            map: this.map,
+            icon: this.getIcon(),
+            title: this.model.get('name')
+        });
+        google.maps.event.addListener(this.marker, 'mouseover', this.toggleSelected);
+        google.maps.event.addListener(this.marker, 'mouseout', this.toggleSelected);
 
        return this;
    }
