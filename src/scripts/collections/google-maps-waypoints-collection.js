@@ -1,7 +1,6 @@
 var waypointModel = require('models/google-maps-point-model');
 
 var BaseCollection = require('collections/waypoints-collection');
-var RoutesCollection = require('collections/routes-collection');
 var RouteModel = require('models/route-model');
 
 var distanceMatrixToArray = function (gDistanceMatrixResponse) {

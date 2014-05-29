@@ -1,8 +1,9 @@
 var ItemView = require('views/waypoint-list-item-view');
 var EditableItemView = require('views/editable-list-item-view');
+var BaseView = require('views/base-view');
 
 var MAX_ALLOWED = 9;
-module.exports = Backbone.View.extend({
+module.exports = BaseView.extend({
     tagName: 'ul',
     editable: false,
     doneEditing: false,
@@ -11,15 +12,17 @@ module.exports = Backbone.View.extend({
         this.collection.on('reset', this.reset, this);
         this.collection.on('add', this.render, this);
         this.model.on('change:currentScenario', this.render, this);
+
+        BaseView.prototype.initialize.apply(this, arguments);
+
    },
 
    addItem: function (mdl, isLastOne) {
         var isEditable = isLastOne === true && this.editable === true;
         var View = isEditable ? EditableItemView : ItemView;
-        var iv = new View({model: mdl});
+        var iv = new View({model: mdl, map: this.app.map});
         this.$el.append(iv.render().$el);
 
-        iv.$(':text').focus();
 
         var isMaxSize = this.collection.length == MAX_ALLOWED;
         if (isEditable && !isMaxSize) {
