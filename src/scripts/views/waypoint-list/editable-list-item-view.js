@@ -12,6 +12,8 @@ module.exports = BaseView.extend({
 
     initialize: function () {
         geocoder = new google.maps.Geocoder();
+
+        this.on('rendered', this.postRender, this);
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
@@ -45,8 +47,6 @@ module.exports = BaseView.extend({
                 }
             });
         }
-
-
     },
 
     handleInput: function(evt) {
@@ -56,6 +56,17 @@ module.exports = BaseView.extend({
         if(evt.which == 13) {
             this.$('button').trigger('click');
         }
+    },
+
+    postRender: function () {
+        var searchBox = new google.maps.places.SearchBox(this.$(':text').get(0), {bounds:  this.map.getBounds()});
+
+        var me = this;
+        google.maps.event.addListener(this.map, 'bounds_changed', function() {
+            var bounds = me.map.getBounds();
+            searchBox.setBounds(bounds);
+          });
+        return this;
     }
 
 });

@@ -1,7 +1,5 @@
 ## File for driving the TSP solver
-
 module TSPModel
-
 
 include("tsp.jl")
 
@@ -23,8 +21,6 @@ end
 
 # Reset the model.
 function reset()
-
-	global fixedPairs = (Int64, Int64)[]
 	global tour = []
 	global fixedConstraints = []
 end

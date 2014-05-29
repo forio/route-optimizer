@@ -14,8 +14,6 @@ module TSPSolver
 
 using JuMP
 using GLPKMathProgInterface
-#using Cbc
-#using Base.Test
 
 # extractTour
 # Given a n-by-n matrix representing the solution to an undirected TSP,
@@ -30,7 +28,6 @@ function extractTour(n, sol)
     cur_city = 1
 
     while true
-    	#println("Tour: $tour")
         # Look for first arc out of current city
         for j = 1:n
             if sol[cur_city,j] >= 1-1e-6
@@ -95,7 +92,7 @@ end
 # Given a matrix of city locations, solve the TSP
 # Inputs:
 #   n       Number of cities
-#   cities  n-by-2 matrix of (x,y) city locations
+#   cities  n-by-n matrix of distancers between cities
 # Output:
 #   path    Vector with order to cities are visited in
 function buildTSP(n, dist)
@@ -126,18 +123,11 @@ function buildTSP(n, dist)
     end
 
     function subtour(cb)
-        # Optional: display tour starting at city 1
-        # println("----\nInside subtour callback")
-        # println("Current tour starting at city 1:")
-        # print(extractTour(n, getValue(x)))
-
         # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
 
         if subtour_length == n
             # This "subtour" is actually all cities, so we are done
-            println("Solution visits all cities")
-            println("----")
             return
         end
         
@@ -167,8 +157,6 @@ function buildTSP(n, dist)
         end
         
         # Add the new subtour elimination constraint we built
-        println("Adding subtour elimination cut")
-        println("----")
         addLazyConstraint(cb, arcs_from_subtour >= 2)
     end  # End function subtour
 
