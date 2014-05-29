@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         },
         connect: {
             options: {
-                port: 9000,
+                port: 8000,
                 hostname: 'localhost',
                 directory: './public'
 
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
         },
         open: {
             server: {
-                path: 'http://localhost:<%= connect.options.port %>'
+                path: 'http://0.0.0.0:<%= connect.options.port %>'
             }
         },
         browserify2: {
