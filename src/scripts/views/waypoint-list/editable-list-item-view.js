@@ -12,6 +12,8 @@ module.exports = BaseView.extend({
 
     initialize: function () {
         geocoder = new google.maps.Geocoder();
+
+        this.on('rendered', this.postRender, this);
         BaseView.prototype.initialize.apply(this, arguments);
     },
 
@@ -56,6 +58,12 @@ module.exports = BaseView.extend({
         if(evt.which == 13) {
             this.$('button').trigger('click');
         }
+    },
+
+    postRender: function () {
+        var searchBox = new google.maps.places.SearchBox(this.$(':text').get(0));
+
+        return this;
     }
 
 });
