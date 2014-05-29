@@ -1,0 +1,1 @@
+CLASSPATH=/usr/local/bin/grinder/lib/grinder.jar java -DHTTPPlugin.additionalHeaders=XAcceptVersion net.grinder.TCPProxy -console -http > grinder.py
