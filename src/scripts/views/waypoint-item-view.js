@@ -34,6 +34,7 @@ module.exports = BaseView.extend({
         var data = this.getData();
         var rendered = (this.template) ? this.template(data) : data;
         this.$el.html(rendered);
+        this.trigger('rendered');
         return this;
     }
 });
