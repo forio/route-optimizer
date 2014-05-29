@@ -38,6 +38,10 @@ module.exports = BaseView.extend({
             collection: this.model.get('original'),
             el: this.$('.maps .original')
         });
+        this.originalMapView.render();
+
+        this.map = this.originalMapView.map;
+
         this.optimizedMapView = new OptimizedMapView({
             collection: this.model.get('optimized'),
             model: this.model,
@@ -58,7 +62,8 @@ module.exports = BaseView.extend({
 
         var wpListView = new WayPointsListView({
             collection: this.model.get('original'),
-            className: 'waypoints'
+            className: 'waypoints',
+            app: this
         });
         $('#content .side').html(wpListView.render().$el);
 

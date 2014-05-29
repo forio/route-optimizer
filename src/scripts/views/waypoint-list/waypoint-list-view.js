@@ -1,5 +1,6 @@
 var ItemView = require('views/waypoint-list-item-view');
 var EditableItemView = require('views/editable-list-item-view');
+var BaseView = require('views/base-view');
 
 var MAX_ALLOWED = 9;
 module.exports = Backbone.View.extend({
@@ -8,11 +9,13 @@ module.exports = Backbone.View.extend({
    initialize: function() {
         this.collection.on('reset', this.render, this);
         this.collection.on('add', this.render, this);
+
+        BaseView.prototype.initialize.apply(this, arguments);
    },
 
    addItem: function (mdl, isEditable) {
         var View = (isEditable === true) ? EditableItemView : ItemView;
-        var iv = new View({model: mdl});
+        var iv = new View({model: mdl, map: this.app.map});
         this.$el.append(iv.render().$el);
 
         iv.$(':text').focus();
