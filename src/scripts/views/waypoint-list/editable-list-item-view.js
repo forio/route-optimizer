@@ -47,8 +47,6 @@ module.exports = BaseView.extend({
                 }
             });
         }
-
-
     },
 
     handleInput: function(evt) {
@@ -61,8 +59,13 @@ module.exports = BaseView.extend({
     },
 
     postRender: function () {
-        var searchBox = new google.maps.places.SearchBox(this.$(':text').get(0));
+        var searchBox = new google.maps.places.SearchBox(this.$(':text').get(0), {bounds:  this.map.getBounds()});
 
+        var me = this;
+        google.maps.event.addListener(this.map, 'bounds_changed', function() {
+            var bounds = me.map.getBounds();
+            searchBox.setBounds(bounds);
+          });
         return this;
     }
 
