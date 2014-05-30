@@ -6,9 +6,12 @@ var DataAPIService = require('services/epicenter-data-service');
 var MAX_ALLOWED = 9;
 module.exports = Backbone.View.extend({
     template: require('templates/save-custom'),
+    className: 'save-container',
 
     events: {
         'click .save-button': 'saveRoute',
+        'click .toggle-save-button': 'toggleSave',
+
         'keyup input': 'validateName',
     },
 
@@ -17,25 +20,32 @@ module.exports = Backbone.View.extend({
         this.model.on('change:currentScenario', this.render, this);
    },
 
-   saveRoute: function (e) {
+   toggleSave: function () {
+        if (this.$el.hasClass('editable')) {
+            this.saveRoute();
+        }
+        else {
+            this.$el.addClass('editable');
+        }
+   },
+
+   saveRoute: function () {
         // For some reason there are empty waypoints in the collection?
         var waypoints = this.collection.filter( function (wp) {
             var name = wp.get('name');
-            return name && name !== ''; 
+            return name && name !== '';
         });
         var routeName = this.$('input').val();
         var payload = { routeName: routeName, waypoints: _.map(waypoints, function (wp) { return wp.toJSON() } ) };
         DataAPIService.saveRoute(payload).done( function (collectionId) {
             window.location.hash = collectionId;
         });
-        console.log(payload);
    },
 
    validateName: function (e) {
         var val = $(e.target).val();
-        var button = this.$('.save-button');
-        var toggle = val !== '' ? button.fadeIn : button.fadeOut;
-        toggle.call(button, 'fast');
+        var validateFn = ($.trim(val) === '') ? 'removeClass' : 'addClass';
+        this.$el[validateFn]('valid');
    },
 
    render: function() {
