@@ -104,30 +104,45 @@
     }
 }
 
+
 .save-container {
-    font-size: 12px;
+    font-size: 14px;
     margin-right: 5px;
+    position: relative;
 
-    input {
-        width:100%;
-        display:block;
-        height: 30px
-    }
-
-    .save-button {
-        display: none;
+    .btn {
+        border: 0;
         background-color: $accent-optimized;
-        @include single-transition(height, 0.1s, linear, 0.1s);
-        color: white;
         cursor: pointer;
         text-align: center;
-        position: relative;
+        color: white;
 
-        h4 {
-            padding: 10px 0;
-            margin: 0;
-            height: 40px;
-        }
-    }    
+    }
+    .toggle-save-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+        @include single-transition(width, 0.1s, linear, 0.1s);
+
+
+            &:after {
+                content: 'Save Route';
+                font-size: 20px;
+            }
+
+    }
+
+    &.editable {
+       .toggle-save-button {
+           width: 40px;
+           padding: 3px;
+
+           &:after {
+               content: 'Save';
+               font-size: 14px;
+           }
+       }
+    }
 }
 
