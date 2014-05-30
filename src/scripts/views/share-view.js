@@ -1,5 +1,6 @@
 module.exports = Backbone.View.extend({
     template: require('templates/share'),
+    className: 'share-container',
 
     events: {
         'click .facebook': 'facebookShare',

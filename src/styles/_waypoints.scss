@@ -150,6 +150,14 @@
 
 .share-container {
     color: #494952;
+    font-size: 30px;
+    position: absolute;
+    bottom: 10px;
+
+    a {
+        color: #494952;
+        margin-right: 20px;
+    }
     
     i#copy-icon {
         @extend .ss-icon;
@@ -157,6 +165,24 @@
 
         &:before {
             content:'📋';
+        }
+    }
+
+    .facebook {
+        @extend .ss-icon.ss-social;
+        cursor: pointer;
+
+        &:before {
+            content:'';
+        }
+    }
+
+    .twitter {
+        @extend .ss-icon.ss-social;
+        cursor: pointer;
+
+        &:before {
+            content:'';
         }
     }
 }
