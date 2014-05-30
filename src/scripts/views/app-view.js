@@ -18,6 +18,8 @@ module.exports = BaseView.extend({
 
     initialize: function () {
         this.model.on('load', this.renderMaps, this);
+        BaseView.prototype.initialize.apply(this, arguments);
+
     },
 
     renderMaps: function () {
@@ -71,7 +73,8 @@ module.exports = BaseView.extend({
 
         var saveCustomView = new SaveCustomView({
             collection: this.model.get('original'),
-            model: this.model
+            model: this.model,
+            app: this
         });
         $('#content .side').append(saveCustomView.render().$el);
 

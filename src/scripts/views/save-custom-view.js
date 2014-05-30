@@ -1,10 +1,12 @@
 var ItemView = require('views/waypoint-list-item-view');
+var BaseView = require('views/base-view');
+
 var EditableItemView = require('views/editable-list-item-view');
 
 var DataAPIService = require('services/epicenter-data-service');
 
 var MAX_ALLOWED = 9;
-module.exports = Backbone.View.extend({
+module.exports = BaseView.extend({
     template: require('templates/save-custom'),
     className: 'save-container',
 
@@ -18,6 +20,7 @@ module.exports = Backbone.View.extend({
    initialize: function() {
         this.collection.on('add', this.render, this);
         this.model.on('change:currentScenario', this.render, this);
+        BaseView.prototype.initialize.apply(this, arguments);
    },
 
    toggleSave: function () {
@@ -37,8 +40,10 @@ module.exports = Backbone.View.extend({
         });
         var routeName = this.$('input').val();
         var payload = { routeName: routeName, waypoints: _.map(waypoints, function (wp) { return wp.toJSON() } ) };
+
+        var me = this;
         DataAPIService.saveRoute(payload).done( function (collectionId) {
-            window.location.hash = collectionId;
+            me.app.router.navigate(collectionId, {trigger: true});
         });
    },
 

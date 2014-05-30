@@ -21,26 +21,29 @@ module.exports = BaseView.extend({
 
     },
 
+    addLocationToModel: function (model, results) {
+        var location = results[0];
+        var prettyName =   location.name ? location.name :  location.formatted_address.split(',')[0];
+        model.set({
+            name: prettyName,
+            latitude: location.geometry.location.lat(),
+            longitude: location.geometry.location.lng(),
+            result: results
+        });
+    },
+
     handleDirectionComplete: function (evt) {
         evt.preventDefault();
 
         var address = this.$(':text').val();
         var me = this;
-        if (this.model.get('latitude')) {
-            this.model.trigger('change:latitude');
+        if ($.trim(address).toLowerCase() === 'forio') {
+            this.model.trigger('change:latitude'); //special casing this
         }
         else {
-            geocoder.geocode({ 'address': address}, function(results, status) {
+            geocoder.geocode({ 'address': address, bounds: this.map.getBounds() }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    var bestResult = results[0];
-
-                    var prettyName = bestResult.formatted_address.split(',')[0];
-                    me.model.set({
-                        name: prettyName,
-                        latitude: bestResult.geometry.location.lat(),
-                        longitude: bestResult.geometry.location.lng(),
-                        result: results
-                    });
+                    me.addLocationToModel(me.model, results);
                 }
                 else {
 
@@ -60,12 +63,16 @@ module.exports = BaseView.extend({
 
     postRender: function () {
         var searchBox = new google.maps.places.SearchBox(this.$(':text').get(0), {bounds:  this.map.getBounds()});
-
         var me = this;
         google.maps.event.addListener(this.map, 'bounds_changed', function() {
             var bounds = me.map.getBounds();
             searchBox.setBounds(bounds);
           });
+
+        google.maps.event.addListener(searchBox, 'places_changed', function() {
+            var places = searchBox.getPlaces();
+            me.addLocationToModel(me.model, places);
+        });
         return this;
     }
 
