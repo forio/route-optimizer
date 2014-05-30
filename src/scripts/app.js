@@ -4,16 +4,18 @@ var Optimizer = require('models/route-optimizer-model');
 
 $(function() {
     var om = new Optimizer();
-    window.om = om;
-    var app = new AppView({
-        model: om,
-        el: 'body'
-    });
-    app.render();
-
     var router = new Router({
         model: om
     });
+
+    var app = new AppView({
+        model: om,
+        el: 'body',
+        router: router
+    });
+    app.render();
+
+
 
     Backbone.history.start({ pushState: false, root: '/'});
 
