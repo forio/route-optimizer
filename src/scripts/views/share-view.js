@@ -19,11 +19,12 @@ module.exports = Backbone.View.extend({
 
     updateView: function () {
         this.isShareableRoute() ? this.$el.show() : this.$el.hide();
+        this.clipboard.setText(this.shareUrl());
     },
 
     render: function() {
         this.$el.html(this.template({
-            url: window.location.href
+            url: this.shareUrl()
         }));
 
         // ZeroClipboard custom code
@@ -35,6 +36,8 @@ module.exports = Backbone.View.extend({
             });
         });
 
+        this.clipboard = client;
+
         return this;
     },
 
@@ -42,7 +45,7 @@ module.exports = Backbone.View.extend({
         e.preventDefault();
         var baseUrl = e.target.href;
         var url = baseUrl + '?u=%url%'
-            .replace('%url%', encodeURIComponent(window.location.href));
+            .replace('%url%', encodeURIComponent(this.shareUrl()));
 
         this.openPopup(url);
     },
@@ -52,12 +55,16 @@ module.exports = Backbone.View.extend({
         var baseUrl = e.target.href;
         var url = baseUrl + '?text=%text%&url=%url%'
             .replace('%text%', encodeURIComponent('Check out my Optimized Travel Plan with Julia and Forio Epicenter'))
-            .replace('%url%', encodeURIComponent(window.location.href));
+            .replace('%url%', encodeURIComponent(this.shareUrl()));
 
         this.openPopup(url);
     },
 
     openPopup: function (url) {
         window.open(url,'sharer','width=575,height=400');
-    } 
+    },
+
+    shareUrl: function () {
+        return window.location.href;
+    }
 });
