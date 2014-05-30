@@ -148,3 +148,16 @@
     }
 }
 
+.share-container {
+    color: #494952;
+    
+    i#copy-icon {
+        @extend .ss-icon;
+        cursor: pointer;
+
+        &:before {
+            content:'📋';
+        }
+    }
+}
+
