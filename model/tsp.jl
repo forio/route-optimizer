@@ -185,7 +185,7 @@ end # end buildTSP
 
 function solveTSP(m)
     status = solve(m)
-
+    # println("Objective value: $(getObjectiveValue(m))")
     n = int(sqrt(m.numCols))
     return extractTour(n, getValue(m.dictList[1]))
 end  # end solveTSP
