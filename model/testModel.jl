@@ -81,7 +81,7 @@ for (k,v) in dist
     tic()
     # println(v)
     tour = solve(v)
-    println("Found a tour: $(TSPModel.tour)")
+    println("Instance $k, found a tour: $(TSPModel.tour)")
     toc()
     reset()
 end
