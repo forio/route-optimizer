@@ -2,7 +2,7 @@ var BaseView = require('views/base-view');
 
 Contour.export('donutTextOneValue', function (data, layer, options) {
     var val = data[0].data[0].y;
-    var text = (val !== 0) ? parseInt( val * 100, 10) + '%' : '';
+    var text = (val >= 0) ? parseInt( val * 100, 10) + '%' : '';
     var textEl = layer.append('text')
                     .attr('class', 'center-text')
                     .attr('x', 12)
@@ -29,7 +29,7 @@ module.exports = BaseView.extend({
         var optimizedVal = this.dataSource(this.optimized);
 
         var difference = optimizedVal / originalVal;
-        return difference;
+        return difference > 1 ? 1 : difference;
      },
 
     render: function () {
