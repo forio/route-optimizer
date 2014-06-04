@@ -44,7 +44,8 @@ function solve(distanceMatrix)
 
 	model = TSPSolver.buildTSP(n, distanceMatrix)
 
-	global tour = TSPSolver.solveTSP(model)
+	result = TSPSolver.solveTSP(model)
+	global tour = result - 1
 
 	record(:tour)
 	return tour
