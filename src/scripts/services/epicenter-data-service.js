@@ -9,7 +9,7 @@ module.exports = function() {
     };
 
     var apiURL = urlService.getDataApiURL(defaultParams);
-    var transport = require('services/ajax-transport-service');
+    var transport = require('services/ajax-transport-service')(apiURL);
 
     return {
         saveRoute: function (route) {

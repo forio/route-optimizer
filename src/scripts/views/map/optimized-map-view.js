@@ -21,6 +21,7 @@ module.exports = BaseView.extend({
         this.renderSelf();
         this.renderWaypoints();
         this.fitBounds();
+        this.clearRoutes();
         return this;
     }
 });

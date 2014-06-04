@@ -2,7 +2,7 @@ var BaseView = require('views/base-view');
 
 Contour.export('donutTextOneValue', function (data, layer, options) {
     var val = data[0].data[0].y;
-    var text = (val !== 0) ? parseInt( val * 100, 10) + '%' : '';
+    var text = (val >= 0) ? parseInt( val * 100, 10) + '%' : '';
     var textEl = layer.append('text')
                     .attr('class', 'center-text')
                     .attr('x', 12)
@@ -29,7 +29,7 @@ module.exports = BaseView.extend({
         var optimizedVal = this.dataSource(this.optimized);
 
         var difference = optimizedVal / originalVal;
-        return difference;
+        return difference > 1 ? 1 : difference;
      },
 
     render: function () {
@@ -47,30 +47,28 @@ module.exports = BaseView.extend({
     },
     renderChart: function(value) {
         var data = [{ x: 'Gain', y: 1- value}, { x: 'Rest', y: value }];
-        if (!this.graph) {
-            this.graph =  new Contour({
-                el: this.$('.graph').get(0),
-                chart: {
-                    width: 70,
-                    height: 70
-                },
-                pie: {
-                    piePadding: 0,
-                    innerRadius: 28,
-                    outerRadius: 35
-                    // innerRadius: 28,
-                    // outerRadius: 35
-                },
-                tooltip: {
-                    formatter: function(d) {
-                        return d.data.x + ': ' + formatter(d.data.y);
-                    }
+        var graph =  new Contour({
+            el: this.$('.graph').get(0),
+            chart: {
+                width: 70,
+                height: 70
+            },
+            pie: {
+                piePadding: 0,
+                innerRadius: 28,
+                outerRadius: 35
+                // innerRadius: 28,
+                // outerRadius: 35
+            },
+            tooltip: {
+                formatter: function(d) {
+                    return d.data.x + ': ' + formatter(d.data.y);
                 }
-            })
-            .pie();
-        }
+            }
+        })
+        .pie();
 
-        this.graph
+        graph
             .setData(data)
             .donutTextOneValue(data)
             .render();

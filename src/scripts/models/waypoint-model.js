@@ -12,6 +12,14 @@ module.exports = Backbone.Model.extend({
     getLatLong: function() {
         var myLatlng = new google.maps.LatLng(this.get('latitude'), this.get('longitude'));
         return myLatlng;
+    },
+
+    toJSON: function () {
+        return {
+            name: this.get('name'),
+            latitude: this.get('latitude'),
+            longitude: this.get('longitude'),
+        };
     }
 
 });
