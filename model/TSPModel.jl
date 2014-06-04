@@ -5,13 +5,12 @@ include("tsp.jl")
 
 using Epicenter
 
-export init,
-       solve,
-       reset
-
 global tour
 
-export tour
+export init,
+       solve,
+       reset, 
+       tour
 
 # Initialize the model. So far, this means that we need to reset the 
 # global variables.
@@ -22,7 +21,6 @@ end
 # Reset the model.
 function reset()
 	global tour = []
-	global fixedConstraints = []
 end
 
 function issquare(matrix)
@@ -46,10 +44,8 @@ function solve(distanceMatrix)
 
 	model = TSPSolver.buildTSP(n, distanceMatrix)
 
-	# Add the fixed constraints
-	# model = TSPSolver.addFixedLegs(model, fixedPairs)
-
-	global tour = TSPSolver.solveTSP(model)
+	result = TSPSolver.solveTSP(model)
+	global tour = result - 1
 
 	record(:tour)
 	return tour
