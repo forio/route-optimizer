@@ -17,9 +17,24 @@
         "symbolicons/ss-symbolicons-block.svg#SSSymboliconsBlock"
         ), "symbolicons/ss-symbolicons-block.eot");
 
+@include font-face("SSSocial", font-files(
+        "ss-social/ss-social-regular.woff",
+        "ss-social/ss-social-regular.ttf",
+        "ss-social/ss-social-regular.svg#SSSymboliconsBlock"
+        ), "ss-social/ss-social-regular.eot");
+
 .ss-icon, .ss-icon.ss-symbolicons-block,
 [class^="ss-"]:before, [class*=" ss-"]:before {
   font-family: "SSSymbolicons";
+  font-style: normal;
+  font-weight: normal;
+
+  @extend .font-legibility;
+}
+
+.ss-icon.ss-social,
+[class^="ss-"]:before, [class*=" ss-"]:before {
+  font-family: "SSSocial";
   font-style: normal;
   font-weight: normal;
 
