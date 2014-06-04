@@ -77,29 +77,19 @@ function findSubtour(n, sol)
             if !subtour[j]
                 if sol[cur_city, j] >= 1e-6
                     # Arc to unvisited city, follow it
-                    # println("From city: $cur_city to: $j")
                     cur_city = j
                     subtour[j] = true
                     found_city = true
                     subtour_length += 1
-
                     break  # Move on to next city
                 end
             end
         end
-        # println("current city: $cur_city")
-        # println(sol)
-        # println(subtour)
         if !found_city
             # We are done
             break
         end
     end
-    # println("-------------------------------")
-    # println("-------------------------------")
-    # println("-------------------------------")
-    # println("-------------------------------")    
-    # println("Returning the subtour: $subtour")
     return subtour, subtour_length
 end
 
@@ -139,9 +129,6 @@ function buildTSP(n, dist)
 
     function subtour(cb)
         # Find any set of cities in a subtour
-        # status = MathProgSolverInterface.cbgetstate(cb)
-        # println("Status: $(status)")
-
         subtour, subtour_length = findSubtour(n, getValue(x))
 
         if subtour_length == n
@@ -185,7 +172,7 @@ end # end buildTSP
 
 function solveTSP(m)
     status = solve(m)
-    # println("Objective value: $(getObjectiveValue(m))")
+    
     n = int(sqrt(m.numCols))
     return extractTour(n, getValue(m.dictList[1]))
 end  # end solveTSP
