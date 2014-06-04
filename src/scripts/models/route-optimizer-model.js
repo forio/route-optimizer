@@ -78,6 +78,7 @@ module.exports = BaseModel.extend({
                 $def.notify('drawing');
 
                 optimizedIndices.pop(); // Model returns back 0 as last item, don't need that
+                optimizedIndices = _.map(optimizedIndices, function (index) { return index - 1; } );
 
                 me.get('optimized').each(function (model, index){
                     var newOrder = _.indexOf(optimizedIndices, index);
