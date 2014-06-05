@@ -6,6 +6,7 @@
 */
 
 var urlService = require('services/epicenter-url-service');
+var DataAPIService = require('services/epicenter-data-service');
 
 module.exports = function (scenario) {
     var defaultParams = {
@@ -16,19 +17,19 @@ module.exports = function (scenario) {
 
     return {
         fetch: function (collection, options) {
-            collection.url = urlService.getDataApiURL(defaultParams);
-            var oldParse = collection.parse;
-            collection.parse = function (data) {
-                return data.waypoints;
-            };
-            return collection.fetch(options).done( function (data) {
-                // Play nice with other loaders that do not require a custom parser
-                collection.parse = oldParse;
+            var done = options.done;
+            var model = options.model;
+            //Second argument needed to be passed
+            model.trigger('routeload');
+
+            return DataAPIService.getRoute(scenario).done( function (data) {
+                collection.reset(data.waypoints, options);
+                if (done) done(data);
+
                 if (options.model) {
                     options.model.set('routeName', data.routeName);
                 }
-            }).fail( function (error) {
-                collection.parse = oldParse;
+                model.trigger('hideloading');
             });
         }
     };
