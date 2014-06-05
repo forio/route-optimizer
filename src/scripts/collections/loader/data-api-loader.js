@@ -26,9 +26,7 @@ module.exports = function (scenario) {
                 collection.reset(data.waypoints, options);
                 if (done) done(data);
 
-                if (options.model) {
-                    options.model.set('routeName', data.routeName);
-                }
+                model.set('routeName', data.routeName);
                 model.trigger('hideloading');
             });
         }

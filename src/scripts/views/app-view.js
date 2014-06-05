@@ -13,6 +13,7 @@ var Optimizer = require('models/route-optimizer-model');
 var BaseView = require('views/base-view');
 var SaveCustomView = require('views/save-custom-view');
 var ShareView = require('views/share-view');
+var LoadingView = require('views/loading-view');
 
 module.exports = BaseView.extend({
     template: require('templates/app'),
@@ -78,6 +79,11 @@ module.exports = BaseView.extend({
             app: this
         });
         $('#content .side').append(saveCustomView.render().$el);
+
+        var loadingView = new LoadingView({
+            model: this.model
+        });
+        $('#content .side').append(loadingView.render().$el);
 
         var shareView = new ShareView({
             model: this.model

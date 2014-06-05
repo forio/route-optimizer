@@ -47,6 +47,7 @@ module.exports = BaseModel.extend({
 
 
     load: function () {
+        this.get('original').reset();
         var dataset = this.get('currentScenario');
         var factory = new WaypointLoader();
         var loader = factory.loaderFactory(dataset);
