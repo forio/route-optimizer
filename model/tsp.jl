@@ -68,40 +68,26 @@ function findSubtour(n, sol)
     while true
         # Find next node that we haven't yet visited
         found_city = false
-        if rand() < 0.5
-            range = n:-1:1
-        else
-            range = 1:n
-        end
-        for j in range
+        for j in 1:n
             if !subtour[j]
-                if sol[cur_city, j] >= 1e-6
+                if sol[cur_city, j] >= 1-1e-6
                     # Arc to unvisited city, follow it
-                    # println("From city: $cur_city to: $j")
                     cur_city = j
                     subtour[j] = true
                     found_city = true
                     subtour_length += 1
-
                     break  # Move on to next city
                 end
             end
         end
-        # println("current city: $cur_city")
-        # println(sol)
-        # println(subtour)
         if !found_city
             # We are done
             break
         end
     end
-    # println("-------------------------------")
-    # println("-------------------------------")
-    # println("-------------------------------")
-    # println("-------------------------------")    
-    # println("Returning the subtour: $subtour")
     return subtour, subtour_length
 end
+
 
 # solveTSP
 # Given a matrix of city locations, solve the TSP
@@ -138,10 +124,13 @@ function buildTSP(n, dist)
     end
 
     function subtour(cb)
-        # Find any set of cities in a subtour
-        # status = MathProgSolverInterface.cbgetstate(cb)
-        # println("Status: $(status)")
+        # Check for integer solution, if not, return before adding constraint
+        integer_solution = check_integrality(n, getValue(x))
+        if !integer_solution
+            return
+        end
 
+        # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
 
         if subtour_length == n
@@ -189,5 +178,17 @@ function solveTSP(m)
     n = int(sqrt(m.numCols))
     return extractTour(n, getValue(m.dictList[1]))
 end  # end solveTSP
+
+# Determines if the current solution is within 1e-6 of integrality
+function check_integrality(n, sol)
+    for i in 1:n
+        for j in 1:n
+            if abs(sol[i,j] - integer(sol[i,j])) > 1e-6
+                return false
+            end
+        end
+    end
+    return true
+end
 
 end

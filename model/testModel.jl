@@ -9,13 +9,13 @@ include("testinputs.jl")
 function run_tests()
   # Initialize the model
   init()
-
+  setup_distance()
   # Solve, print tour found
   for (k,v) in dist
       tic()
       # println(v)
       tour = solve(v)
-      println("Instance $k, found a tour: $(TSPModel.tour)")
+      println("Instance $k, found a tour: $tour")
       toc()
       reset()
   end
