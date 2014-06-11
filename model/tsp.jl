@@ -14,6 +14,7 @@ module TSPSolver
 
 using JuMP
 using GLPKMathProgInterface
+using CPLEX
 
 # extractTour
 # Given a n-by-n matrix representing the solution to an undirected TSP,
@@ -99,7 +100,8 @@ end
 function buildTSP(n, dist)
 
     # Create a model that will use GLPK to solve
-    m = Model(solver=GLPKSolverMIP())
+    # m = Model(solver=GLPKSolverMIP())
+    m = Model(solver=CplexSolver())
 
     # x[i,j] is 1 iff we travel between i and j, 0 otherwise
     # Although we define all n^2 variables, we will only use
