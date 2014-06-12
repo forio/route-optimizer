@@ -35,7 +35,7 @@ The hostname of the load test target.
 Type: `String`
 Default: `"showcase/route-optimizer"`
 
-{{account}}/{{project}} segment of the application url.
+`{{account}}`/`{{project}}` segment of the application url.
 
 
 #### LOAD_API_HOST
