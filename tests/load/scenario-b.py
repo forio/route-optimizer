@@ -12,9 +12,13 @@ connectionDefaults = HTTPPluginControl.getConnectionDefaults()
 httpUtilities = HTTPPluginControl.getHTTPUtilities()
 
 SECURE = os.getenv('LOAD_SECURE', "yes") == "yes"
+PROTOCOL = ('https' if SECURE else 'http')
 APP_HOST = os.getenv('LOAD_APP_HOST', 'forio.com')
-APP_PATH = os.getenv('LOAD_APP_PATH', 'showcase/route-optimizer')
+APP_ACCOUNT = os.getenv('LOAD_APP_ACCOUNT', 'showcase')
+APP_PROJECT = os.getenv('LOAD_APP_PROJECT', 'route-optimizer')
+APP_PATH = APP_ACCOUNT + '/' + APP_PROJECT
 API_HOST = os.getenv('LOAD_API_HOST', 'api.forio.com')
+STATIC_URL = PROTOCOL + '://' + APP_HOST
 
 staticHeaders = [
   NVPair('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'),
@@ -22,13 +26,22 @@ staticHeaders = [
   NVPair('Accept-Language', 'en-US,en;q=0.8'),
   NVPair('Cache-Control', 'no-cache'),
   NVPair('Pragma', 'no-cache'),
+  NVPair('Host', APP_HOST),
+  NVPair('Referer', STATIC_URL),
   NVPair('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36'),
   NVPair('Connection', 'keep-alive')
 ]
 
 apiHeaders = [
-  NVPair('Content-Type', 'application/json; charset=UTF-8'),
-  NVPair('Accept', 'application/json, text/javascript, */*; q=0.01')
+  NVPair('Accept', 'application/json, text/javascript, */*; q=0.01'),
+  NVPair('Accept-Encoding', 'gzip,deflate,sdch'),
+  NVPair('Accept-Language', 'en-US,en;q=0.8'),
+  NVPair('Connection', 'keep-alive'),
+  NVPair('Content-Type', 'application/json'),
+  NVPair('Host', API_HOST),
+  NVPair('Origin', STATIC_URL),
+  NVPair('Referer', STATIC_URL),
+  NVPair('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36')
 ]
 
 matcher = re.compile('.*"id":\s*"([^"]+)".*')
@@ -43,9 +56,8 @@ def createRequest(test, url, headers=staticHeaders):
 # These definitions at the top level of the file are evaluated once,
 # when the worker process is started.
 
-protocol = ('https' if SECURE else 'http')
-url0 = protocol + '://' + APP_HOST
-url1 = protocol + '://' + API_HOST
+url0 = STATIC_URL
+url1 = PROTOCOL + '://' + API_HOST
 
 request101 = createRequest(Test(101, 'GET /'), url0)
 
@@ -203,7 +215,7 @@ class TestRunner:
   def page13(self):
     """POST run (request 1301)."""
     result = request1301.POST('/model/run',
-      '{\"account\":\"showcase\",\"project\":\"route-optimizer\",\"model\":\"TSPModel.jl\"}')
+      '{\"account\":\"' + APP_ACCOUNT + '\",\"project\":\"' + APP_PROJECT + '\",\"model\":\"TSPModel.jl\"}')
 
     return result
 

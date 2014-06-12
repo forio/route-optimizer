@@ -31,11 +31,17 @@ Default: `"forio.com"`
 
 The hostname of the load test target.
 
-#### LOAD_APP_PATH
+#### LOAD_APP_ACCOUNT
 Type: `String`
-Default: `"showcase/route-optimizer"`
+Default: `"showcase"`
 
-`{{account}}`/`{{project}}` segment of the application url.
+The account for the application.
+
+#### LOAD_APP_PROJECT
+Type: `String`
+Default: `"route-optimizer"`
+
+The project for the application.
 
 
 #### LOAD_API_HOST
