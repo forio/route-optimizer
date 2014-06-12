@@ -9,6 +9,16 @@ from HTTPClient import NVPair
 connectionDefaults = HTTPPluginControl.getConnectionDefaults()
 httpUtilities = HTTPPluginControl.getHTTPUtilities()
 
+staticHeaders = [
+  NVPair('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'),
+  NVPair('Accept-Encoding', 'gzip,deflate,sdch'),
+  NVPair('Accept-Language', 'en-US,en;q=0.8'),
+  NVPair('Cache-Control', 'no-cache'),
+  NVPair('Pragma', 'no-cache'),
+  NVPair('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36'),
+  NVPair('Connection', 'keep-alive')
+]
+
 apiHeaders = [
   NVPair('Content-Type', 'application/json; charset=UTF-8'),
   NVPair('Accept', 'application/json, text/javascript, */*; q=0.01')
@@ -20,7 +30,7 @@ matcher = re.compile('.*"id":\s*"([^"]+)".*')
 # To use a proxy server, uncomment the next line and set the host and port.
 # connectionDefaults.setProxyServer("localhost", 8001)
 
-def createRequest(test, url, headers=None):
+def createRequest(test, url, headers=staticHeaders):
     """Create an instrumented HTTPRequest."""
     request = HTTPRequest(url=url)
     if headers: request.headers=headers
@@ -71,11 +81,11 @@ request1101 = createRequest(Test(1101, 'GET ss-symbolicons-block.woff'), url0)
 
 request1102 = createRequest(Test(1102, 'GET marker-sprite-shadow.png'), url0)
 
-request1201 = createRequest(Test(1201, 'OPTIONS run'), url1)
+request1201 = createRequest(Test(1201, 'OPTIONS run'), url1, apiHeaders)
 
 request1301 = createRequest(Test(1301, 'POST run'), url1, apiHeaders)
 
-request1401 = createRequest(Test(1401, 'OPTIONS {{run.id}}'), url1)
+request1401 = createRequest(Test(1401, 'OPTIONS {{run.id}}'), url1, apiHeaders)
 
 request1501 = createRequest(Test(1501, 'POST {{run.id}}'), url1, apiHeaders)
 
@@ -94,7 +104,7 @@ class TestRunner:
   # A method for each recorded page.
   def page1(self):
     """GET / (requests 101-108)."""
-    result = request101.GET('/')
+    result = request101.GET('/app/showcase/route-optimizer')
     self.token_family = \
       httpUtilities.valueFromBodyURI('family') # 'Open+Sans:300'
 
