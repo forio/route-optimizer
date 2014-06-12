@@ -125,7 +125,7 @@ function buildTSP(n, dist)
 
     # Make x_ij and x_ji be the same thing (undirectional)
     for i = 1:2n
-            for j = (i+1):2n
+        for j = (i+1):2n
             @addConstraint(m, x[i,j] == x[j,i])
         end
     end
