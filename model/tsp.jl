@@ -89,6 +89,18 @@ function findSubtour(n, sol)
     return subtour, subtour_length
 end
 
+function convert_atsp_distance(n, dist)
+    atsp_dist = zeros(2n, 2n)
+    for i in 1:n
+        dist[i,i] = 0.0
+    end
+
+    atsp_dist[(n+1:2n),1:n] = dist
+    atsp_dist[1:n,(n+1:2n)] = dist
+
+    return atsp_dist
+end
+
 
 # solveTSP
 # Given a matrix of city locations, solve the TSP
@@ -98,7 +110,7 @@ end
 # Output:
 #   path    Vector with order to cities are visited in
 function buildTSP(n, dist)
-
+    dist = convert_atsp_distance(n, dist)
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
@@ -106,36 +118,46 @@ function buildTSP(n, dist)
     # x[i,j] is 1 iff we travel between i and j, 0 otherwise
     # Although we define all n^2 variables, we will only use
     # the upper triangle
-    @defVar(m, x[1:n,1:n], Bin)
+    @defVar(m, x[1:2n,1:2n], Bin)
 
     # Minimize length of tour
-    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:n,j=i:n})
+    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:2n,j=i:2n})
 
     # Make x_ij and x_ji be the same thing (undirectional)
-    # Don't allow self-arcs
-    for i = 1:n
-        @addConstraint(m, x[i,i] == 0)
-        for j = (i+1):n
+    for i = 1:2n
+            for j = (i+1):2n
             @addConstraint(m, x[i,j] == x[j,i])
         end
     end
 
-    # We must enter and leave every city once and only once
+    # Don't allow self-arcs or moving between non-prime to prime
     for i = 1:n
-        @addConstraint(m, sum{x[i,j], j=1:n} == 2)
+        for j = 1:n
+            @addConstraint(m, x[i,j] == 0)
+        end
+    end
+    for i = (n+1):2n
+        for j = (n+1):2n
+            @addConstraint(m, x[i,j] == 0)
+        end
+    end
+
+    # We must enter and leave every city once and only once
+    for i = 1:2n
+        @addConstraint(m, sum{x[i,j], j=1:2n} == 2)
     end
 
     function subtour(cb)
         # Check for integer solution, if not, return before adding constraint
-        integer_solution = check_integrality(n, getValue(x))
+        integer_solution = check_integrality(2n, getValue(x))
         if !integer_solution
             return
         end
 
         # Find any set of cities in a subtour
-        subtour, subtour_length = findSubtour(n, getValue(x))
+        subtour, subtour_length = findSubtour(2n, getValue(x))
 
-        if subtour_length == n
+        if subtour_length == 2n
             # This "subtour" is actually all cities, so we are done
             return
         end
@@ -144,14 +166,14 @@ function buildTSP(n, dist)
         # We will build it up piece-by-piece
         arcs_from_subtour = AffExpr()
         
-        for i = 1:n
+        for i = 1:2n
             if !subtour[i]
                 # If this city isn't in subtour, skip it
                 continue
             end
             # Want to include all arcs from this city, which is in
             # the subtour, to all cities not in the subtour
-            for j = 1:n
+            for j = 1:2n
                 if i == j
                     # Self-arc
                     continue
@@ -176,7 +198,7 @@ end # end buildTSP
 
 function solveTSP(m)
     status = solve(m)
-    # println("Objective value: $(getObjectiveValue(m))")
+    println("Objective value: $(getObjectiveValue(m)), status: $status")
     n = int(sqrt(m.numCols))
     return extractTour(n, getValue(m.dictList[1]))
 end  # end solveTSP
