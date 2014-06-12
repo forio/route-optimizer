@@ -189,10 +189,10 @@ end
 
 function setup_distance()
 	global dist
-	for file in tsp_files
-		distances = read_tsp_file(file)
-		dist[file] = distances
-	end
+	# for file in tsp_files
+	# 	distances = read_tsp_file(file)
+	# 	dist[file] = distances
+	# end
 
 rand_pos =[6.239665319389998 22.530743130506735;
  46.0640564779129 27.75465168508613;
