@@ -11,17 +11,29 @@ module.exports = BaseView.extend({
         'business-deliver': 'Business Delivery'
     },
 
+    customRoute: {
+
+    },
+
     events: {
         'change select': 'handleScenarioSelect'
     },
 
     initialize: function () {
         this.model.on('change:currentScenario', this.select, this);
+        this.model.on('change:routeName', this.addCustomRoute, this);
     },
 
     handleScenarioSelect: function (evt) {
         var url = $(evt.target).val();
         window.location.hash = url;
+    },
+
+    addCustomRoute: function (model) {
+        var currScenario = model.get('currentScenario');
+        this.customRoute = {};
+        this.customRoute[currScenario] = model.get('routeName');
+        this.render();
     },
 
     select: function (model) {
@@ -30,7 +42,7 @@ module.exports = BaseView.extend({
 
     render: function() {
         this.$el.html(this.template({
-            scenarios: this.scenarios,
+            scenarios: $.extend(this.customRoute, this.scenarios),
             selected: this.model.get('currentScenario')
         }));
         return this;

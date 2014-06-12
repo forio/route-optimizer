@@ -52,9 +52,11 @@ module.exports = BaseModel.extend({
         var loader = factory.loaderFactory(dataset);
 
         var me = this;
-        loader.fetch(this.get('original'), {reset: true}).then(function (data) {
-            me.get('optimized').reset(data, {silent: true});
-            me.trigger('load', data);
+        loader.fetch(this.get('original'), {reset: true, model: this}).then(function (data) {
+            // Don't use data directly because some loaders parse the incoming data, use the original collection data instead
+            var waypoints = me.get('original').toArray();
+            me.get('optimized').reset(waypoints);
+            me.trigger('load', waypoints);
             me.set('generated', false);
         });
     },

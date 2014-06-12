@@ -11,12 +11,16 @@ var ScenariosView = require('views/scenarios-view');
 
 var Optimizer = require('models/route-optimizer-model');
 var BaseView = require('views/base-view');
+var SaveCustomView = require('views/save-custom-view');
+var ShareView = require('views/share-view');
 
 module.exports = BaseView.extend({
     template: require('templates/app'),
 
     initialize: function () {
         this.model.on('load', this.renderMaps, this);
+        BaseView.prototype.initialize.apply(this, arguments);
+
     },
 
     renderMaps: function () {
@@ -38,6 +42,10 @@ module.exports = BaseView.extend({
             collection: this.model.get('original'),
             el: this.$('.maps .original')
         });
+        this.originalMapView.render();
+
+        this.map = this.originalMapView.map;
+
         this.optimizedMapView = new OptimizedMapView({
             collection: this.model.get('optimized'),
             model: this.model,
@@ -58,9 +66,23 @@ module.exports = BaseView.extend({
 
         var wpListView = new WayPointsListView({
             collection: this.model.get('original'),
-            className: 'waypoints'
+            model: this.model,
+            className: 'waypoints',
+            app: this
         });
         $('#content .side').html(wpListView.render().$el);
+
+        var saveCustomView = new SaveCustomView({
+            collection: this.model.get('original'),
+            model: this.model,
+            app: this
+        });
+        $('#content .side').append(saveCustomView.render().$el);
+
+        var shareView = new ShareView({
+            model: this.model
+        });
+        $('#content .side').append(shareView.render().$el);
 
         var cv = new CodeView({
             el: $('#how-we-did-it .main')

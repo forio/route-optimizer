@@ -9,6 +9,7 @@ $sidebarPadding: 30px;
         width: $sidebarwidth;
         float: left;
         padding-left: $sidebarPadding;
+        position: relative;
     }
     .main {
         width: calc(100% - #{$sidebarwidth});

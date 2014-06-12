@@ -14,6 +14,7 @@ module TSPSolver
 
 using JuMP
 using GLPKMathProgInterface
+# using CPLEX
 
 # extractTour
 # Given a n-by-n matrix representing the solution to an undirected TSP,
@@ -68,9 +69,9 @@ function findSubtour(n, sol)
     while true
         # Find next node that we haven't yet visited
         found_city = false
-        for j = 1:n
+        for j in 1:n
             if !subtour[j]
-                if sol[cur_city, j] >= 1 - 1e-6
+                if sol[cur_city, j] >= 1-1e-6
                     # Arc to unvisited city, follow it
                     cur_city = j
                     subtour[j] = true
@@ -88,6 +89,7 @@ function findSubtour(n, sol)
     return subtour, subtour_length
 end
 
+
 # solveTSP
 # Given a matrix of city locations, solve the TSP
 # Inputs:
@@ -99,6 +101,7 @@ function buildTSP(n, dist)
 
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
+    # m = Model(solver=CplexSolver())
 
     # x[i,j] is 1 iff we travel between i and j, 0 otherwise
     # Although we define all n^2 variables, we will only use
@@ -123,6 +126,12 @@ function buildTSP(n, dist)
     end
 
     function subtour(cb)
+        # Check for integer solution, if not, return before adding constraint
+        integer_solution = check_integrality(n, getValue(x))
+        if !integer_solution
+            return
+        end
+
         # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
 
@@ -130,7 +139,7 @@ function buildTSP(n, dist)
             # This "subtour" is actually all cities, so we are done
             return
         end
-        
+
         # Subtour found - add lazy constraint
         # We will build it up piece-by-piece
         arcs_from_subtour = AffExpr()
@@ -155,7 +164,7 @@ function buildTSP(n, dist)
                 end
             end
         end
-        
+
         # Add the new subtour elimination constraint we built
         addLazyConstraint(cb, arcs_from_subtour >= 2)
     end  # End function subtour
@@ -166,10 +175,22 @@ function buildTSP(n, dist)
 end # end buildTSP
 
 function solveTSP(m)
-    solve(m)
-
+    status = solve(m)
+    # println("Objective value: $(getObjectiveValue(m))")
     n = int(sqrt(m.numCols))
     return extractTour(n, getValue(m.dictList[1]))
 end  # end solveTSP
+
+# Determines if the current solution is within 1e-6 of integrality
+function check_integrality(n, sol)
+    for i in 1:n
+        for j in 1:n
+            if abs(sol[i,j] - integer(sol[i,j])) > 1e-6
+                return false
+            end
+        end
+    end
+    return true
+end
 
 end
