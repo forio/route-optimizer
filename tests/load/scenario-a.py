@@ -1,6 +1,7 @@
 # The Grinder 3.11
 # HTTP script recorded by TCPProxy at May 29, 2014 3:12:48 PM
 
+import os
 from net.grinder.script import Test
 from net.grinder.script.Grinder import grinder
 from net.grinder.plugin.http import HTTPPluginControl, HTTPRequest
@@ -8,10 +9,22 @@ from HTTPClient import NVPair
 connectionDefaults = HTTPPluginControl.getConnectionDefaults()
 httpUtilities = HTTPPluginControl.getHTTPUtilities()
 
-# To use a proxy server, uncomment the next line and set the host and port.
-# connectionDefaults.setProxyServer("localhost", 8001)
+SECURE = os.getenv('LOAD_SECURE', "yes") == "yes"
+APP_HOST = os.getenv('LOAD_APP_HOST', 'forio.com')
+APP_PATH = os.getenv('LOAD_APP_PATH', 'showcase/route-optimizer')
+API_HOST = os.getenv('LOAD_API_HOST', 'api.forio.com')
 
-def createRequest(test, url, headers=None):
+staticHeaders = [
+  NVPair('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'),
+  NVPair('Accept-Encoding', 'gzip,deflate,sdch'),
+  NVPair('Accept-Language', 'en-US,en;q=0.8'),
+  NVPair('Cache-Control', 'no-cache'),
+  NVPair('Pragma', 'no-cache'),
+  NVPair('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36'),
+  NVPair('Connection', 'keep-alive')
+]
+
+def createRequest(test, url, headers=staticHeaders):
     """Create an instrumented HTTPRequest."""
     request = HTTPRequest(url=url)
     if headers: request.headers=headers
@@ -21,7 +34,8 @@ def createRequest(test, url, headers=None):
 # These definitions at the top level of the file are evaluated once,
 # when the worker process is started.
 
-url0 = 'http://localhost:9002'
+protocol = ('https' if SECURE else 'http')
+url0 = protocol + '://' + APP_HOST
 
 request101 = createRequest(Test(101, 'GET /'), url0)
 
@@ -68,88 +82,88 @@ class TestRunner:
   # A method for each recorded page.
   def page1(self):
     """GET / (requests 101-108)."""
-    result = request101.GET('/')
+    result = request101.GET('/app/' + APP_PATH)
     self.token_family = \
       httpUtilities.valueFromBodyURI('family') # 'Open+Sans:300'
 
     grinder.sleep(173)
-    request102.GET('/vendor/jquery/dist/jquery.min.js')
+    request102.GET('/app/' + APP_PATH + '/vendor/jquery/dist/jquery.min.js')
 
-    request103.GET('/vendor/lodash/dist/lodash.min.js')
+    request103.GET('/app/' + APP_PATH + '/vendor/lodash/dist/lodash.min.js')
 
-    request104.GET('/vendor/d3/d3.min.js')
+    request104.GET('/app/' + APP_PATH + '/vendor/d3/d3.min.js')
 
-    request105.GET('/vendor/backbone/backbone.js')
+    request105.GET('/app/' + APP_PATH + '/vendor/backbone/backbone.js')
 
-    request106.GET('/vendor/contour/dist/contour.min.js')
+    request106.GET('/app/' + APP_PATH + '/vendor/contour/dist/contour.min.js')
 
-    request107.GET('/scripts/app.js')
+    request107.GET('/app/' + APP_PATH + '/scripts/app.js')
 
     grinder.sleep(68)
-    request108.GET('/styles/main.css')
+    request108.GET('/app/' + APP_PATH + '/styles/main.css')
 
     return result
 
   def page2(self):
     """GET epicenter-logo.svg (request 201)."""
-    result = request201.GET('/styles/assets/logos/epicenter-logo.svg')
+    result = request201.GET('/app/' + APP_PATH + '/styles/assets/logos/epicenter-logo.svg')
 
     return result
 
   def page3(self):
     """GET mandelbrot-logo.svg (request 301)."""
-    result = request301.GET('/styles/assets/logos/mandelbrot-logo.svg')
+    result = request301.GET('/app/' + APP_PATH + '/styles/assets/logos/mandelbrot-logo.svg')
 
     return result
 
   def page4(self):
     """GET contour-logo.svg (request 401)."""
-    result = request401.GET('/styles/assets/logos/contour-logo.svg')
+    result = request401.GET('/app/' + APP_PATH + '/styles/assets/logos/contour-logo.svg')
 
     return result
 
   def page5(self):
     """GET julia.svg (request 501)."""
-    result = request501.GET('/styles/assets/logos/julia.svg')
+    result = request501.GET('/app/' + APP_PATH + '/styles/assets/logos/julia.svg')
 
     return result
 
   def page6(self):
     """GET opensource-logo.svg (request 601)."""
-    result = request601.GET('/styles/assets/logos/opensource-logo.svg')
+    result = request601.GET('/app/' + APP_PATH + '/styles/assets/logos/opensource-logo.svg')
 
     return result
 
   def page7(self):
     """GET map.svg (request 701)."""
-    result = request701.GET('/styles/assets/logos/map.svg')
+    result = request701.GET('/app/' + APP_PATH + '/styles/assets/logos/map.svg')
 
     return result
 
   def page8(self):
     """GET logo-white.svg (request 801)."""
-    result = request801.GET('/styles/assets/logo-white.svg')
+    result = request801.GET('/app/' + APP_PATH + '/styles/assets/logo-white.svg')
 
     return result
 
   def page9(self):
     """GET logo.svg (request 901)."""
-    result = request901.GET('/styles/assets/logo.svg')
+    result = request901.GET('/app/' + APP_PATH + '/styles/assets/logo.svg')
 
     return result
 
   def page10(self):
     """GET book-crawl.json (request 1001)."""
-    result = request1001.GET('/data/book-crawl.json')
+    result = request1001.GET('/app/' + APP_PATH + '/data/book-crawl.json')
 
     return result
 
   def page11(self):
     """GET ss-symbolicons-block.woff (requests 1101-1102)."""
-    result = request1101.GET('/styles/assets/fonts/symbolicons/ss-symbolicons-block.woff')
+    result = request1101.GET('/app/' + APP_PATH + '/styles/assets/fonts/symbolicons/ss-symbolicons-block.woff')
 
     grinder.sleep(715)
-    request1102.GET('/styles/assets/marker-sprite-shadow.png')
+    request1102.GET('/app/' + APP_PATH + '/styles/assets/marker-sprite-shadow.png')
 
     return result
 
