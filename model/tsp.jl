@@ -90,12 +90,13 @@ function findSubtour(n, sol)
 end
 
 function convert_atsp_distance(n, dist)
-    atsp_dist = zeros(2n, 2n)
     for i in 1:n
         dist[i,i] = 0.0
     end
 
-    atsp_dist[(n+1:2n),1:n] = dist
+    atsp_dist = zeros(2n, 2n)
+
+    atsp_dist[(n+1:2n),1:n] = dist'
     atsp_dist[1:n,(n+1:2n)] = dist
 
     return atsp_dist
@@ -111,7 +112,7 @@ end
 #   path    Vector with order to cities are visited in
 function buildTSP(n, dist)
     dist = convert_atsp_distance(n, dist)
-    println("Is new distance symmetric? $(issym(distances))")
+    println("Is new distance symmetric? $(issym(dist))")
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
