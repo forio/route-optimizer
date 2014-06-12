@@ -192,7 +192,6 @@ function setup_distance()
 	for file in tsp_files
 		distances = read_tsp_file(file)
 		dist[file] = distances
-    println(distances)
 	end
 
 rand_pos =[6.239665319389998 22.530743130506735;

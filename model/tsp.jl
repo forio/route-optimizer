@@ -111,6 +111,7 @@ end
 #   path    Vector with order to cities are visited in
 function buildTSP(n, dist)
     dist = convert_atsp_distance(n, dist)
+    println("Is new distance symmetric? $(issym(distances))")
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
