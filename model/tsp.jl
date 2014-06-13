@@ -25,6 +25,7 @@ using GLPKMathProgInterface
 # Output:
 #  tour     n+1 length vector of tour, starting and ending at 1
 function extractTour(n, sol)
+    println(sol)
     tour = [1]  # Start at city 1 always
     cur_city = 1
 
@@ -36,7 +37,7 @@ function extractTour(n, sol)
                 push!(tour, j)
                 # Don't ever use this arc again
                 sol[cur_city, j] = 0.0
-                sol[j, cur_city] = 0.0
+                # sol[j, cur_city] = 0.0
                 # Move to next city
                 cur_city = j
                 break
@@ -96,8 +97,8 @@ function convert_atsp_distance(n, dist)
 
     atsp_dist = zeros(2n, 2n)
 
-    atsp_dist[(n+1:2n),1:n] = dist'
     atsp_dist[1:n,(n+1:2n)] = dist
+    atsp_dist[(n+1:2n),1:n] = dist'
 
     return atsp_dist
 end
@@ -111,8 +112,8 @@ end
 # Output:
 #   path    Vector with order to cities are visited in
 function buildTSP(n, dist)
-    dist = convert_atsp_distance(n, dist)
-    println("Is new distance symmetric? $(issym(dist))")
+    # dist = convert_atsp_distance(n, dist)
+    
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
@@ -120,46 +121,58 @@ function buildTSP(n, dist)
     # x[i,j] is 1 iff we travel between i and j, 0 otherwise
     # Although we define all n^2 variables, we will only use
     # the upper triangle
-    @defVar(m, x[1:2n,1:2n], Bin)
+    @defVar(m, x[1:n,1:n], Bin)
 
     # Minimize length of tour
-    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:2n,j=i:2n})
+    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:n,j=i:n})
 
     # Make x_ij and x_ji be the same thing (undirectional)
-    for i = 1:2n
-        for j = (i+1):2n
-            @addConstraint(m, x[i,j] == x[j,i])
-        end
-    end
+    # for i = 1:2n
+    #     for j = (i+1):2n
+    #         @addConstraint(m, x[i,j] == x[j,i])
+    #     end
+    # end
 
     # Don't allow self-arcs or moving between non-prime to prime
     for i = 1:n
-        for j = 1:n
-            @addConstraint(m, x[i,j] == 0)
-        end
+        @addConstraint(m, x[i,i] == 1)
     end
-    for i = (n+1):2n
-        for j = (n+1):2n
-            @addConstraint(m, x[i,j] == 0)
-        end
-    end
+    # for i = 1:n
+    #     for j = 1:n
+    #         @addConstraint(m, x[i,j] == 0)
+    #     end
+    # end
+    # for i = (n+1):n
+    #     for j = (n+1):2n
+    #         @addConstraint(m, x[i,j] == 0)
+    #     end
+    # end
 
     # We must enter and leave every city once and only once
-    for i = 1:2n
-        @addConstraint(m, sum{x[i,j], j=1:2n} == 2)
+    # for i = 1:2n
+    #     @addConstraint(m, sum{x[i,j], j=1:2n} == 2)
+    # end
+    for i = 1:n
+        @addConstraint(m, sum{x[i,j], j=1:n} == 1)
+    end
+    for i = 1:n
+        @addConstraint(m, sum{x[j,i], j=1:n} == 1)
     end
 
+
     function subtour(cb)
+        println("Subtour callback")
         # Check for integer solution, if not, return before adding constraint
-        integer_solution = check_integrality(2n, getValue(x))
+        integer_solution = check_integrality(n, getValue(x))
         if !integer_solution
+            println("Not integer, returning")
             return
         end
 
         # Find any set of cities in a subtour
-        subtour, subtour_length = findSubtour(2n, getValue(x))
-
-        if subtour_length == 2n
+        subtour, subtour_length = findSubtour(n, getValue(x))
+        if subtour_length == n
+            println("Found a subtour of length $(n)")
             # This "subtour" is actually all cities, so we are done
             return
         end
@@ -167,15 +180,15 @@ function buildTSP(n, dist)
         # Subtour found - add lazy constraint
         # We will build it up piece-by-piece
         arcs_from_subtour = AffExpr()
-        
-        for i = 1:2n
+
+        for i = 1:n
             if !subtour[i]
                 # If this city isn't in subtour, skip it
                 continue
             end
             # Want to include all arcs from this city, which is in
             # the subtour, to all cities not in the subtour
-            for j = 1:2n
+            for j = 1:n
                 if i == j
                     # Self-arc
                     continue
@@ -184,13 +197,14 @@ function buildTSP(n, dist)
                     continue
                 else
                     # j isn't in subtour
-                    arcs_from_subtour += x[i,j]
+                    arcs_from_subtour += x[i,j] + x[j,i]
                 end
             end
         end
 
         # Add the new subtour elimination constraint we built
-        addLazyConstraint(cb, arcs_from_subtour >= 2)
+        addLazyConstraint(cb, arcs_from_subtour >= 1)
+        # println("Adding $arcs_from_subtour")
     end  # End function subtour
 
     # Solve the problem with our cut generator
@@ -202,14 +216,28 @@ function solveTSP(m)
     status = solve(m)
     println("Objective value: $(getObjectiveValue(m)), status: $status")
     n = int(sqrt(m.numCols))
-    return extractTour(n, getValue(m.dictList[1]))
+    tour = extractTour(n, getValue(m.dictList[1]))
+    println(tour)
+    # tour = convert_to_symmetric(tour) 
+    return tour
 end  # end solveTSP
+
+# Convert the Asymmetric solution with dummy cities back to the original
+function convert_to_symmetric(tour)
+    tour = tour[1:2:end-1]
+    push!(tour, 1)
+    return tour
+end
 
 # Determines if the current solution is within 1e-6 of integrality
 function check_integrality(n, sol)
     for i in 1:n
         for j in 1:n
-            if abs(sol[i,j] - integer(sol[i,j])) > 1e-6
+            if isnan(sol[i,j])
+                sol[i,j] = 1.0
+            end
+            if abs(sol[i,j] - int(sol[i,j])) > 1e-6
+                println("Not integer, $(sol[i,j]) and $(integer(sol[i,j]))")
                 return false
             end
         end
