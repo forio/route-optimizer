@@ -90,20 +90,6 @@ function findSubtour(n, sol)
     return subtour, subtour_length
 end
 
-function convert_atsp_distance(n, dist)
-    for i in 1:n
-        dist[i,i] = 0.0
-    end
-
-    atsp_dist = zeros(2n, 2n)
-
-    atsp_dist[1:n,(n+1:2n)] = dist
-    atsp_dist[(n+1:2n),1:n] = dist'
-
-    return atsp_dist
-end
-
-
 # solveTSP
 # Given a matrix of city locations, solve the TSP
 # Inputs:
@@ -112,53 +98,28 @@ end
 # Output:
 #   path    Vector with order to cities are visited in
 function buildTSP(n, dist)
-    # dist = convert_atsp_distance(n, dist)
-    
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
 
     # x[i,j] is 1 iff we travel between i and j, 0 otherwise
-    # Although we define all n^2 variables, we will only use
-    # the upper triangle
     @defVar(m, x[1:n,1:n], Bin)
 
     # Minimize length of tour
-    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:n,j=i:n})
+    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:n,j=1:n})
 
-    # Make x_ij and x_ji be the same thing (undirectional)
-    # for i = 1:2n
-    #     for j = (i+1):2n
-    #         @addConstraint(m, x[i,j] == x[j,i])
-    #     end
-    # end
-
-    # Don't allow self-arcs or moving between non-prime to prime
+    # Don't allow self-arcs
     for i = 1:n
         @addConstraint(m, x[i,i] == 1)
     end
-    # for i = 1:n
-    #     for j = 1:n
-    #         @addConstraint(m, x[i,j] == 0)
-    #     end
-    # end
-    # for i = (n+1):n
-    #     for j = (n+1):2n
-    #         @addConstraint(m, x[i,j] == 0)
-    #     end
-    # end
 
     # We must enter and leave every city once and only once
-    # for i = 1:2n
-    #     @addConstraint(m, sum{x[i,j], j=1:2n} == 2)
-    # end
     for i = 1:n
         @addConstraint(m, sum{x[i,j], j=1:n} == 1)
     end
     for i = 1:n
         @addConstraint(m, sum{x[j,i], j=1:n} == 1)
     end
-
 
     function subtour(cb)
         println("Subtour callback")
@@ -218,16 +179,8 @@ function solveTSP(m)
     n = int(sqrt(m.numCols))
     tour = extractTour(n, getValue(m.dictList[1]))
     println(tour)
-    # tour = convert_to_symmetric(tour) 
     return tour
 end  # end solveTSP
-
-# Convert the Asymmetric solution with dummy cities back to the original
-function convert_to_symmetric(tour)
-    tour = tour[1:2:end-1]
-    push!(tour, 1)
-    return tour
-end
 
 # Determines if the current solution is within 1e-6 of integrality
 function check_integrality(n, sol)
