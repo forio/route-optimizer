@@ -25,7 +25,6 @@ using GLPKMathProgInterface
 # Output:
 #  tour     n+1 length vector of tour, starting and ending at 1
 function extractTour(n, sol)
-    println(sol)
     tour = [1]  # Start at city 1 always
     cur_city = 1
 
@@ -110,7 +109,7 @@ function buildTSP(n, dist)
 
     # Don't allow self-arcs
     for i = 1:n
-        @addConstraint(m, x[i,i] == 1)
+        @addConstraint(m, x[i,i] == 0)
     end
 
     # We must enter and leave every city once and only once
@@ -122,18 +121,15 @@ function buildTSP(n, dist)
     end
 
     function subtour(cb)
-        println("Subtour callback")
         # Check for integer solution, if not, return before adding constraint
         integer_solution = check_integrality(n, getValue(x))
         if !integer_solution
-            println("Not integer, returning")
             return
         end
 
         # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
         if subtour_length == n
-            println("Found a subtour of length $(n)")
             # This "subtour" is actually all cities, so we are done
             return
         end
@@ -158,14 +154,13 @@ function buildTSP(n, dist)
                     continue
                 else
                     # j isn't in subtour
-                    arcs_from_subtour += x[i,j] + x[j,i]
+                    arcs_from_subtour += x[i,j]
                 end
             end
         end
 
         # Add the new subtour elimination constraint we built
         addLazyConstraint(cb, arcs_from_subtour >= 1)
-        # println("Adding $arcs_from_subtour")
     end  # End function subtour
 
     # Solve the problem with our cut generator
@@ -175,10 +170,9 @@ end # end buildTSP
 
 function solveTSP(m)
     status = solve(m)
-    println("Objective value: $(getObjectiveValue(m)), status: $status")
+    # println("Objective value: $(getObjectiveValue(m)), status: $status")
     n = int(sqrt(m.numCols))
     tour = extractTour(n, getValue(m.dictList[1]))
-    println(tour)
     return tour
 end  # end solveTSP
 
@@ -190,7 +184,6 @@ function check_integrality(n, sol)
                 sol[i,j] = 1.0
             end
             if abs(sol[i,j] - int(sol[i,j])) > 1e-6
-                println("Not integer, $(sol[i,j]) and $(integer(sol[i,j]))")
                 return false
             end
         end
