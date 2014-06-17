@@ -32,7 +32,7 @@ cities1 = [50 200;
           351 750]
 
 global dist = Dict()
-dist[0] = calculate_distance(cities1)
+# dist[0] = calculate_distance(cities1)
 
 dist[1] = [[0,2455,3433,5644,1584,3202,5198,8013,3829],
      [1891,0,1247,5898,2455,4650,5456,9468,5285],
@@ -74,7 +74,8 @@ dist[4] = [[0,11388,7838,11146,5599,11562,11615,5449,8047],
            [8262,2854,1293,2831,7154,5032,3094,3048,0]]
 
 tsp_files = ["gr17.tsp", "gr21.tsp", "gr24.tsp", "fri26.tsp"]#, "gr48.tsp"]
-# tsp_files = ["gr21.tsp"]
+# tsp_files = ["gr24.tsp"]
+# tsp_files = []
 
 # Return a coordinate array
 function read_tsp_file(filename)
@@ -227,7 +228,7 @@ rand_pos =[6.239665319389998 22.530743130506735;
  88.01186994140436 31.396778353681754]
   # rand_pos = rand(31,2)*100
 
-  dist["rand"] = calculate_distance(rand_pos)
+  # dist["rand"] = calculate_distance(rand_pos)
 
 
 end
