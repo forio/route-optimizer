@@ -14,6 +14,7 @@ module TSPSolver
 
 using JuMP
 using GLPKMathProgInterface
+# using CPLEX
 
 # extractTour
 # Given a n-by-n matrix representing the solution to an undirected TSP,
@@ -35,7 +36,7 @@ function extractTour(n, sol)
                 push!(tour, j)
                 # Don't ever use this arc again
                 sol[cur_city, j] = 0.0
-                sol[j, cur_city] = 0.0
+                # sol[j, cur_city] = 0.0
                 # Move to next city
                 cur_city = j
                 break
@@ -68,14 +69,9 @@ function findSubtour(n, sol)
     while true
         # Find next node that we haven't yet visited
         found_city = false
-        if rand() < 0.5
-            range = n:-1:1
-        else
-            range = 1:n
-        end
-        for j in range
+        for j in 1:n
             if !subtour[j]
-                if sol[cur_city, j] >= 1e-6
+                if sol[cur_city, j] >= 1-1e-6
                     # Arc to unvisited city, follow it
                     cur_city = j
                     subtour[j] = true
@@ -93,44 +89,44 @@ function findSubtour(n, sol)
     return subtour, subtour_length
 end
 
-# solveTSP
-# Given a matrix of city locations, solve the TSP
+# buildTSP
+# Given a matrix of city locations, build the TSP
 # Inputs:
 #   n       Number of cities
 #   cities  n-by-n matrix of distancers between cities
 # Output:
-#   path    Vector with order to cities are visited in
+#   m       JuMP model
 function buildTSP(n, dist)
-
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
+    # m = Model(solver=CplexSolver())
 
-    # x[i,j] is 1 iff we travel between i and j, 0 otherwise
-    # Although we define all n^2 variables, we will only use
-    # the upper triangle
+    # x[i,j] is 1 iff we travel from i to j, 0 otherwise
     @defVar(m, x[1:n,1:n], Bin)
 
     # Minimize length of tour
-    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:n,j=i:n})
+    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:n,j=1:n})
 
-    # Make x_ij and x_ji be the same thing (undirectional)
     # Don't allow self-arcs
     for i = 1:n
         @addConstraint(m, x[i,i] == 0)
-        for j = (i+1):n
-            @addConstraint(m, x[i,j] == x[j,i])
-        end
     end
 
     # We must enter and leave every city once and only once
     for i = 1:n
-        @addConstraint(m, sum{x[i,j], j=1:n} == 2)
+        @addConstraint(m, sum{x[i,j], j=1:n} == 1)
+        @addConstraint(m, sum{x[j,i], j=1:n} == 1)
     end
 
     function subtour(cb)
+        # Check for integer solution, if not, return before adding constraint
+        integer_solution = check_integrality(n, getValue(x))
+        if !integer_solution
+            return
+        end
+
         # Find any set of cities in a subtour
         subtour, subtour_length = findSubtour(n, getValue(x))
-
         if subtour_length == n
             # This "subtour" is actually all cities, so we are done
             return
@@ -139,7 +135,7 @@ function buildTSP(n, dist)
         # Subtour found - add lazy constraint
         # We will build it up piece-by-piece
         arcs_from_subtour = AffExpr()
-        
+
         for i = 1:n
             if !subtour[i]
                 # If this city isn't in subtour, skip it
@@ -162,7 +158,7 @@ function buildTSP(n, dist)
         end
 
         # Add the new subtour elimination constraint we built
-        addLazyConstraint(cb, arcs_from_subtour >= 2)
+        addLazyConstraint(cb, arcs_from_subtour >= 1)
     end  # End function subtour
 
     # Solve the problem with our cut generator
@@ -170,11 +166,29 @@ function buildTSP(n, dist)
     return m
 end # end buildTSP
 
+# Solve the TSP
+# Input:
+#   m: JuMP model
+# Output:
+#   tour Vector with order to cities are visited in
 function solveTSP(m)
     status = solve(m)
-    
+    # println("Objective value: $(getObjectiveValue(m)), status: $status")
     n = int(sqrt(m.numCols))
-    return extractTour(n, getValue(m.dictList[1]))
+    tour = extractTour(n, getValue(m.dictList[1]))
+    return tour
 end  # end solveTSP
+
+# Determines if the current solution is within 1e-6 of integrality
+function check_integrality(n, sol)
+    for i in 1:n
+        for j in 1:n
+            if abs(sol[i,j] - int(sol[i,j])) > 1e-6
+                return false
+            end
+        end
+    end
+    return true
+end
 
 end
