@@ -74,6 +74,7 @@ dist[4] = [[0,11388,7838,11146,5599,11562,11615,5449,8047],
            [8262,2854,1293,2831,7154,5032,3094,3048,0]]
 
 tsp_files = ["gr17.tsp", "gr21.tsp", "gr24.tsp", "fri26.tsp"]#, "gr48.tsp"]
+tsp_files = ["gr17.tsp", "gr21.tsp", "fri26.tsp"]#, "gr48.tsp"]
 # tsp_files = ["gr24.tsp"]
 # tsp_files = []
 

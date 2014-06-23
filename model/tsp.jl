@@ -89,19 +89,19 @@ function findSubtour(n, sol)
     return subtour, subtour_length
 end
 
-# solveTSP
-# Given a matrix of city locations, solve the TSP
+# buildTSP
+# Given a matrix of city locations, build the TSP
 # Inputs:
 #   n       Number of cities
 #   cities  n-by-n matrix of distancers between cities
 # Output:
-#   path    Vector with order to cities are visited in
+#   m       JuMP model
 function buildTSP(n, dist)
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
 
-    # x[i,j] is 1 iff we travel between i and j, 0 otherwise
+    # x[i,j] is 1 iff we travel from i to j, 0 otherwise
     @defVar(m, x[1:n,1:n], Bin)
 
     # Minimize length of tour
@@ -115,8 +115,6 @@ function buildTSP(n, dist)
     # We must enter and leave every city once and only once
     for i = 1:n
         @addConstraint(m, sum{x[i,j], j=1:n} == 1)
-    end
-    for i = 1:n
         @addConstraint(m, sum{x[j,i], j=1:n} == 1)
     end
 
@@ -168,6 +166,11 @@ function buildTSP(n, dist)
     return m
 end # end buildTSP
 
+# Solve the TSP
+# Input:
+#   m: JuMP model
+# Output:
+#   tour Vector with order to cities are visited in
 function solveTSP(m)
     status = solve(m)
     # println("Objective value: $(getObjectiveValue(m)), status: $status")
@@ -180,9 +183,6 @@ end  # end solveTSP
 function check_integrality(n, sol)
     for i in 1:n
         for j in 1:n
-            if isnan(sol[i,j])
-                sol[i,j] = 1.0
-            end
             if abs(sol[i,j] - int(sol[i,j])) > 1e-6
                 return false
             end
