@@ -13,10 +13,17 @@ module.exports = function() {
         do: function (operation, data) {
             var $def = $.Deferred();
             var postData = {name: operation, arguments: [data]};
+            var doPOST;
 
-            var doPOST = function (runid) {
+            var runExpired = function () {
+                //Run must've expired or something went wrong with epicenter
+                runsService.getRunID(true).then(doPOST);
+            };
+
+            doPOST = function (runid) {
                 return transport(apiURL + '/' + runid)
                    .post(postData)
+                   .fail(runExpired)
                    .then(function (response){
                        $def.resolve(response.result);
                    });
@@ -24,10 +31,7 @@ module.exports = function() {
 
             runsService.getRunID()
                 .done(doPOST)
-                .fail(function (){
-                    //Run must've gone out of memory
-                    runsService.getRunID(true).then(doPOST);
-                });
+                .fail(runExpired);
             return $def;
         }
     };

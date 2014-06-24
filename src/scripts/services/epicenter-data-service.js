@@ -31,10 +31,13 @@ module.exports = function() {
             var transport = require('services/ajax-transport-service')(baseUrl + '/' + collectionId);
 
             transport
-               .get(options)
-               .done(function (data){
-                   $def.resolve(data);
-               });
+                .get(options)
+                .done(function (data){
+                    $def.resolve(data);
+                })
+                .fail(function () {
+                    $def.reject(arguments);
+                });
 
             return $def;
         }

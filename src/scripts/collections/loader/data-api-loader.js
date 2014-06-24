@@ -10,7 +10,7 @@ var DataAPIService = require('services/epicenter-data-service');
 
 module.exports = function (scenario) {
     var defaultParams = {
-        account: 'showcase',
+        account: 'examples',
         project: 'route-optimizer',
         collection: 'routes/' + scenario
     };
@@ -27,6 +27,10 @@ module.exports = function (scenario) {
                 if (done) done(data);
 
                 model.set('routeName', data.routeName);
+                model.trigger('hideloading');
+            }).fail( function () {
+                // Invalid route, defaulting to the root
+                window.location.hash = '';
                 model.trigger('hideloading');
             });
         }
