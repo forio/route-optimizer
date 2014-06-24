@@ -71,6 +71,9 @@ module.exports = BaseModel.extend({
         var me = this;
         var $def = $.Deferred();
 
+        var optimizeFail = function () {
+            $def.reject();
+        };
 
         $def.notify('distance_matrix');
         or.getDistanceMatrix().done(function (distanceMatrix) {
@@ -88,8 +91,8 @@ module.exports = BaseModel.extend({
                 me.set('generated', true);
 
                 $def.resolve(me.get('optimized'));
-            });
-        });
+            }).fail(optimizeFail);
+        }).fail(optimizeFail);
         return $def;
     }
 

@@ -33,6 +33,12 @@ module.exports = BaseView.extend({
         this.$('.steps').empty();
     },
 
+    resetView: function () {
+        this.$el.removeClass('generated');
+        this.$el.removeClass('in-progress');
+        this.render();
+    },
+
     render: function() {
         this.$el.html(this.template());
         return this;
@@ -48,7 +54,7 @@ module.exports = BaseView.extend({
             var me = this;
             $progressIndicator.progress(function (type) {
                 me.addProgressItem(type);
-            });
+            }).fail(_.bind(this.resetView, this));
         }
     },
 
