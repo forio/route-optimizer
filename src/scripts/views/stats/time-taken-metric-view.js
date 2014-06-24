@@ -11,6 +11,6 @@ module.exports = BaseView.extend({
         var minutes =  d3.format("02d")(Math.floor( (seconds % 3600) / 60));
 
         var suffix = (hours > 1) ? 's' : '';
-        return _.template('<%= hours %> <span class="unit"> Hr </span> <%=suffix%> <%= minutes %>', {hours: hours, suffix:suffix, minutes: minutes});
+        return _.template('<%= hours %> <span class="unit"> Hr<%=suffix%> </span> <%= minutes %>', {hours: hours, suffix:suffix, minutes: minutes});
     }
 });

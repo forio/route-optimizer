@@ -3,17 +3,17 @@ var urlService = require('services/epicenter-url-service');
 
 module.exports = function() {
     var defaultParams = {
-        account: 'showcase',
+        account: 'examples',
         project: 'route-optimizer',
         collection: 'routes'
     };
 
-    var apiURL = urlService.getDataApiURL(defaultParams);
-    var transport = require('services/ajax-transport-service')(apiURL);
+    var baseUrl = urlService.getDataApiURL(defaultParams);
 
     return {
         saveRoute: function (route) {
             var $def = $.Deferred();
+            var transport = require('services/ajax-transport-service')(baseUrl);
 
             transport
                .post(route)
@@ -25,17 +25,19 @@ module.exports = function() {
             return $def;
         },
 
-        getRoute: function (collectionId) {
+        getRoute: function (collectionId, options) {
             var $def = $.Deferred();
-            var params = {
-                id: collectionId
-            }
+            options = options || {};
+            var transport = require('services/ajax-transport-service')(baseUrl + '/' + collectionId);
 
             transport
-               .get(params)
-               .done(function (data){
-                   $def.resolve(data);
-               });
+                .get(options)
+                .done(function (data){
+                    $def.resolve(data);
+                })
+                .fail(function () {
+                    $def.reject(arguments);
+                });
 
             return $def;
         }

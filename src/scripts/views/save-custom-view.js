@@ -41,8 +41,13 @@ module.exports = BaseView.extend({
         var routeName = this.$('input').val();
         var payload = { routeName: routeName, waypoints: _.map(waypoints, function (wp) { return wp.toJSON() } ) };
 
+        // Hide the current view to prevent double saves
+        this.$el.html('');
+
         var me = this;
+        this.model.trigger('routesave');
         DataAPIService.saveRoute(payload).done( function (collectionId) {
+            me.model.trigger('hideloading'); 
             me.app.router.navigate(collectionId, {trigger: true});
         });
    },
