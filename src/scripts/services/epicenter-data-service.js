@@ -3,7 +3,7 @@ var urlService = require('services/epicenter-url-service');
 
 module.exports = function() {
     var defaultParams = {
-        account: 'showcase',
+        account: 'examples',
         project: 'route-optimizer',
         collection: 'routes'
     };

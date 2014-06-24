@@ -10,7 +10,7 @@ module.exports = function() {
             var $def = $.Deferred();
 
             var params = {
-                account: 'showcase',
+                account: 'examples',
                 project: 'route-optimizer',
                 model: 'TSPModel.jl'
             };
