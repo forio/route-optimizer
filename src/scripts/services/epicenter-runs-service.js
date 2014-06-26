@@ -21,6 +21,9 @@ module.exports = function() {
                    .done(function (run){
                        runid = run.id;
                        $def.resolve(run.id);
+                   })
+                   .fail(function () {
+                        $def.reject();                   
                    });
             }
             else {

@@ -17,7 +17,9 @@ module.exports = function() {
 
             var runExpired = function () {
                 //Run must've expired or something went wrong with epicenter
-                runsService.getRunID(true).then(doPOST);
+                runsService.getRunID(true).fail( function () {
+                    $def.reject();
+                }).then(doPOST);
             };
 
             doPOST = function (runid) {
