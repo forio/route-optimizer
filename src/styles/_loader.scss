@@ -3,36 +3,64 @@
     100% {@include rotate(359deg);}
 }
 
-.generate {
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    color:white;
+    color: white;
 
     overflow: hidden;
     text-align: center;
 
-    &.generated {
-       display: none;
+    h3 {
+        margin-top: -4px;
     }
 
-
-    &:before {
-        top: 0;
-        left: 0;
-        content: '';
-        background-color: white;
-        opacity: 0.7;
-        z-index: 9;
-
+    .step-container {
+        padding: 10px 0;
+        margin: auto auto;
+        background-color: $code-bg;
         display: block;
+
         position: absolute;
         right: 0;
-        bottom: 0;
+        left: 0;
+        top: 0;
+        z-index: 9;
+        height: 40px;
+    }
+}
 
-        @include single-transition(opacity, 0.1s, linear, 0.1s);
+.generate {
+
+    @extend .overlay;
+
+    &:not(.generated) {
+        h3 {
+            color: #b2b2b2;    
+        }
+
+        &:before {
+            top: 0;
+            left: 0;
+            content: '';
+            background-color: white;
+            opacity: 0.7;
+            z-index: 9;
+
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+
+            @include single-transition(opacity, 0.1s, linear, 0.1s);
+        }
+    }
+    
+    &.generated .status {
+       display: none;
     }
 
     &:hover{
@@ -41,27 +69,6 @@
         }
     }
 
-
-    .step-container {
-        padding: 10px 0;
-        margin: auto auto;
-        background-color: $accent-optimized;
-        display: block;
-
-        position: absolute;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        top: 0;
-        z-index: 9;
-
-        @include single-transition(height, 0.1s, linear, 0.1s);
-        height: 40px;
-    }
-
-    h3 {
-        margin-top: -4px;
-    }
     .steps {
         display: none;
 
@@ -69,8 +76,27 @@
         margin: 0 auto;
         text-align: left;
     }
+ 
+    .status {
+        margin: auto;
+        height: 40px;
+        width: 50%;
+        background-color: $code-bg;
+        margin-top: -2px;
+
+        button {
+            width: 100%;
+            height: 40px;
+            background-color: $accent-optimized;
+            color: white;
+            font-size: $medium-text;
+        }
+
+        @include single-transition(height, 0.1s, linear, 0.1s);
+    }
+
     &.in-progress {
-        .step-container {
+        .status {
             height: 300px;
 
             li {
@@ -119,7 +145,7 @@
         .steps {
             display: block;
         }
-        h3 {
+        button {
             display: none;
         }
     }

@@ -21,14 +21,20 @@
             }
         }
 
+        .map {
+            height: 560px;
+            margin-top: 40px;
+        }
+
+        .original {
+            position: relative;
+        }
+
         .optimized {
             position: relative;
             cursor: pointer;
 
-            .map {
-                height: 100%;
-            }
-
+            
 
             // &:before, &:after {
             //     display: block;
