@@ -13,15 +13,17 @@
 
     overflow: hidden;
     text-align: center;
+    opacity: 0.8;
 
     h3 {
         margin-top: -4px;
+        opacity: 1;
     }
 
     .step-container {
         padding: 10px 0;
         margin: auto auto;
-        background-color: $code-bg;
+        background-color: $accent-original;
         display: block;
 
         position: absolute;
@@ -38,9 +40,7 @@
     @extend .overlay;
 
     &:not(.generated) {
-        h3 {
-            color: #b2b2b2;    
-        }
+        opacity: 1;
 
         &:before {
             top: 0;
@@ -59,8 +59,14 @@
         }
     }
     
-    &.generated .status {
-       display: none;
+    &.generated  {
+        .status {
+           display: none;
+       }
+
+       .step-container {
+            height: 40px;
+        }
     }
 
     &:hover{
@@ -77,16 +83,15 @@
         text-align: left;
     }
  
-    .status {
+    .step-container {
         margin: auto;
-        height: 40px;
-        width: 50%;
-        background-color: $code-bg;
+        height: 90px;
         margin-top: -2px;
 
         button {
-            width: 100%;
+            width: 50%;
             height: 40px;
+            margin: auto;
             background-color: $accent-optimized;
             color: white;
             font-size: $medium-text;
@@ -96,8 +101,8 @@
     }
 
     &.in-progress {
-        .status {
-            height: 300px;
+        .step-container {
+            height: 350px;
 
             li {
                 list-style: none;
