@@ -10,7 +10,7 @@ var DataAPIService = require('services/epicenter-data-service');
 
 module.exports = function (scenario) {
     var defaultParams = {
-        account: 'examples',
+        account: 'showcase',
         project: 'route-optimizer',
         collection: 'routes/' + scenario
     };

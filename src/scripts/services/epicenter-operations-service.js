@@ -16,7 +16,7 @@ module.exports = function() {
             var doPOST;
 
             var runExpired = function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 404) {
+                if (jqXHR && jqXHR.status === 404) {
                     //Run must've expired
                     runsService.getRunID(true).fail( function () {
                         $def.reject();

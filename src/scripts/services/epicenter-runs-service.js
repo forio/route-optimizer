@@ -10,7 +10,7 @@ module.exports = function() {
             var $def = $.Deferred();
 
             var params = {
-                account: 'examples',
+                account: 'showcase',
                 project: 'route-optimizer',
                 model: 'TSPModel.jl'
             };
@@ -23,7 +23,7 @@ module.exports = function() {
                        $def.resolve(run.id);
                    })
                    .fail(function () {
-                        $def.reject();                   
+                        $def.reject(arguments);                   
                    });
             }
             else {
