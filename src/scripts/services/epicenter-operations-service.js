@@ -15,11 +15,15 @@ module.exports = function() {
             var postData = {name: operation, arguments: [data]};
             var doPOST;
 
-            var runExpired = function () {
-                //Run must've expired or something went wrong with epicenter
-                runsService.getRunID(true).fail( function () {
+            var runExpired = function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 404) {
+                    //Run must've expired
+                    runsService.getRunID(true).fail( function () {
+                        $def.reject();
+                    }).then(doPOST);
+                } else {
                     $def.reject();
-                }).then(doPOST);
+                }
             };
 
             doPOST = function (runid) {
