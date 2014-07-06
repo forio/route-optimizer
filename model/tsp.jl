@@ -96,10 +96,10 @@ end
 # Given a matrix of city locations, build the TSP
 # Inputs:
 #   n       Number of cities
-#   times  n-by-n matrix of travel times between cities
+#   durations  n-by-n matrix of travel times between cities
 # Output:
 #   m       JuMP model
-function buildTSP(n, times)
+function buildTSP(n, durations)
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
@@ -108,7 +108,7 @@ function buildTSP(n, times)
     @defVar(m, x[1:n,1:n], Bin)
 
     # Minimize length of tour
-    @setObjective(m, Min, sum{times[i,j]*x[i,j], i=1:n,j=1:n})
+    @setObjective(m, Min, sum{durations[i,j]*x[i,j], i=1:n,j=1:n})
 
     # Don't allow self-arcs
     for i = 1:n

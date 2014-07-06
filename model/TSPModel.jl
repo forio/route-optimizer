@@ -40,18 +40,18 @@ end
 # Solve takes a 2d array of travel times and returns a tour as a
 # 0-based permutation of the input cities
 # Input:
-#  traveltimes  n-by-n matrix of travel times between cities
+#  durations  n-by-n matrix of travel times between cities
 # Output:
 #   tour        (0-based) array of the input cities in the order visited.
-function solve(traveltimes)
+function solve(durations)
 
-	n = size(traveltimes)[1]
-	if !issquare(traveltimes)
+	n = size(durations)[1]
+	if !issquare(durations)
 		n = int(sqrt(n))
-		traveltimes = reshape(traveltimes, (n, n))
+		durations = reshape(durations, (n, n))
 	end
 
-	model = TSPSolver.buildTSP(n, traveltimes)
+	model = TSPSolver.buildTSP(n, durations)
 
 	global tour = TSPSolver.solveTSP(model) 
 
