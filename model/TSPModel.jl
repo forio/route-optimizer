@@ -23,6 +23,11 @@ function reset()
 	global tour = []
 end
 
+# Helper function. Determines if a given matrix is square.
+# Input:
+#  matrix     Matrix to check
+# Output:
+#   boolean, true if square, false if not
 function issquare(matrix)
 	square = false
 	matrixsize = size(matrix)
@@ -32,17 +37,21 @@ function issquare(matrix)
 	return square
 end
 
-## Solve takes a 2d array of distances and 
-## returns a tour
-function solve(distanceMatrix)
+# Solve takes a 2d array of travel times and returns a tour as a
+# 0-based permutation of the input cities
+# Input:
+#  traveltimes  n-by-n matrix of travel times between cities
+# Output:
+#   tour        (0-based) array of the input cities in the order visited.
+function solve(traveltimes)
 
-	n = size(distanceMatrix)[1]
-	if !issquare(distanceMatrix)
+	n = size(traveltimes)[1]
+	if !issquare(traveltimes)
 		n = int(sqrt(n))
-		distanceMatrix = reshape(distanceMatrix, (n, n))
+		traveltimes = reshape(traveltimes, (n, n))
 	end
 
-	model = TSPSolver.buildTSP(n, distanceMatrix)
+	model = TSPSolver.buildTSP(n, traveltimes)
 
 	global tour = TSPSolver.solveTSP(model) 
 

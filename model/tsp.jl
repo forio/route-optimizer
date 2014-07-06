@@ -1,4 +1,7 @@
 ## Original code taken from TSP example for JuMP.jl
+## Modified by Forio, 2014
+## http://www.forio.com
+## http://www.github.com/forio/route-optimizer
 module TSPSolver
 
 #############################################################################
@@ -93,10 +96,10 @@ end
 # Given a matrix of city locations, build the TSP
 # Inputs:
 #   n       Number of cities
-#   cities  n-by-n matrix of distancers between cities
+#   times  n-by-n matrix of travel times between cities
 # Output:
 #   m       JuMP model
-function buildTSP(n, dist)
+function buildTSP(n, times)
     # Create a model that will use GLPK to solve
     m = Model(solver=GLPKSolverMIP())
     # m = Model(solver=CplexSolver())
@@ -105,7 +108,7 @@ function buildTSP(n, dist)
     @defVar(m, x[1:n,1:n], Bin)
 
     # Minimize length of tour
-    @setObjective(m, Min, sum{dist[i,j]*x[i,j], i=1:n,j=1:n})
+    @setObjective(m, Min, sum{times[i,j]*x[i,j], i=1:n,j=1:n})
 
     # Don't allow self-arcs
     for i = 1:n
@@ -179,7 +182,8 @@ function solveTSP(m)
     return tour
 end  # end solveTSP
 
-# Determines if the current solution is within 1e-6 of integrality
+## Determines if the current solution is within 1e-6 of integrality. Fix for
+## http://github.com/JuliaOpt/JuMP.jl/issues/194.
 function check_integrality(n, sol)
     for i in 1:n
         for j in 1:n
