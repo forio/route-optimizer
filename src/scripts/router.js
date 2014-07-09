@@ -10,7 +10,7 @@ module.exports = Backbone.Router.extend({
 
     dashboard: function (routeID) {
         if (!routeID) {
-            routeID = 'book-crawl';
+            routeID = 'business-deliver';
         }
         this.app.set('currentScenario', routeID);
     }

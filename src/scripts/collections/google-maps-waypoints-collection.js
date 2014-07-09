@@ -8,7 +8,7 @@ var distanceMatrixToArray = function (gDistanceMatrixResponse) {
         return _.map(gDistanceMatrixResponseRow.elements, function (gDistanceMatrixResponseElement){
             var distance;
             if (gDistanceMatrixResponseElement.status === google.maps.DistanceMatrixElementStatus.OK) {
-                distance = gDistanceMatrixResponseElement.distance.value;
+                distance = gDistanceMatrixResponseElement.duration.value;
             }
             else {
                 distance = 0;

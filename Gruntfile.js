@@ -9,8 +9,15 @@ var mountFolder = function(connect, dir) {
 module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
+    var fs = require('fs');
     var ejs = require('ejsify');
     var UglifyJS = require("uglify-js");
+    var _ = require('lodash');
+
+    if (!fs.existsSync('./config.json')) {
+        grunt.fail.warn('config.json file missing, use the config.default.json as a template');
+    }
+    var config = require('./config.json');
 
     grunt.initConfig({
         watch: {
@@ -24,7 +31,7 @@ module.exports = function(grunt) {
             },
             index: {
                 files: [ 'src/index.html'],
-                tasks: 'copy:index'
+                tasks: ['copy:index', 'apiKeys:dev']
             },
             assets: {
                 files: [ 'src/styles/assets/**/*.*'],
@@ -189,12 +196,53 @@ module.exports = function(grunt) {
                 },
                 files: []
             }
+        },
+
+        apiKeys: {
+            options: {
+                target: 'public/index.html',
+                GOOGLE_MAPS_API_KEY: config.googleMapsAPIKey
+            },
+
+            dev: {
+            },
+
+            production: {
+            }
         }
     });
 
-    grunt.registerTask('init', ['copy', 'compass:dev', 'browserify2:dev']);
+    grunt.registerMultiTask('apiKeys', 'Injects API Keys into the source code', function() {
+        var done = this.async();
+        var fs = require('fs');
+        var options = _.extend(this.options(), this.data);
 
-    grunt.registerTask('production', ['copy', 'compass:production', 'browserify2:production']);
+        fs.readFile(options.target, 'utf8', function (err,data) {
+            if (err) {
+                grunt.log.writeln(options.target + ' was not found');
+                done(false);
+                return;
+            }
+            var newIndex = data;
+            _.each(options, function (value, key) {
+                newIndex = newIndex.replace('%' + key + '%', value);
+            });
+            fs.writeFile(options.target, newIndex, function (err) {
+                if (err) {
+                    grunt.log.writeln('Could not write ' + options.target);
+                    done(false);
+                    return;
+                }
+
+                grunt.log.writeln(options.target + ' was updated');
+                done();
+            });
+        });
+    });
+
+    grunt.registerTask('init', ['copy', 'compass:dev', 'browserify2:dev', 'apiKeys:dev']);
+
+    grunt.registerTask('production', ['copy', 'compass:production', 'browserify2:production', 'apiKeys:production']);
     grunt.registerTask('server', ['init', 'connect:livereload', 'open', 'watch']);
 
 
