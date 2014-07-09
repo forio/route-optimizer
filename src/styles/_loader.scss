@@ -85,17 +85,26 @@
  
     .step-container {
         margin: auto;
-        height: 90px;
-        margin-top: -2px;
 
         button {
             width: 50%;
             height: 40px;
-            margin: auto;
+            margin: 14px auto;
             background-color: $accent-optimized;
             color: white;
             font-size: $medium-text;
-        }
+            border: none;
+            border-radius: 4px;
+
+            &:hover {
+                background-color: darken($accent-optimized, 5%);
+            }
+
+            -webkit-transition: background-color 200ms;
+            -moz-transition: background-color 200ms;
+            -o-transition: background-color 200ms;
+            transition: background-color 200ms;
+        } 
 
         @include single-transition(height, 0.1s, linear, 0.1s);
     }
