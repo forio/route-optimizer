@@ -14,10 +14,10 @@ module.exports = function(grunt) {
     var UglifyJS = require("uglify-js");
     var _ = require('lodash');
 
-    if (!fs.existsSync('./config.js')) {
-        grunt.fail.warn('config.js file missing, use the config.default.js as a template');
+    if (!fs.existsSync('./config.json')) {
+        grunt.fail.warn('config.json file missing, use the config.default.json as a template');
     }
-    var config = require('./config');
+    var config = require('./config.json');
 
     grunt.initConfig({
         watch: {
