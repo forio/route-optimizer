@@ -3,36 +3,70 @@
     100% {@include rotate(359deg);}
 }
 
-.generate {
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    color:white;
+    color: white;
 
     overflow: hidden;
     text-align: center;
+    opacity: 0.8;
 
-    &.generated {
-       display: none;
+    h3 {
+        margin-top: -4px;
+        opacity: 1;
     }
 
-
-    &:before {
-        top: 0;
-        left: 0;
-        content: '';
-        background-color: white;
-        opacity: 0.7;
-        z-index: 9;
-
+    .step-container {
+        padding: 10px 0;
+        margin: auto auto;
+        background-color: $accent-original;
         display: block;
+
         position: absolute;
         right: 0;
-        bottom: 0;
+        left: 0;
+        top: 0;
+        z-index: 9;
+        height: 40px;
+    }
+}
 
-        @include single-transition(opacity, 0.1s, linear, 0.1s);
+.generate {
+
+    @extend .overlay;
+
+    &:not(.generated) {
+        opacity: 1;
+
+        &:before {
+            top: 0;
+            left: 0;
+            content: '';
+            background-color: white;
+            opacity: 0.7;
+            z-index: 9;
+
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+
+            @include single-transition(opacity, 0.1s, linear, 0.1s);
+        }
+    }
+    
+    &.generated  {
+        .status {
+           display: none;
+       }
+
+       .step-container {
+            height: 40px;
+        }
     }
 
     &:hover{
@@ -41,27 +75,6 @@
         }
     }
 
-
-    .step-container {
-        padding: 10px 0;
-        margin: auto auto;
-        background-color: $accent-optimized;
-        display: block;
-
-        position: absolute;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        top: 0;
-        z-index: 9;
-
-        @include single-transition(height, 0.1s, linear, 0.1s);
-        height: 40px;
-    }
-
-    h3 {
-        margin-top: -4px;
-    }
     .steps {
         display: none;
 
@@ -69,9 +82,27 @@
         margin: 0 auto;
         text-align: left;
     }
+ 
+    .step-container {
+        margin: auto;
+        height: 90px;
+        margin-top: -2px;
+
+        button {
+            width: 50%;
+            height: 40px;
+            margin: auto;
+            background-color: $accent-optimized;
+            color: white;
+            font-size: $medium-text;
+        }
+
+        @include single-transition(height, 0.1s, linear, 0.1s);
+    }
+
     &.in-progress {
         .step-container {
-            height: 300px;
+            height: 350px;
 
             li {
                 list-style: none;
@@ -119,7 +150,7 @@
         .steps {
             display: block;
         }
-        h3 {
+        button {
             display: none;
         }
     }

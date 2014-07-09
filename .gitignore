@@ -30,3 +30,5 @@ node_modules
 public/
 
 src/scripts/vendor
+
+config.json

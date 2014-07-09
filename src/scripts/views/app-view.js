@@ -41,7 +41,7 @@ module.exports = BaseView.extend({
     renderContents: function () {
         this.originalMapView = new OriginalMapView({
             collection: this.model.get('original'),
-            el: this.$('.maps .original')
+            el: this.$('.maps .original .map')
         });
         this.originalMapView.render();
 
