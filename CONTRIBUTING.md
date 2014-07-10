@@ -12,7 +12,7 @@ Feel free to [file issues](https://github.com/forio/route-optimizer/issues) when
 
 ### Submitting your contributions
 
-*By contributing code to Lumberjack, you are agreeing to release your work under the [LGPLv3](https://github.com/forio/route-optimizer/blob/master/LICENSE.txt).*
+*By contributing code to Route Optimizer, you are agreeing to release your work under the [LGPLv3](https://github.com/forio/route-optimizer/blob/master/LICENSE.txt).*
 
 We love contributions in the form of pull requests! Check [here](https://help.github.com/articles/fork-a-repo) if you're not familiar with forking, otherwise:
 
