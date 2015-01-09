@@ -15,6 +15,8 @@ var SaveCustomView = require('views/save-custom-view');
 var ShareView = require('views/share-view');
 var LoadingView = require('views/loading-view');
 
+var runsService = require('services/epicenter-runs-service');
+
 module.exports = BaseView.extend({
     template: require('templates/app'),
 
@@ -22,6 +24,8 @@ module.exports = BaseView.extend({
         this.model.on('load', this.renderMaps, this);
         BaseView.prototype.initialize.apply(this, arguments);
 
+        // Pre-initializes the run
+        runsService.getRunID();
     },
 
     renderMaps: function () {
