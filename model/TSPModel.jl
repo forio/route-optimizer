@@ -61,4 +61,23 @@ function solve(durations)
 	return tour
 end
 
+function calculate_distance(cities)
+	n = size(cities)[1]
+	# Calculate pairwise distance matrix
+	dist = zeros(n, n)
+	for i = 1:n
+		for j = i:n
+			d = norm(cities[i,1:2] - cities[j,1:2])
+			dist[i,j] = d
+			dist[j,i] = d
+		end
+	end
+	return dist
+end
+
+solve([0.0 111.80339887498948 111.80339887498948 517.228189487;
+	   111.80339887498948 0.0 200.0 447.8001786511479;
+	   111.80339887498948 200.0 0.0 510.41649659861116;
+	   517.228189487 447.8001786511479 510.41649659861116 0.0])
+
 end
