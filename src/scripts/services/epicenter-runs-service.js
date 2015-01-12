@@ -6,6 +6,8 @@ module.exports = function() {
     var transport = require('services/ajax-transport-service')(runURL);
 
     return {
+        listeners: [],
+        runIdReq: null,
         getRunID: function (forceGet) {
             var $def = $.Deferred();
 
@@ -16,15 +18,28 @@ module.exports = function() {
             };
 
             if (!runid || forceGet) {
-                transport
-                   .post(params)
-                   .done(function (run){
-                       runid = run.id;
-                       $def.resolve(run.id);
-                   })
-                   .fail(function () {
-                        $def.reject(arguments);                   
-                   });
+                var _this = this;
+                this.listeners.push($def);
+
+                if (!this.runIdReq) {
+                    this.runIdReq = transport
+                       .post(params)
+                       .done(function (run){
+                           runid = run.id;
+                           _.each(_this.listeners, function (prom) {
+                                prom.resolve(run.id);
+                            });
+                           _this.runIdReq = null;
+                       })
+                       .fail(function () {
+                            var args = arguments;
+                            _.each(_this.listeners, function (prom) {
+                                prom.reject(args);
+                            });
+                            _this.runIdReq = null;   
+                       });
+                }
+                
             }
             else {
                 $def.resolve(runid);
