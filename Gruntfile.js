@@ -242,7 +242,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('init', ['copy', 'compass:dev', 'browserify2:dev', 'apiKeys:dev']);
 
-    grunt.registerTask('production', ['copy', 'compass:production', 'browserify2:production', 'apiKeys:production']);
+    grunt.registerTask('production', ['copy', 'compass:production', 'browserify2:production']);
     grunt.registerTask('server', ['init', 'connect:livereload', 'open', 'watch']);
 
 
