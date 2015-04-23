@@ -24,3 +24,5 @@ Before running the project, a Google Maps API Key is required
 ##Background
 
 Additional details on our methods and motivation are in our [blog post](http://forio.com/about/blog/route-optimizer-julia-google-maps-epicenter/).
+
+© Forio Corporation, 2014. All rights reserved.
